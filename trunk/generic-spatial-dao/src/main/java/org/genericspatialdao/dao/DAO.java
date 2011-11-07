@@ -25,5 +25,7 @@ public interface DAO<T> {
 	@SuppressWarnings("rawtypes")
 	List executeSQLQuery(String sql);
     int executeSQLUpdate(String sql);
+    
+    void close();
 
 }

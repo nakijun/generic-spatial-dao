@@ -2,15 +2,20 @@ package org.genericspatialdao.dao;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.genericspatialdao.data.SpatialTestVO;
 import org.genericspatialdao.data.TestVO;
 import org.genericspatialdao.exception.DAOException;
+import org.genericspatialdao.utils.SpatialUtils;
 import org.genericspatialdao.utils.TestUtils;
+import org.hibernate.criterion.Criterion;
+import org.hibernatespatial.criterion.SpatialRestrictions;
 import org.junit.Test;
 
 import com.vividsolutions.jts.geom.Point;
+import com.vividsolutions.jts.geom.Polygon;
 
 public class GenericDAOTest {
 
@@ -42,7 +47,7 @@ public class GenericDAOTest {
 		testDAO.remove(updatedTestVO);
 		assertEquals(0, testDAO.findAll().size());
 
-		DAOHelper.cleanUp();
+		testDAO.close();
 	}
 
 	@Test
@@ -72,7 +77,7 @@ public class GenericDAOTest {
 		testDAO.remove(updatedSpatialTestVO);
 		assertEquals(0, testDAO.findAll().size());
 
-		DAOHelper.cleanUp();
+		testDAO.close();
 	}
 
 	@Test
@@ -82,7 +87,7 @@ public class GenericDAOTest {
 
 		assertEquals(0, testDAO.findAll().size());
 
-		DAOHelper.cleanUp();
+		DAOHelper.close();
 	}
 
 	@Test(expected = DAOException.class)
@@ -96,6 +101,39 @@ public class GenericDAOTest {
 		testVO.setPassword(TestUtils.randomString());
 
 		testDAO.persist(testVO);
+
+		testDAO.close();
+
+	}
+
+	@Test
+	public void withinTest() {
+		System.out.println("containsTest");
+
+		final int NUM = 50;
+		DAO<SpatialTestVO> testDAO = new GenericDAO<SpatialTestVO>(
+				SpatialTestVO.class);
+		List<SpatialTestVO> list = new ArrayList<SpatialTestVO>();
+		for (int i = 0; i < NUM; i++) {
+			SpatialTestVO spatialVO = new SpatialTestVO(TestUtils.randomPoint(
+					-179, 179, -89, 89, SRID));
+			list.add(spatialVO);
+			testDAO.persist(spatialVO);
+		}
+
+		Polygon polygon = SpatialUtils
+				.createPolygon(
+						"POLYGON((-180 -90, -180 90, 180 90, 180 -90, -180 -90))",
+						SRID);
+		List<Criterion> conditions = new ArrayList<Criterion>();
+		Criterion c1 = SpatialRestrictions.within("point", polygon);
+		conditions.add(c1);
+
+		assertEquals(NUM, testDAO.findByCriteria(conditions).size());
+
+		for (int i = 0; i < NUM; i++) {
+			testDAO.remove(list.get(i));
+		}
 	}
 
 }

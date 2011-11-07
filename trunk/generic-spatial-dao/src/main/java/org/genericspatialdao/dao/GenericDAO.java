@@ -172,7 +172,10 @@ public class GenericDAO<T> implements DAO<T> {
 			LOG.error(FAILED_TO_EXECUTE_QUERY + e.getMessage());
 			throw new DAOException(FAILED_TO_EXECUTE_QUERY + e.getMessage());
 		}
+	}
 
+	public void close() {
+		DAOHelper.close();
 	}
 
 }
