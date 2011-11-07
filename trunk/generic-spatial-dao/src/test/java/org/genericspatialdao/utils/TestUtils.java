@@ -23,6 +23,10 @@ public class TestUtils {
 		return (long) (Math.random() * Long.MAX_VALUE);
 	}
 	
+	public static double randomDouble() {
+		return (double) (Math.random() * Double.MAX_VALUE);
+	}
+	
 	public static double randomDouble(double low, double high) {
 		return (double) (Math.min(low, high) + Math.random() * (high - low));
 	}
