@@ -103,7 +103,6 @@ public class GenericDAOTest {
 		testDAO.persist(testVO);
 
 		testDAO.close();
-
 	}
 
 	@Test
@@ -134,6 +133,7 @@ public class GenericDAOTest {
 		for (int i = 0; i < NUM; i++) {
 			testDAO.remove(list.get(i));
 		}
-	}
 
+		testDAO.close();
+	}
 }
