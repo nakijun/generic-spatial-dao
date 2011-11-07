@@ -76,12 +76,12 @@ public class DAOHelper {
 	}
 
 	/**
-	 * Clean up entity manager
+	 * Close entity manager
 	 */
-	public static synchronized void cleanUp() {
+	public static synchronized void close() {
 		EntityManager em = getEntityManager();
 		if (em != null) {
-			LOG.debug("Cleaning up");
+			LOG.debug("Closing entity manager");
 			if (em.isOpen()) {
 				em.close();
 			}

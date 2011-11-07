@@ -2,7 +2,6 @@ package org.genericspatialdao.utils;
 
 import static org.junit.Assert.assertEquals;
 
-
 import org.genericspatialdao.exception.SpatialException;
 import org.junit.Test;
 
@@ -10,7 +9,7 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
 
-public class SpatialUtilsTest {
+public class SpatialTestUtils {
 
 	private static final int SRID = 4326;
 
@@ -53,17 +52,20 @@ public class SpatialUtilsTest {
 		assertEquals(true, p.isValid());
 		assertEquals(SRID, p.getSRID());
 	}
-	
+
 	@Test
-	public void createPolygonFromWKTTest() {		
-		Polygon p = SpatialUtils.createPolygon("POLYGON((0 0,4 0,4 4,0 4,0 0),(1 1, 2 1, 2 2, 1 2,1 1))", SRID);
+	public void createPolygonFromWKTTest() {
+		Polygon p = SpatialUtils
+				.createPolygon(
+						"POLYGON((0 0,4 0,4 4,0 4,0 0),(1 1, 2 1, 2 2, 1 2,1 1))",
+						SRID);
 		assertEquals(false, p.isEmpty());
 		assertEquals(true, p.isValid());
 		assertEquals(SRID, p.getSRID());
 	}
-	
+
 	@Test(expected = SpatialException.class)
-	public void createPolygonFromWKTWrongTest() {		
+	public void createPolygonFromWKTWrongTest() {
 		Polygon p = SpatialUtils.createPolygon("POINT(0 0)", SRID);
 		assertEquals(false, p.isEmpty());
 		assertEquals(true, p.isValid());

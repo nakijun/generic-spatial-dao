@@ -38,6 +38,14 @@ public class SpatialTestVO implements Serializable {
 	@Type(type = "org.hibernatespatial.GeometryUserType")
 	private Geometry geometry;
 
+	public SpatialTestVO() {
+		
+	}
+	
+	public SpatialTestVO(Point point) {
+		this.point = point;
+	}
+	
 	public long getId() {
 		return id;
 	}
@@ -76,6 +84,13 @@ public class SpatialTestVO implements Serializable {
 
 	public void setGeometry(Geometry geometry) {
 		this.geometry = geometry;
+	}
+
+	@Override
+	public String toString() {
+		return "SpatialTestVO [id=" + id + ", point=" + point + ", polygon="
+				+ polygon + ", multiPolygon=" + multiPolygon + ", geometry="
+				+ geometry + "]";
 	}
 
 }
