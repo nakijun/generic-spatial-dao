@@ -108,7 +108,7 @@ public class GenericDAOTest {
 
 	@Test
 	public void withinTest() {
-		System.out.println("containsTest");
+		System.out.println("withinTest");
 
 		final int NUM = 50;
 		DAO<SpatialTestVO> testDAO = new GenericDAO<SpatialTestVO>(
