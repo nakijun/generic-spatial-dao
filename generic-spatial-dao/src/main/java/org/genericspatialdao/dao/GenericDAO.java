@@ -35,7 +35,7 @@ public class GenericDAO<T> implements DAO<T> {
 	}
 
 	public T find(Object id) {
-		LOG.info(FINDING + entityClass.getSimpleName() + OBJECT_BY_ID + id);
+		LOG.info(FINDING + entityClass.getName() + OBJECT_BY_ID + id);
 		DAOHelper.beginTransaction();
 		T t = em.find(entityClass, id);
 		LOG.debug(RESULT + t);
