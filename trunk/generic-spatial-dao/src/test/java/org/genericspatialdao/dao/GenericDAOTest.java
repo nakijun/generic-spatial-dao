@@ -39,7 +39,7 @@ public class GenericDAOTest {
 		testVO = result.get(0);
 		String newPassword = TestUtils.randomString();
 		testVO.setPassword(newPassword);
-		testDAO.flush();
+		testDAO.merge(testVO);
 
 		TestVO updatedTestVO = (TestVO) testDAO.find(testVO.getId());
 		assertEquals(newPassword, updatedTestVO.getPassword());
