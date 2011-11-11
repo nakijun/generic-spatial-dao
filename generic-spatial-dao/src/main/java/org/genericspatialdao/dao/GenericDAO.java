@@ -109,6 +109,7 @@ public class GenericDAO<T> implements DAO<T> {
 
 	public void flush() {
 		LOG.info("Flushing session");
+		DAOHelper.beginTransaction();
 		em.flush();
 	}
 
