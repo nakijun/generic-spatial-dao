@@ -79,8 +79,8 @@ public class DAOHelper {
 	public static synchronized void close() {
 		EntityManager em = getEntityManager();
 		if (em != null) {
-			LOG.debug("Closing entity manager");
 			if (em.isOpen()) {
+				LOG.info("Closing entity manager");
 				em.close();
 			}
 			session.set(null);
@@ -99,8 +99,8 @@ public class DAOHelper {
 	 */
 	public static synchronized void closeFactory() {
 		if (factory != null) {
-			LOG.info("Closing entity manager factory");
 			if (factory.isOpen()) {
+				LOG.info("Closing entity manager factory");
 				factory.close();
 			}
 			factory = null;
