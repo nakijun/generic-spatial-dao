@@ -1,7 +1,5 @@
 package org.genericspatialdao.dao;
 
-
-
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
@@ -118,7 +116,7 @@ public class DAOHelper {
 		EntityManager em = getEntityManager();
 		EntityTransaction transaction = em.getTransaction();
 		if (!transaction.isActive()) {
-			LOG.debug("Beginning transaction");
+			LOG.info("Beginning transaction");
 			transaction.begin();
 		}
 	}
@@ -131,8 +129,8 @@ public class DAOHelper {
 	public static synchronized void commit() {
 		EntityManager em = getEntityManager();
 		EntityTransaction transaction = em.getTransaction();
-		if (!transaction.isActive()) {
-			LOG.debug("Commiting");
+		if (transaction.isActive()) {
+			LOG.info("Commiting");
 			transaction.commit();
 		}
 	}
@@ -145,8 +143,8 @@ public class DAOHelper {
 	public static synchronized void rollback() {
 		EntityManager em = getEntityManager();
 		EntityTransaction transaction = em.getTransaction();
-		if (!transaction.isActive()) {
-			LOG.debug("Rollbacking");
+		if (transaction.isActive()) {
+			LOG.info("Rollbacking");
 			transaction.rollback();
 		}
 	}
