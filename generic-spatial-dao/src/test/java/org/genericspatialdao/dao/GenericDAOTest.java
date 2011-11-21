@@ -81,6 +81,65 @@ public class GenericDAOTest {
 	}
 
 	@Test
+	public void hqlTest() {
+		System.out.println("hqlTest");
+		DAO<TestVO> testDAO = new GenericDAO<TestVO>(TestVO.class);
+
+		String login1 = TestUtils.randomString();
+
+		TestVO testVO1 = new TestVO();
+		testVO1.setLogin(login1);
+		testVO1.setPassword(TestUtils.randomString());
+		testDAO.persist(testVO1);
+		assertEquals(login1, testDAO.find(testVO1.getId()).getLogin());
+
+		TestVO testVO2 = new TestVO();
+		testVO2.setLogin(TestUtils.randomString());
+		testVO2.setPassword(TestUtils.randomString());
+		testDAO.persist(testVO2);
+		assertEquals(2, testDAO.findAll().size());
+
+		assertEquals(login1, testVO1.getLogin());
+		assertEquals(
+				1,
+				testDAO.executeHQL(
+						"FROM TestVO t WHERE login = '" + login1 + "'").size());
+
+		testDAO.remove(testVO1);
+		testDAO.remove(testVO2);
+		testDAO.close();
+	}
+
+	@Test
+	public void hql2Test() {
+		System.out.println("hqlTest");
+		DAO<TestVO> testDAO = new GenericDAO<TestVO>(TestVO.class);
+
+		String login1 = TestUtils.randomString();
+
+		TestVO testVO1 = new TestVO();
+		testVO1.setLogin(login1);
+		testVO1.setPassword(TestUtils.randomString());
+		testDAO.persist(testVO1);
+		assertEquals(login1, testDAO.find(testVO1.getId()).getLogin());
+
+		TestVO testVO2 = new TestVO();
+		testVO2.setLogin(TestUtils.randomString());
+		testVO2.setPassword(TestUtils.randomString());
+		testDAO.persist(testVO2);
+		assertEquals(2, testDAO.findAll().size());
+
+		assertEquals(login1, testVO1.getLogin());
+		assertEquals(1,
+				testDAO.executeHQL("FROM TestVO t WHERE login = ?", login1)
+						.size());
+
+		testDAO.remove(testVO1);
+		testDAO.remove(testVO2);
+		testDAO.close();
+	}
+
+	@Test
 	public void findTest() {
 		System.out.println("findTest");
 		DAO<TestVO> testDAO = new GenericDAO<TestVO>(TestVO.class);

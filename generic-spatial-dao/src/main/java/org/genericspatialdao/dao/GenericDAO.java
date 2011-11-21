@@ -179,4 +179,38 @@ public class GenericDAO<T> implements DAO<T> {
 		DAOHelper.close();
 	}
 
+	@SuppressWarnings("rawtypes")
+	@Override
+	public List executeHQL(String hql) {
+		LOG.info(EXECUTING_QUERY + hql);
+		try {
+			Query q = DAOHelper.getSession().createQuery(hql);
+			List result = q.list();
+			LOG.debug(RESULT + result);
+			return result;
+		} catch (Exception e) {
+			LOG.error(FAILED_TO_EXECUTE_QUERY + e.getMessage());
+			throw new DAOException(FAILED_TO_EXECUTE_QUERY + e.getMessage());
+		}
+	}
+
+	@SuppressWarnings("rawtypes")
+	@Override
+	public List executeHQL(String hqlTemplate, Object... params) {
+		try {
+			Query q = DAOHelper.getSession().createQuery(hqlTemplate);
+			int index = 0;
+			for (Object param : params) {
+				q.setParameter(index++, param);
+			}
+			LOG.info(EXECUTING_QUERY + q.getQueryString());
+			List result = q.list();
+			LOG.debug(RESULT + result);
+			return result;
+		} catch (Exception e) {
+			LOG.error(FAILED_TO_EXECUTE_QUERY + e.getMessage());
+			throw new DAOException(FAILED_TO_EXECUTE_QUERY + e.getMessage());
+		}
+	}
+
 }
