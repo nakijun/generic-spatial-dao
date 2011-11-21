@@ -65,7 +65,7 @@ public class DAOHelper {
 				throw new DAOException(NO_PERSISTENCE_UNIT_LOADED);
 			}
 
-			LOG.info("Creating entity manager");
+			LOG.debug("Creating entity manager");
 			em = factory.createEntityManager();
 			session.set(em);
 		}
@@ -80,7 +80,7 @@ public class DAOHelper {
 		EntityManager em = getEntityManager();
 		if (em != null) {
 			if (em.isOpen()) {
-				LOG.info("Closing entity manager");
+				LOG.debug("Closing entity manager");
 				em.close();
 			}
 			session.set(null);
@@ -100,7 +100,7 @@ public class DAOHelper {
 	public static synchronized void closeFactory() {
 		if (factory != null) {
 			if (factory.isOpen()) {
-				LOG.info("Closing entity manager factory");
+				LOG.debug("Closing entity manager factory");
 				factory.close();
 			}
 			factory = null;
@@ -116,7 +116,7 @@ public class DAOHelper {
 		EntityManager em = getEntityManager();
 		EntityTransaction transaction = em.getTransaction();
 		if (!transaction.isActive()) {
-			LOG.info("Beginning transaction");
+			LOG.debug("Beginning transaction");
 			transaction.begin();
 		}
 	}
@@ -130,7 +130,7 @@ public class DAOHelper {
 		EntityManager em = getEntityManager();
 		EntityTransaction transaction = em.getTransaction();
 		if (transaction.isActive()) {
-			LOG.info("Commiting");
+			LOG.debug("Commiting");
 			transaction.commit();
 		}
 	}
