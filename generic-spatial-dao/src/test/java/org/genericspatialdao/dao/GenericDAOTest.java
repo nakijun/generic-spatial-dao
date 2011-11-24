@@ -22,6 +22,22 @@ public class GenericDAOTest {
 	private final int SRID = 4326;
 
 	@Test
+	public void removeAllTest() {
+		DAO<TestVO> testDAO = new GenericDAO<TestVO>(TestVO.class);
+		TestVO testVO = new TestVO();
+		testVO.setLogin(TestUtils.randomString());
+		testVO.setPassword(TestUtils.randomString());
+
+		testDAO.persist(testVO);
+		assertEquals(1, testDAO.findAll().size());
+
+		testDAO.removeAll();
+		assertEquals(0, testDAO.findAll().size());
+
+		testDAO.close();
+	}
+
+	@Test
 	public void persistUpdateRemoveTest() {
 		System.out.println("persistUpdateRemoveTest");
 		DAO<TestVO> testDAO = new GenericDAO<TestVO>(TestVO.class);
