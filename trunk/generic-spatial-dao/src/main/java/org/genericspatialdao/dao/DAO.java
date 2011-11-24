@@ -33,6 +33,8 @@ public interface DAO<T> {
 
 	@SuppressWarnings("rawtypes")
 	List executeHQL(String hqlTemplate, Object... params);
+	
+	int executeHQLUpdate(String hql);
 
 	@SuppressWarnings("rawtypes")
 	List executeSQLQuery(String sql);
@@ -40,5 +42,7 @@ public interface DAO<T> {
 	int executeSQLUpdate(String sql);
 
 	void close();
+
+	void removeAll();
 
 }

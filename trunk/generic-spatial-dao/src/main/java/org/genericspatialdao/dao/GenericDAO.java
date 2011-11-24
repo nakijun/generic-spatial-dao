@@ -213,4 +213,25 @@ public class GenericDAO<T> implements DAO<T> {
 		}
 	}
 
+	@Override
+	public int executeHQLUpdate(String hql) {
+		LOG.info(EXECUTING_QUERY + hql);
+		try {
+			Query q = DAOHelper.getSession().createQuery(hql);
+			int result = q.executeUpdate();
+			LOG.debug(RESULT + result);
+			return result;
+		} catch (Exception e) {
+			LOG.error(FAILED_TO_EXECUTE_QUERY + e.getMessage());
+			throw new DAOException(FAILED_TO_EXECUTE_QUERY + e.getMessage());
+		}
+	}
+
+	@Override
+	public void removeAll() {
+		LOG.info("Removing all");
+		String hql = "DELETE FROM " + entityClass.getSimpleName();
+		executeHQLUpdate(hql);
+	}
+
 }
