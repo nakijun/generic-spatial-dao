@@ -28,12 +28,17 @@ public interface DAO<T> {
 	List<T> findByCriteria(List<Criterion> list, ProjectionList projectionList,
 			Order order, Integer firstResult, Integer maxResults);
 
+	T findUniqueByCriteria(List<Criterion> list);
+
+	T findUniqueByCriteria(List<Criterion> list, ProjectionList projectionList,
+			Order order, Integer firstResult, Integer maxResults);
+
 	@SuppressWarnings("rawtypes")
 	List executeHQL(String hql);
 
 	@SuppressWarnings("rawtypes")
 	List executeHQL(String hqlTemplate, Object... params);
-	
+
 	int executeHQLUpdate(String hql);
 
 	@SuppressWarnings("rawtypes")

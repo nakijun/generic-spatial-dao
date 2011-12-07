@@ -148,6 +148,43 @@ public class GenericDAO<T> implements DAO<T> {
 		}
 	}
 
+	@Override
+	public T findUniqueByCriteria(List<Criterion> list) {
+		return findUniqueByCriteria(list, null, null, null, null);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public T findUniqueByCriteria(List<Criterion> list,
+			ProjectionList projectionList, Order order, Integer firstResult,
+			Integer maxResults) {
+		try {
+			Criteria criteria = DAOHelper.getCriteria(entityClass);
+			for (int i = 0; i < list.size(); i++) {
+				criteria.add(list.get(i));
+			}
+			if (projectionList != null) {
+				criteria.setProjection(projectionList);
+			}
+			if (order != null) {
+				criteria.addOrder(order);
+			}
+			if (firstResult != null) {
+				criteria.setFirstResult(firstResult);
+			}
+			if (maxResults != null) {
+				criteria.setMaxResults(maxResults);
+			}
+
+			T result = (T) criteria.uniqueResult();
+			LOG.debug(RESULT + result);
+			return result;
+		} catch (Exception e) {
+			LOG.error(ERROR + e.getMessage());
+			throw new DAOException(ERROR + e.getMessage());
+		}
+	}
+
 	@SuppressWarnings("rawtypes")
 	public List executeSQLQuery(String sql) {
 		LOG.info(EXECUTING_QUERY + sql);
