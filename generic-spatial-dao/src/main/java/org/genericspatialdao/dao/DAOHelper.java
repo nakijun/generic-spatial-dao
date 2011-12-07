@@ -17,7 +17,7 @@ public class DAOHelper {
 	private static final String LOADING_PERSISTENCE_UNIT = "Loading persistence unit: ";
 	private static final String NO_PERSISTENCE_UNIT_LOADED = "No persistence unit loaded";
 	private static final String DEFAULT_PERSISTENCE_UNIT_LOADED = "Default persistence unit loaded";
-	private static final String FAILED_TO_LOAD_DEFAULT_PERSISTENCE_UNIT_MESSAGE = "Failed to load default persistence unit: ";
+	private static final String FAILED_TO_LOAD_PERSISTENCE_UNIT = "Failed to load default persistence unit: ";
 	private static final String TRYING_TO_LOAD_DEFAULT_PERSISTENCE_UNIT = "Trying to load default persistence unit: ";
 
 	private static final Logger LOG = Logger.getLogger(DAOHelper.class);
@@ -30,16 +30,10 @@ public class DAOHelper {
 	}
 
 	public static void loadDefaultPersistenceUnit() {
-		try {
-			LOG.info(TRYING_TO_LOAD_DEFAULT_PERSISTENCE_UNIT
-					+ DAOHelper.DEFAULT_PERSISTENCE_UNIT_NAME);
-			DAOHelper
-					.loadPersistenceUnit(DAOHelper.DEFAULT_PERSISTENCE_UNIT_NAME);
-			LOG.info(DEFAULT_PERSISTENCE_UNIT_LOADED);
-		} catch (Exception e) {
-			LOG.warn(FAILED_TO_LOAD_DEFAULT_PERSISTENCE_UNIT_MESSAGE
-					+ e.getMessage());
-		}
+		LOG.info(TRYING_TO_LOAD_DEFAULT_PERSISTENCE_UNIT
+				+ DAOHelper.DEFAULT_PERSISTENCE_UNIT_NAME);
+		DAOHelper.loadPersistenceUnit(DAOHelper.DEFAULT_PERSISTENCE_UNIT_NAME);
+		LOG.info(DEFAULT_PERSISTENCE_UNIT_LOADED);
 	}
 
 	/**
@@ -49,7 +43,12 @@ public class DAOHelper {
 	public static synchronized void loadPersistenceUnit(String persistenceUnit) {
 		closeFactory();
 		LOG.info(LOADING_PERSISTENCE_UNIT + persistenceUnit);
-		factory = Persistence.createEntityManagerFactory(persistenceUnit);
+		try {
+			factory = Persistence.createEntityManagerFactory(persistenceUnit);
+		} catch (Exception e) {
+			LOG.error(FAILED_TO_LOAD_PERSISTENCE_UNIT + e.getMessage()
+					+ ". Cause: " + e.getCause().getMessage());
+		}
 	}
 
 	/**
