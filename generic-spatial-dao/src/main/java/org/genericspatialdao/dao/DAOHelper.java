@@ -48,6 +48,8 @@ public class DAOHelper {
 		} catch (Exception e) {
 			LOG.error(FAILED_TO_LOAD_PERSISTENCE_UNIT + e.getMessage()
 					+ ". Cause: " + e.getCause().getMessage());
+			throw new DAOException(FAILED_TO_LOAD_PERSISTENCE_UNIT
+					+ e.getMessage() + ". Cause: " + e.getCause().getMessage());
 		}
 	}
 
