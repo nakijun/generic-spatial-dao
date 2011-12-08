@@ -3,10 +3,7 @@ package org.genericspatialdao.example;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import javax.persistence.EntityManager;
-
 import org.genericspatialdao.dao.DAO;
-import org.genericspatialdao.dao.DAOHelper;
 import org.genericspatialdao.dao.GenericDAO;
 import org.genericspatialdao.example.vo.Department;
 import org.genericspatialdao.example.vo.Employee;
