@@ -1,9 +1,9 @@
 package org.genericspatialdao.example.vo;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,14 +13,12 @@ import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-
-
-
 @Entity
 public class Employee {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@Column(name = "employee_id")
 	private long id;
 
 	private String name;
@@ -28,11 +26,11 @@ public class Employee {
 	@Temporal(TemporalType.DATE)
 	private Date birthdate;
 
-	@ManyToOne
+	@ManyToOne()
 	private Department department;
 
 	@OneToMany(mappedBy = "boss")
-	private Collection<Department> departments = new ArrayList<Department>();;
+	private Collection<Department> departments;
 
 	public long getId() {
 		return id;
