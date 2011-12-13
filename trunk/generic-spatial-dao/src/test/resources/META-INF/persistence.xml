@@ -16,5 +16,16 @@
 			<property name="hibernate.id.new_generator_mappings" value="true" />
 		</properties>
 	</persistence-unit>
+	
+	<persistence-unit name="test">
+		<properties>
+			<property name="hibernate.connection.driver_class" value="org.postgresql.Driver" />
+			<property name="hibernate.dialect" value="org.hibernatespatial.postgis.PostgisDialect" />
+			<property name="hibernate.connection.url" value="jdbc:postgresql://baquara:5432/test_gis_2" />
+			<property name="hibernate.hbm2ddl.auto" value="create-drop" />
+			<property name="hibernate.connection.username" value="postgres" />
+			<property name="hibernate.connection.password" value="postgres" />
+		</properties>
+	</persistence-unit>
 
 </persistence>
