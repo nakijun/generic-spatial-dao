@@ -3,17 +3,30 @@ package org.genericspatialdao.dao;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.EntityManager;
+
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
-import org.hibernate.criterion.ProjectionList;
 
 public interface DAO<T> {
 
-	void persist(T t);
+	void beginTransaction();
 
-	void remove(T t);
+	void commit();
 
-	void merge(T t);
+	void rollback();
+
+	void close();
+
+	EntityManager getEntityManager();
+
+	void persist(T... t);
+
+	void remove(T... t);
+
+	void merge(T... t);
+
+	void refresh(T... t);
 
 	void flush();
 
@@ -23,15 +36,17 @@ public interface DAO<T> {
 
 	List<T> findAll();
 
+	List<T> findAll(Integer firstResult, Integer maxResults);
+
 	List<T> findByCriteria(List<Criterion> list);
 
-	List<T> findByCriteria(List<Criterion> list, ProjectionList projectionList,
-			Order order, Integer firstResult, Integer maxResults);
+	List<T> findByCriteria(List<Criterion> list, Order order,
+			Integer firstResult, Integer maxResults);
 
 	T findUniqueByCriteria(List<Criterion> list);
 
-	T findUniqueByCriteria(List<Criterion> list, ProjectionList projectionList,
-			Order order, Integer firstResult, Integer maxResults);
+	T findUniqueByCriteria(List<Criterion> list, Order order,
+			Integer firstResult, Integer maxResults);
 
 	@SuppressWarnings("rawtypes")
 	List executeHQL(String hql);
@@ -46,8 +61,5 @@ public interface DAO<T> {
 
 	int executeSQLUpdate(String sql);
 
-	void close();
-
 	void removeAll();
-
 }

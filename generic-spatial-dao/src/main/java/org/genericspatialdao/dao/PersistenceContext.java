@@ -5,35 +5,36 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.genericspatialdao.exception.DAOException;
-import org.hibernate.Criteria;
+import org.genericspatialdao.utils.PropertiesUtils;
 import org.hibernate.Session;
 
-public class DAOHelper {
+public class PersistenceContext {
 
-	public static final String DEFAULT_PERSISTENCE_UNIT_NAME = "default";
+	public static final String DEFAULT_PERSISTENCE_UNIT = "default";
+	public static final String DEFAULT_PERSISTENCE_UNIT_PROPERTY = "persistence-unit.default";
 
+	private static final String PERSISTENCE_UNIT_LOADED = "Persistence unit loaded: ";
 	private static final String LOADING_PERSISTENCE_UNIT = "Loading persistence unit: ";
 	private static final String NO_PERSISTENCE_UNIT_LOADED = "No persistence unit loaded";
-	private static final String DEFAULT_PERSISTENCE_UNIT_LOADED = "Default persistence unit loaded";
 	private static final String FAILED_TO_LOAD_PERSISTENCE_UNIT = "Failed to load default persistence unit: ";
-	private static final String TRYING_TO_LOAD_DEFAULT_PERSISTENCE_UNIT = "Trying to load default persistence unit: ";
 
-	private static final Logger LOG = Logger.getLogger(DAOHelper.class);
+	private static final Logger LOG = Logger
+			.getLogger(PersistenceContext.class);
 
 	private static ThreadLocal<EntityManager> session = new ThreadLocal<EntityManager>();
 	private static EntityManagerFactory factory;
 
 	static {
-		loadDefaultPersistenceUnit();
-	}
-
-	public static void loadDefaultPersistenceUnit() {
-		LOG.info(TRYING_TO_LOAD_DEFAULT_PERSISTENCE_UNIT
-				+ DAOHelper.DEFAULT_PERSISTENCE_UNIT_NAME);
-		DAOHelper.loadPersistenceUnit(DAOHelper.DEFAULT_PERSISTENCE_UNIT_NAME);
-		LOG.info(DEFAULT_PERSISTENCE_UNIT_LOADED);
+		String defaultPersistenceUnit = PropertiesUtils
+				.getString(DEFAULT_PERSISTENCE_UNIT_PROPERTY);
+		if (!StringUtils.isBlank(defaultPersistenceUnit)) {
+			loadPersistenceUnit(defaultPersistenceUnit);
+		} else {
+			loadPersistenceUnit(DEFAULT_PERSISTENCE_UNIT);
+		}
 	}
 
 	/**
@@ -45,6 +46,7 @@ public class DAOHelper {
 		LOG.info(LOADING_PERSISTENCE_UNIT + persistenceUnit);
 		try {
 			factory = Persistence.createEntityManagerFactory(persistenceUnit);
+			LOG.info(PERSISTENCE_UNIT_LOADED + persistenceUnit);
 		} catch (Exception e) {
 			LOG.error(FAILED_TO_LOAD_PERSISTENCE_UNIT + e.getMessage()
 					+ ". Cause: " + e.getCause().getMessage());
@@ -123,7 +125,7 @@ public class DAOHelper {
 	}
 
 	/**
-	 * Commits if transaction is not active
+	 * Commits if transaction is active
 	 * 
 	 * @param em
 	 */
@@ -150,12 +152,13 @@ public class DAOHelper {
 		}
 	}
 
+	/**
+	 * Get session for Hibernate
+	 * 
+	 * @return
+	 */
 	public static synchronized Session getSession() {
 		EntityManager em = getEntityManager();
 		return ((Session) em.getDelegate());
-	}
-
-	public static synchronized Criteria getCriteria(Class<?> entityClass) {
-		return getSession().createCriteria(entityClass);
 	}
 }

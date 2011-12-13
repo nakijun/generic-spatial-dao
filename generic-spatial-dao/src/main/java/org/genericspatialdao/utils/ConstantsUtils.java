@@ -16,5 +16,4 @@ public class ConstantsUtils {
 	public static final String RIGHT_BRACE = "}";
 	public static final String LEFT_PARENTHESES = "(";
 	public static final String RIGHT_PARENTHESES = ")";
-
 }
