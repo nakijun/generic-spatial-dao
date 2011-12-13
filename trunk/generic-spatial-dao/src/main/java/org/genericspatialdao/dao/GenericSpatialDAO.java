@@ -7,22 +7,24 @@ import javax.persistence.EntityManager;
 
 import org.apache.log4j.Logger;
 import org.genericspatialdao.exception.DAOException;
-import org.genericspatialdao.utils.ConstantsUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
-import org.hibernate.criterion.ProjectionList;
 
-public class GenericDAO<T> implements DAO<T> {
+public class GenericSpatialDAO<T> implements DAO<T> {
 
 	protected static final Logger LOG = Logger.getLogger(DAO.class);
 	protected final Class<T> entityClass;
-	protected EntityManager em = DAOHelper.getEntityManager();
 
-	private static final String FAILED_TO_MERGE_OBJECT = "Failed to merge object: ";
-	private static final String FAILED_TO_REMOVE_OBJECT = "Failed to remove object: ";
-	private static final String FAILED_TO_PERSIST_OBJECT = "Failed to persist object: ";
+	private static final String PERSISTING_OBJECT = "Persisting object: ";
+	private static final String REMOVING_OBJECT = "Removing object: ";
+	private static final String MERGING_OBJECT = "Merging object: ";
+	private static final String REFRESHING_OBJECT = "Refreshing object: ";
+	private static final String FAILED_TO_MERGE = "Failed to merge: ";
+	private static final String FAILED_TO_REMOVE = "Failed to remove: ";
+	private static final String FAILED_TO_PERSIST = "Failed to persist: ";
+	private static final String FAILED_TO_REFRESH = "Failed to refresh: ";
 	private static final String OBJECT_BY_ID = " object by id ";
 	private static final String FINDING = "Finding ";
 	private static final String EXECUTING_QUERY = "Executing query: ";
@@ -30,14 +32,14 @@ public class GenericDAO<T> implements DAO<T> {
 	private static final String ERROR = "Error: ";
 	private static final String RESULT = "Result: ";
 
-	public GenericDAO(Class<T> entityClass) {
+	public GenericSpatialDAO(Class<T> entityClass) {
 		this.entityClass = entityClass;
 	}
 
 	public T find(Object id) {
 		LOG.info(FINDING + entityClass.getName() + OBJECT_BY_ID + id);
-		DAOHelper.beginTransaction();
-		T t = em.find(entityClass, id);
+		beginTransaction();
+		T t = getEntityManager().find(entityClass, id);
 		LOG.debug(RESULT + t);
 		return t;
 	}
@@ -45,89 +47,120 @@ public class GenericDAO<T> implements DAO<T> {
 	public T find(Object id, Map<String, Object> properties) {
 		LOG.info(FINDING + entityClass.getSimpleName() + OBJECT_BY_ID + id
 				+ " and properties: " + properties);
-		DAOHelper.beginTransaction();
-		T t = em.find(entityClass, id, properties);
+		beginTransaction();
+		T t = getEntityManager().find(entityClass, id, properties);
 		LOG.debug(RESULT + t);
 		return t;
 	}
 
-	@SuppressWarnings("unchecked")
+	@Override
 	public List<T> findAll() {
+		return findAll(null, null);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<T> findAll(Integer firstResult, Integer maxResults) {
 		LOG.info("Finding all " + entityClass.getSimpleName() + " objects");
-		Criteria criteria = DAOHelper.getCriteria(entityClass);
+		Criteria criteria = PersistenceContext.getSession().createCriteria(
+				entityClass);
+		if (firstResult != null) {
+			criteria.setFirstResult(firstResult);
+		}
+		if (maxResults != null) {
+			criteria.setMaxResults(maxResults);
+		}
+
 		List<T> result = criteria.list();
 		LOG.debug(RESULT + result);
 		return result;
 	}
 
-	public void persist(T t) {
-		LOG.info("Persisting object: " + t);
+	@Override
+	public void persist(T... t) {
 		try {
-			DAOHelper.beginTransaction();
-			em.persist(t);
-			DAOHelper.commit();
+			beginTransaction();
+			for (T entity : t) {
+				LOG.info(PERSISTING_OBJECT + t);
+				getEntityManager().persist(entity);
+			}
+			commit();
 		} catch (Exception e) {
-			LOG.error(FAILED_TO_PERSIST_OBJECT + t + ConstantsUtils.DOT_SPACE
-					+ e.getMessage());
-			DAOHelper.rollback();
-			throw new DAOException(FAILED_TO_PERSIST_OBJECT + t
-					+ ConstantsUtils.DOT_SPACE + e.getMessage());
-		}
-	}
-
-	public void remove(T t) {
-		LOG.info("Removing object: " + t);
-		try {
-			DAOHelper.beginTransaction();
-			em.remove(t);
-			DAOHelper.commit();
-		} catch (Exception e) {
-			LOG.error(FAILED_TO_REMOVE_OBJECT + t + ConstantsUtils.DOT_SPACE
-					+ e.getMessage());
-			DAOHelper.rollback();
-			throw new DAOException(FAILED_TO_REMOVE_OBJECT + t
-					+ ConstantsUtils.DOT_SPACE + e.getMessage());
+			LOG.error(FAILED_TO_PERSIST + e.getMessage());
+			rollback();
+			throw new DAOException(FAILED_TO_PERSIST + e.getMessage());
 		}
 
 	}
 
-	public void merge(T t) {
-		LOG.info("Merging object: " + t);
+	@Override
+	public void remove(T... t) {
 		try {
-			DAOHelper.beginTransaction();
-			em.merge(t);
-			DAOHelper.commit();
+			beginTransaction();
+			for (T entity : t) {
+				LOG.info(REMOVING_OBJECT + entity);
+				getEntityManager().remove(entity);
+			}
+			commit();
 		} catch (Exception e) {
-			LOG.error(FAILED_TO_MERGE_OBJECT + t + ConstantsUtils.DOT_SPACE
-					+ e.getMessage());
-			DAOHelper.rollback();
-			throw new DAOException(FAILED_TO_MERGE_OBJECT + t
-					+ ConstantsUtils.DOT_SPACE + e.getMessage());
+			LOG.error(FAILED_TO_REMOVE + e.getMessage());
+			rollback();
+			throw new DAOException(FAILED_TO_REMOVE + e.getMessage());
+		}
+
+	}
+
+	public void merge(T... t) {
+		try {
+			beginTransaction();
+			for (T entity : t) {
+				LOG.info(MERGING_OBJECT + entity);
+				getEntityManager().merge(entity);
+			}
+			commit();
+		} catch (Exception e) {
+			LOG.error(FAILED_TO_MERGE + e.getMessage());
+			rollback();
+			throw new DAOException(FAILED_TO_MERGE + e.getMessage());
+		}
+
+	}
+
+	@Override
+	public void refresh(T... t) {
+		try {
+			beginTransaction();
+			for (T entity : t) {
+				LOG.info(REFRESHING_OBJECT + entity);
+				getEntityManager().merge(entity);
+			}
+			commit();
+		} catch (Exception e) {
+			LOG.error(FAILED_TO_REFRESH + e.getMessage());
+			rollback();
+			throw new DAOException(FAILED_TO_REFRESH + e.getMessage());
 		}
 
 	}
 
 	public void flush() {
 		LOG.info("Flushing session");
-		DAOHelper.beginTransaction();
-		em.flush();
+		beginTransaction();
+		getEntityManager().flush();
 	}
 
 	public List<T> findByCriteria(List<Criterion> list) {
-		return findByCriteria(list, null, null, null, null);
+		return findByCriteria(list, null, null, null);
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public List<T> findByCriteria(List<Criterion> list,
-			ProjectionList projectionList, Order order, Integer firstResult,
-			Integer maxResults) {
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public List<T> findByCriteria(List<Criterion> list, Order order,
+			Integer firstResult, Integer maxResults) {
 		try {
-			Criteria criteria = DAOHelper.getCriteria(entityClass);
+			Criteria criteria = PersistenceContext.getSession().createCriteria(
+					entityClass);
 			for (int i = 0; i < list.size(); i++) {
 				criteria.add(list.get(i));
-			}
-			if (projectionList != null) {
-				criteria.setProjection(projectionList);
 			}
 			if (order != null) {
 				criteria.addOrder(order);
@@ -150,21 +183,18 @@ public class GenericDAO<T> implements DAO<T> {
 
 	@Override
 	public T findUniqueByCriteria(List<Criterion> list) {
-		return findUniqueByCriteria(list, null, null, null, null);
+		return findUniqueByCriteria(list, null, null, null);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public T findUniqueByCriteria(List<Criterion> list,
-			ProjectionList projectionList, Order order, Integer firstResult,
-			Integer maxResults) {
+	public T findUniqueByCriteria(List<Criterion> list, Order order,
+			Integer firstResult, Integer maxResults) {
 		try {
-			Criteria criteria = DAOHelper.getCriteria(entityClass);
+			Criteria criteria = PersistenceContext.getSession().createCriteria(
+					entityClass);
 			for (int i = 0; i < list.size(); i++) {
 				criteria.add(list.get(i));
-			}
-			if (projectionList != null) {
-				criteria.setProjection(projectionList);
 			}
 			if (order != null) {
 				criteria.addOrder(order);
@@ -189,7 +219,7 @@ public class GenericDAO<T> implements DAO<T> {
 	public List executeSQLQuery(String sql) {
 		LOG.info(EXECUTING_QUERY + sql);
 		try {
-			Query q = DAOHelper.getSession().createSQLQuery(sql);
+			Query q = PersistenceContext.getSession().createSQLQuery(sql);
 			List result = q.list();
 			LOG.debug(RESULT + result);
 			return result;
@@ -202,7 +232,7 @@ public class GenericDAO<T> implements DAO<T> {
 	public int executeSQLUpdate(String sql) {
 		LOG.info(EXECUTING_QUERY + sql);
 		try {
-			Query q = DAOHelper.getSession().createSQLQuery(sql);
+			Query q = PersistenceContext.getSession().createSQLQuery(sql);
 			int result = q.executeUpdate();
 			LOG.debug(RESULT + result);
 			return result;
@@ -212,16 +242,12 @@ public class GenericDAO<T> implements DAO<T> {
 		}
 	}
 
-	public void close() {
-		DAOHelper.close();
-	}
-
 	@SuppressWarnings("rawtypes")
 	@Override
 	public List executeHQL(String hql) {
 		LOG.info(EXECUTING_QUERY + hql);
 		try {
-			Query q = DAOHelper.getSession().createQuery(hql);
+			Query q = PersistenceContext.getSession().createQuery(hql);
 			List result = q.list();
 			LOG.debug(RESULT + result);
 			return result;
@@ -235,7 +261,7 @@ public class GenericDAO<T> implements DAO<T> {
 	@Override
 	public List executeHQL(String hqlTemplate, Object... params) {
 		try {
-			Query q = DAOHelper.getSession().createQuery(hqlTemplate);
+			Query q = PersistenceContext.getSession().createQuery(hqlTemplate);
 			int index = 0;
 			for (Object param : params) {
 				q.setParameter(index++, param);
@@ -254,7 +280,7 @@ public class GenericDAO<T> implements DAO<T> {
 	public int executeHQLUpdate(String hql) {
 		LOG.info(EXECUTING_QUERY + hql);
 		try {
-			Query q = DAOHelper.getSession().createQuery(hql);
+			Query q = PersistenceContext.getSession().createQuery(hql);
 			int result = q.executeUpdate();
 			LOG.debug(RESULT + result);
 			return result;
@@ -271,4 +297,27 @@ public class GenericDAO<T> implements DAO<T> {
 		executeHQLUpdate(hql);
 	}
 
+	@Override
+	public EntityManager getEntityManager() {
+		return PersistenceContext.getEntityManager();
+	}
+
+	@Override
+	public void beginTransaction() {
+		PersistenceContext.beginTransaction();
+	}
+
+	@Override
+	public void commit() {
+		PersistenceContext.commit();
+	}
+
+	@Override
+	public void rollback() {
+		PersistenceContext.rollback();
+	}
+
+	public void close() {
+		PersistenceContext.close();
+	}
 }
