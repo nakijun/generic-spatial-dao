@@ -28,4 +28,28 @@ public class EmployeeProjectPK implements Serializable {
 		this.projectId = projectId;
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (int) (employeeId ^ (employeeId >>> 32));
+		result = prime * result + (int) (projectId ^ (projectId >>> 32));
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		EmployeeProjectPK other = (EmployeeProjectPK) obj;
+		if (employeeId != other.employeeId)
+			return false;
+		if (projectId != other.projectId)
+			return false;
+		return true;
+	}
 }
