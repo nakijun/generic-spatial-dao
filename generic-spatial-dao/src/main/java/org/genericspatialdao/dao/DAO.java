@@ -48,11 +48,9 @@ public interface DAO<T> {
 	T findUniqueByCriteria(List<Criterion> list, Order order,
 			Integer firstResult, Integer maxResults);
 
-	@SuppressWarnings("rawtypes")
-	List executeHQL(String hql);
+	List<Object[]> executeHQL(String hql);
 
-	@SuppressWarnings("rawtypes")
-	List executeHQL(String hqlTemplate, Object... params);
+	List<Object[]> executeHQL(String hqlTemplate, Object... params);
 
 	int executeHQLUpdate(String hql);
 
@@ -62,6 +60,6 @@ public interface DAO<T> {
 	int executeSQLUpdate(String sql);
 
 	void removeAll();
-	
+
 	long count();
 }

@@ -244,13 +244,13 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 		}
 	}
 
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings("unchecked")
 	@Override
-	public List executeHQL(String hql) {
+	public List<Object[]> executeHQL(String hql) {
 		LOG.info(EXECUTING_QUERY + hql);
 		try {
 			Query q = PersistenceContext.getSession().createQuery(hql);
-			List result = q.list();
+			List<Object[]> result = q.list();
 			LOG.debug(RESULT + result);
 			return result;
 		} catch (Exception e) {
@@ -259,9 +259,9 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 		}
 	}
 
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings("unchecked")
 	@Override
-	public List executeHQL(String hqlTemplate, Object... params) {
+	public List<Object[]> executeHQL(String hqlTemplate, Object... params) {
 		try {
 			Query q = PersistenceContext.getSession().createQuery(hqlTemplate);
 			int index = 0;
@@ -269,7 +269,7 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 				q.setParameter(index++, param);
 			}
 			LOG.info(EXECUTING_QUERY + q.getQueryString());
-			List result = q.list();
+			List<Object[]> result = q.list();
 			LOG.debug(RESULT + result);
 			return result;
 		} catch (Exception e) {
