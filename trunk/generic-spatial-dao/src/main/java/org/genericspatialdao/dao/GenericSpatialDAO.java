@@ -11,10 +11,12 @@ import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
 
 public class GenericSpatialDAO<T> implements DAO<T> {
 
-	protected static final Logger LOG = Logger.getLogger(DAO.class);
+	protected static final Logger LOG = Logger
+			.getLogger(GenericSpatialDAO.class);
 	protected final Class<T> entityClass;
 
 	private static final String PERSISTING_OBJECT = "Persisting object: ";
@@ -292,9 +294,25 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 
 	@Override
 	public void removeAll() {
-		LOG.info("Removing all");
+		LOG.info("Removing all of type " + entityClass.getSimpleName());
 		String hql = "DELETE FROM " + entityClass.getSimpleName();
 		executeHQLUpdate(hql);
+	}
+
+	@Override
+	public long count() {
+		LOG.info("Counting rows of " + entityClass.getSimpleName());
+		try {
+			Criteria criteria = PersistenceContext.getSession().createCriteria(
+					entityClass);
+			criteria.setProjection(Projections.rowCount());
+			long result = (Long) criteria.uniqueResult();
+			LOG.debug(RESULT + result);
+			return result;
+		} catch (Exception e) {
+			LOG.error(ERROR + e.getMessage());
+			throw new DAOException(ERROR + e.getMessage());
+		}
 	}
 
 	@Override
@@ -320,4 +338,5 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 	public void close() {
 		PersistenceContext.close();
 	}
+
 }

@@ -62,4 +62,6 @@ public interface DAO<T> {
 	int executeSQLUpdate(String sql);
 
 	void removeAll();
+	
+	long count();
 }
