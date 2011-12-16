@@ -36,6 +36,25 @@ public class GenericSpatialDAOTest {
 
 		testDAO.close();
 	}
+	
+	@Test
+	public void countTest() {
+		DAO<TestVO> testDAO = new GenericSpatialDAO<TestVO>(TestVO.class);
+		TestVO testVO = new TestVO();
+		testVO.setLogin(TestUtils.randomString());
+		testVO.setPassword(TestUtils.randomString());
+		
+		TestVO testVO2 = new TestVO();
+		testVO2.setLogin(TestUtils.randomString());
+		testVO2.setPassword(TestUtils.randomString());
+		
+		testDAO.persist(testVO);
+		testDAO.persist(testVO2);
+		assertEquals(2, testDAO.findAll().size());
+		assertEquals(2L, testDAO.count());
+		testDAO.removeAll();
+		testDAO.close();
+	}
 
 	@Test
 	public void persistUpdateRemoveTest() {
