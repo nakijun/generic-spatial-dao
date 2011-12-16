@@ -48,9 +48,11 @@ public interface DAO<T> {
 	T findUniqueByCriteria(List<Criterion> list, Order order,
 			Integer firstResult, Integer maxResults);
 
-	List<Object[]> executeHQL(String hql);
+	@SuppressWarnings("rawtypes")
+	List executeHQL(String hql);
 
-	List<Object[]> executeHQL(String hqlTemplate, Object... params);
+	@SuppressWarnings("rawtypes")
+	List executeHQL(String hqlTemplate, Object... params);
 
 	int executeHQLUpdate(String hql);
 
