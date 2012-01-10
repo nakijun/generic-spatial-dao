@@ -83,7 +83,23 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 		try {
 			beginTransaction();
 			for (T entity : t) {
-				LOG.info(PERSISTING_OBJECT + t);
+				LOG.info(PERSISTING_OBJECT + entity);
+				getEntityManager().persist(entity);
+			}
+			commit();
+		} catch (Exception e) {
+			LOG.error(FAILED_TO_PERSIST + e.getMessage());
+			rollback();
+			throw new DAOException(FAILED_TO_PERSIST + e.getMessage());
+		}
+	}
+
+	@Override
+	public void persist(List<T> list) {
+		try {
+			beginTransaction();
+			for (T entity : list) {
+				LOG.info(PERSISTING_OBJECT + entity);
 				getEntityManager().persist(entity);
 			}
 			commit();
@@ -109,7 +125,22 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 			rollback();
 			throw new DAOException(FAILED_TO_REMOVE + e.getMessage());
 		}
+	}
 
+	@Override
+	public void remove(List<T> list) {
+		try {
+			beginTransaction();
+			for (T entity : list) {
+				LOG.info(REMOVING_OBJECT + entity);
+				getEntityManager().remove(entity);
+			}
+			commit();
+		} catch (Exception e) {
+			LOG.error(FAILED_TO_REMOVE + e.getMessage());
+			rollback();
+			throw new DAOException(FAILED_TO_REMOVE + e.getMessage());
+		}
 	}
 
 	public void merge(T... t) {
@@ -125,7 +156,21 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 			rollback();
 			throw new DAOException(FAILED_TO_MERGE + e.getMessage());
 		}
+	}
 
+	public void merge(List<T> list) {
+		try {
+			beginTransaction();
+			for (T entity : list) {
+				LOG.info(MERGING_OBJECT + entity);
+				getEntityManager().merge(entity);
+			}
+			commit();
+		} catch (Exception e) {
+			LOG.error(FAILED_TO_MERGE + e.getMessage());
+			rollback();
+			throw new DAOException(FAILED_TO_MERGE + e.getMessage());
+		}
 	}
 
 	@Override
@@ -142,7 +187,28 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 			rollback();
 			throw new DAOException(FAILED_TO_REFRESH + e.getMessage());
 		}
+	}
 
+	@Override
+	public void refresh(List<T> list) {
+		try {
+			beginTransaction();
+			for (T entity : list) {
+				LOG.info(REFRESHING_OBJECT + entity);
+				getEntityManager().merge(entity);
+			}
+			commit();
+		} catch (Exception e) {
+			LOG.error(FAILED_TO_REFRESH + e.getMessage());
+			rollback();
+			throw new DAOException(FAILED_TO_REFRESH + e.getMessage());
+		}
+	}
+
+	@Override
+	public void clear() {
+		LOG.info("Clearing");
+		getEntityManager().clear();
 	}
 
 	public void flush() {
@@ -335,8 +401,8 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 		PersistenceContext.rollback();
 	}
 
+	@Override
 	public void close() {
 		PersistenceContext.close();
 	}
-
 }

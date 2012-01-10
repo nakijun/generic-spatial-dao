@@ -36,20 +36,19 @@ public class GenericSpatialDAOTest {
 
 		testDAO.close();
 	}
-	
+
 	@Test
 	public void countTest() {
 		DAO<TestVO> testDAO = new GenericSpatialDAO<TestVO>(TestVO.class);
 		TestVO testVO = new TestVO();
 		testVO.setLogin(TestUtils.randomString());
 		testVO.setPassword(TestUtils.randomString());
-		
+
 		TestVO testVO2 = new TestVO();
 		testVO2.setLogin(TestUtils.randomString());
 		testVO2.setPassword(TestUtils.randomString());
-		
-		testDAO.persist(testVO);
-		testDAO.persist(testVO2);
+
+		testDAO.persist(testVO, testVO2);
 		assertEquals(2, testDAO.findAll().size());
 		assertEquals(2L, testDAO.count());
 		testDAO.removeAll();
@@ -140,8 +139,7 @@ public class GenericSpatialDAOTest {
 				testDAO.executeHQL(
 						"FROM TestVO t WHERE login = '" + login1 + "'").size());
 
-		testDAO.remove(testVO1);
-		testDAO.remove(testVO2);
+		testDAO.remove(testVO1, testVO2);
 		testDAO.close();
 	}
 
@@ -169,8 +167,7 @@ public class GenericSpatialDAOTest {
 				testDAO.executeHQL("FROM TestVO t WHERE login = ?", login1)
 						.size());
 
-		testDAO.remove(testVO1);
-		testDAO.remove(testVO2);
+		testDAO.remove(testVO1, testVO2);
 		testDAO.close();
 	}
 
@@ -202,7 +199,6 @@ public class GenericSpatialDAOTest {
 	@Test
 	public void withinTest() {
 		System.out.println("withinTest");
-
 		final int NUM = 50;
 		DAO<SpatialTestVO> testDAO = new GenericSpatialDAO<SpatialTestVO>(
 				SpatialTestVO.class);
@@ -211,8 +207,8 @@ public class GenericSpatialDAOTest {
 			SpatialTestVO spatialVO = new SpatialTestVO(TestUtils.randomPoint(
 					-179, 179, -89, 89, SRID));
 			list.add(spatialVO);
-			testDAO.persist(spatialVO);
 		}
+		testDAO.persist(list);
 
 		Polygon polygon = SpatialUtils
 				.createPolygon(
@@ -224,9 +220,7 @@ public class GenericSpatialDAOTest {
 
 		assertEquals(NUM, testDAO.findByCriteria(conditions).size());
 
-		for (int i = 0; i < NUM; i++) {
-			testDAO.remove(list.get(i));
-		}
+		testDAO.remove(list);
 
 		testDAO.close();
 	}

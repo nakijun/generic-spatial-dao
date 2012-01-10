@@ -26,8 +26,7 @@ public class ExampleTest {
 
 		Employee e1 = DataCreator.createEmployee();
 		Employee e2 = DataCreator.createEmployee();
-		testE.persist(e1);
-		testE.persist(e2);
+		testE.persist(e1, e2);
 		assertEquals(2, testE.findAll().size());
 
 		// action
@@ -47,8 +46,7 @@ public class ExampleTest {
 		assertEquals(d, e1.getDepartment());
 		assertEquals(d, e2.getDepartment());
 
-		testE.remove(e2);
-		testE.remove(e1);
+		testE.remove(e2, e1);
 		testD.remove(d);
 
 		DAOUtils.close(testE, testD);
