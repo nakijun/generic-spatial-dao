@@ -11,6 +11,11 @@ import org.genericspatialdao.exception.DAOException;
 import org.genericspatialdao.utils.PropertiesUtils;
 import org.hibernate.Session;
 
+/**
+ * 
+ * @author joaosavio
+ * 
+ */
 public class PersistenceContext {
 
 	public static final String DEFAULT_PERSISTENCE_UNIT = "default";
@@ -38,6 +43,7 @@ public class PersistenceContext {
 	}
 
 	/**
+	 * Load a persistence unit
 	 * 
 	 * @param persistenceUnit
 	 */
@@ -90,6 +96,11 @@ public class PersistenceContext {
 		}
 	}
 
+	/**
+	 * Verify if there is a persistence unit loaded
+	 * 
+	 * @return
+	 */
 	public static synchronized boolean isPersistenceUnitLoaded() {
 		if (factory == null) {
 			return false;
@@ -112,8 +123,6 @@ public class PersistenceContext {
 
 	/**
 	 * Begins a transaction if it is not active
-	 * 
-	 * @param em
 	 */
 	public static synchronized void beginTransaction() {
 		EntityManager em = getEntityManager();
@@ -126,8 +135,6 @@ public class PersistenceContext {
 
 	/**
 	 * Commits if transaction is active
-	 * 
-	 * @param em
 	 */
 	public static synchronized void commit() {
 		EntityManager em = getEntityManager();
@@ -140,8 +147,6 @@ public class PersistenceContext {
 
 	/**
 	 * Rollback if transaction is active
-	 * 
-	 * @param em
 	 */
 	public static synchronized void rollback() {
 		EntityManager em = getEntityManager();
