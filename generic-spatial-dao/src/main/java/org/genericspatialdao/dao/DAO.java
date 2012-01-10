@@ -22,11 +22,21 @@ public interface DAO<T> {
 
 	void persist(T... t);
 
+	void persist(List<T> list);
+
 	void remove(T... t);
+
+	void remove(List<T> list);
 
 	void merge(T... t);
 
+	void merge(List<T> list);
+
 	void refresh(T... t);
+
+	void refresh(List<T> list);
+
+	void clear();
 
 	void flush();
 

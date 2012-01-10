@@ -119,7 +119,7 @@ public class PersistenceContext {
 		EntityManager em = getEntityManager();
 		EntityTransaction transaction = em.getTransaction();
 		if (!transaction.isActive()) {
-			LOG.debug("Beginning transaction");
+			LOG.info("Beginning transaction");
 			transaction.begin();
 		}
 	}
@@ -133,7 +133,7 @@ public class PersistenceContext {
 		EntityManager em = getEntityManager();
 		EntityTransaction transaction = em.getTransaction();
 		if (transaction.isActive()) {
-			LOG.debug("Commiting");
+			LOG.info("Commiting");
 			transaction.commit();
 		}
 	}
