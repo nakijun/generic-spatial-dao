@@ -62,9 +62,7 @@ public class PersistenceContext {
 	}
 
 	/**
-	 * Creates or return an entity manager
-	 * 
-	 * @return
+	 * @return an entity manager
 	 */
 	public static synchronized EntityManager getEntityManager() {
 		EntityManager em = session.get();
@@ -83,23 +81,22 @@ public class PersistenceContext {
 	}
 
 	/**
-	 * Close entity manager
+	 * Close entity manager and session
 	 */
 	public static synchronized void close() {
 		EntityManager em = getEntityManager();
 		if (em != null) {
 			if (em.isOpen()) {
-				LOG.debug("Closing entity manager");
+				LOG.info("Closing entity manager");
 				em.close();
 			}
-			session.set(null);
 		}
+		LOG.info("Closing session");
+		session.set(null);
 	}
 
 	/**
-	 * Verify if there is a persistence unit loaded
-	 * 
-	 * @return
+	 * @return if there is a persistence unit loaded
 	 */
 	public static synchronized boolean isPersistenceUnitLoaded() {
 		if (factory == null) {
@@ -158,9 +155,7 @@ public class PersistenceContext {
 	}
 
 	/**
-	 * Get session for Hibernate
-	 * 
-	 * @return
+	 * @return session for Hibernate
 	 */
 	public static synchronized Session getSession() {
 		EntityManager em = getEntityManager();

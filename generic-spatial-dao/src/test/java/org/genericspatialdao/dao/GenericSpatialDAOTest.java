@@ -75,7 +75,7 @@ public class GenericSpatialDAOTest {
 		testVO.setPassword(newPassword);
 		testDAO.merge(testVO);
 
-		TestVO updatedTestVO = (TestVO) testDAO.find(testVO.getId());
+		TestVO updatedTestVO = testDAO.find(testVO.getId());
 		assertEquals(newPassword, updatedTestVO.getPassword());
 
 		testDAO.remove(updatedTestVO);
@@ -104,7 +104,7 @@ public class GenericSpatialDAOTest {
 		spatialTestVO.setPoint(newPoint);
 		testDAO.flush();
 
-		SpatialTestVO updatedSpatialTestVO = (SpatialTestVO) testDAO
+		SpatialTestVO updatedSpatialTestVO = testDAO
 				.find(spatialTestVO.getId());
 		assertEquals(newPoint, updatedSpatialTestVO.getPoint());
 
@@ -178,7 +178,7 @@ public class GenericSpatialDAOTest {
 
 		assertEquals(0, testDAO.findAll().size());
 
-		PersistenceContext.close();
+		testDAO.close();
 	}
 
 	@Test(expected = DAOException.class)

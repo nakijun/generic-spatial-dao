@@ -12,7 +12,7 @@ public class GeneratorTest {
 	public void test() {
 		DAO<TestGeneratorVO> testG = new GenericSpatialDAO<TestGeneratorVO>(
 				TestGeneratorVO.class);
-		for (int i = 0; i < 30; i++) {
+		for (int i = 0; i < 5; i++) {
 			TestGeneratorVO tg = new TestGeneratorVO();
 			tg.setName(TestUtils.randomString());
 			testG.persist(tg);

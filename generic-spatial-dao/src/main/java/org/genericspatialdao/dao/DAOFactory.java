@@ -5,7 +5,7 @@ public class DAOFactory {
 	/**
 	 * 
 	 * @param clazz
-	 * @return
+	 * @return a DAO implementation
 	 */
 	public static <T> DAO<T> getDAO(Class<T> clazz) {
 		return new GenericSpatialDAO<T>(clazz);
