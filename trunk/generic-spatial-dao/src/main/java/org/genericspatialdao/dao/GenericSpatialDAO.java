@@ -33,6 +33,7 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 	private static final String FAILED_TO_EXECUTE_QUERY = "Failed to execute query: ";
 	private static final String ERROR = "Error: ";
 	private static final String RESULT = "Result: ";
+	private static final String EMPTY_LIST = "Empty list";
 
 	public GenericSpatialDAO(Class<T> entityClass) {
 		this.entityClass = entityClass;
@@ -438,7 +439,7 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 
 	private boolean isEmpty(List<T> list) {
 		if (list == null || list.size() == 0) {
-			LOG.warn("Empty list");
+			LOG.warn(EMPTY_LIST);
 			return true;
 		}
 		return false;
@@ -446,7 +447,7 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 
 	private boolean isEmpty(T... t) {
 		if (t == null || t.length == 0) {
-			LOG.warn("Empty list");
+			LOG.warn(EMPTY_LIST);
 			return true;
 		}
 		return false;
