@@ -227,7 +227,7 @@ public class GenericSpatialDAOTest {
 
 	@Test
 	public void addUpdateAndRemoveEmptyTest() {
-		System.out.println("removeNullTest");
+		System.out.println("addUpdateAndRemoveEmptyTest");
 		DAO<SpatialTestVO> testDAO = new GenericSpatialDAO<SpatialTestVO>(
 				SpatialTestVO.class);
 		testDAO.persist(new ArrayList<SpatialTestVO>());
