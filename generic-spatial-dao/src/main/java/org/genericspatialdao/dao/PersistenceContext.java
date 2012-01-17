@@ -87,7 +87,7 @@ public class PersistenceContext {
 		EntityManager em = getEntityManager();
 		if (em != null) {
 			if (em.isOpen()) {
-				LOG.info("Closing entity manager");
+				LOG.debug("Closing entity manager");
 				em.close();
 			}
 		}
