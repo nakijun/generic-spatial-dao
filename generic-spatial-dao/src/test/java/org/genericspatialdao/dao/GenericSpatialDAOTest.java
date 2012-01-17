@@ -224,4 +224,15 @@ public class GenericSpatialDAOTest {
 
 		testDAO.close();
 	}
+
+	@Test
+	public void addUpdateAndRemoveEmptyTest() {
+		System.out.println("removeNullTest");
+		DAO<SpatialTestVO> testDAO = new GenericSpatialDAO<SpatialTestVO>(
+				SpatialTestVO.class);
+		testDAO.persist(new ArrayList<SpatialTestVO>());
+		testDAO.merge(new ArrayList<SpatialTestVO>());
+		testDAO.remove(new ArrayList<SpatialTestVO>());
+	}
+
 }
