@@ -38,6 +38,7 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 		this.entityClass = entityClass;
 	}
 
+	@Override
 	public T find(Object id) {
 		LOG.info(FINDING + entityClass.getName() + OBJECT_BY_ID + id);
 		beginTransaction();
@@ -46,6 +47,7 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 		return t;
 	}
 
+	@Override
 	public T find(Object id, Map<String, Object> properties) {
 		LOG.info(FINDING + entityClass.getSimpleName() + OBJECT_BY_ID + id
 				+ " and properties: " + properties);
@@ -96,6 +98,9 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 
 	@Override
 	public void persist(List<T> list) {
+		if (isEmpty(list)) {
+			return;
+		}
 		try {
 			beginTransaction();
 			for (T entity : list) {
@@ -113,6 +118,9 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 
 	@Override
 	public void remove(T... t) {
+		if (isEmpty(t)) {
+			return;
+		}
 		try {
 			beginTransaction();
 			for (T entity : t) {
@@ -129,6 +137,9 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 
 	@Override
 	public void remove(List<T> list) {
+		if (isEmpty(list)) {
+			return;
+		}
 		try {
 			beginTransaction();
 			for (T entity : list) {
@@ -143,7 +154,11 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 		}
 	}
 
+	@Override
 	public void merge(T... t) {
+		if (isEmpty(t)) {
+			return;
+		}
 		try {
 			beginTransaction();
 			for (T entity : t) {
@@ -158,7 +173,11 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 		}
 	}
 
+	@Override
 	public void merge(List<T> list) {
+		if (isEmpty(list)) {
+			return;
+		}
 		try {
 			beginTransaction();
 			for (T entity : list) {
@@ -175,6 +194,9 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 
 	@Override
 	public void refresh(T... t) {
+		if (isEmpty(t)) {
+			return;
+		}
 		try {
 			beginTransaction();
 			for (T entity : t) {
@@ -191,6 +213,9 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 
 	@Override
 	public void refresh(List<T> list) {
+		if (isEmpty(list)) {
+			return;
+		}
 		try {
 			beginTransaction();
 			for (T entity : list) {
@@ -211,16 +236,19 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 		getEntityManager().clear();
 	}
 
+	@Override
 	public void flush() {
 		LOG.info("Flushing session");
 		beginTransaction();
 		getEntityManager().flush();
 	}
 
+	@Override
 	public List<T> findByCriteria(List<Criterion> list) {
 		return findByCriteria(list, null, null, null);
 	}
 
+	@Override
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public List<T> findByCriteria(List<Criterion> list, Order order,
 			Integer firstResult, Integer maxResults) {
@@ -283,6 +311,7 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 		}
 	}
 
+	@Override
 	@SuppressWarnings("rawtypes")
 	public List executeSQLQuery(String sql) {
 		LOG.info(EXECUTING_QUERY + sql);
@@ -297,6 +326,7 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 		}
 	}
 
+	@Override
 	public int executeSQLUpdate(String sql) {
 		LOG.info(EXECUTING_QUERY + sql);
 		try {
@@ -404,5 +434,21 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 	@Override
 	public void close() {
 		PersistenceContext.close();
+	}
+
+	private boolean isEmpty(List<T> list) {
+		if (list == null || list.size() == 0) {
+			LOG.warn("Empty list");
+			return true;
+		}
+		return false;
+	}
+
+	private boolean isEmpty(T... t) {
+		if (t == null || t.length == 0) {
+			LOG.warn("Empty list");
+			return true;
+		}
+		return false;
 	}
 }
