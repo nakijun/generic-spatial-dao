@@ -19,6 +19,7 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 			.getLogger(GenericSpatialDAO.class);
 	protected final Class<T> entityClass;
 
+	private static final String CAUSE = ". Cause: ";
 	private static final String PERSISTING_OBJECT = "Persisting object: ";
 	private static final String REMOVING_OBJECT = "Removing object: ";
 	private static final String MERGING_OBJECT = "Merging object: ";
@@ -91,9 +92,10 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 			}
 			commit();
 		} catch (Exception e) {
-			LOG.error(FAILED_TO_PERSIST + e.getMessage());
+			LOG.error(FAILED_TO_PERSIST + e.getMessage() + CAUSE + e.getCause());
 			rollback();
-			throw new DAOException(FAILED_TO_PERSIST + e.getMessage());
+			throw new DAOException(FAILED_TO_PERSIST + e.getMessage() + CAUSE
+					+ e.getCause());
 		}
 	}
 
@@ -110,9 +112,10 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 			}
 			commit();
 		} catch (Exception e) {
-			LOG.error(FAILED_TO_PERSIST + e.getMessage());
+			LOG.error(FAILED_TO_PERSIST + e.getMessage() + CAUSE + e.getCause());
 			rollback();
-			throw new DAOException(FAILED_TO_PERSIST + e.getMessage());
+			throw new DAOException(FAILED_TO_PERSIST + e.getMessage() + CAUSE
+					+ e.getCause());
 		}
 
 	}
@@ -130,9 +133,10 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 			}
 			commit();
 		} catch (Exception e) {
-			LOG.error(FAILED_TO_REMOVE + e.getMessage());
+			LOG.error(FAILED_TO_REMOVE + e.getMessage() + CAUSE + e.getCause());
 			rollback();
-			throw new DAOException(FAILED_TO_REMOVE + e.getMessage());
+			throw new DAOException(FAILED_TO_REMOVE + e.getMessage() + CAUSE
+					+ e.getCause());
 		}
 	}
 
@@ -149,9 +153,10 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 			}
 			commit();
 		} catch (Exception e) {
-			LOG.error(FAILED_TO_REMOVE + e.getMessage());
+			LOG.error(FAILED_TO_REMOVE + e.getMessage() + CAUSE + e.getCause());
 			rollback();
-			throw new DAOException(FAILED_TO_REMOVE + e.getMessage());
+			throw new DAOException(FAILED_TO_REMOVE + e.getMessage() + CAUSE
+					+ e.getCause());
 		}
 	}
 
@@ -168,9 +173,10 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 			}
 			commit();
 		} catch (Exception e) {
-			LOG.error(FAILED_TO_MERGE + e.getMessage());
+			LOG.error(FAILED_TO_MERGE + e.getMessage() + CAUSE + e.getCause());
 			rollback();
-			throw new DAOException(FAILED_TO_MERGE + e.getMessage());
+			throw new DAOException(FAILED_TO_MERGE + e.getMessage() + CAUSE
+					+ e.getCause());
 		}
 	}
 
@@ -187,9 +193,10 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 			}
 			commit();
 		} catch (Exception e) {
-			LOG.error(FAILED_TO_MERGE + e.getMessage());
+			LOG.error(FAILED_TO_MERGE + e.getMessage() + CAUSE + e.getCause());
 			rollback();
-			throw new DAOException(FAILED_TO_MERGE + e.getMessage());
+			throw new DAOException(FAILED_TO_MERGE + e.getMessage() + CAUSE
+					+ e.getCause());
 		}
 	}
 
@@ -206,9 +213,10 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 			}
 			commit();
 		} catch (Exception e) {
-			LOG.error(FAILED_TO_REFRESH + e.getMessage());
+			LOG.error(FAILED_TO_REFRESH + e.getMessage() + CAUSE + e.getCause());
 			rollback();
-			throw new DAOException(FAILED_TO_REFRESH + e.getMessage());
+			throw new DAOException(FAILED_TO_REFRESH + e.getMessage() + CAUSE
+					+ e.getCause());
 		}
 	}
 
@@ -225,9 +233,10 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 			}
 			commit();
 		} catch (Exception e) {
-			LOG.error(FAILED_TO_REFRESH + e.getMessage());
+			LOG.error(FAILED_TO_REFRESH + e.getMessage() + CAUSE + e.getCause());
 			rollback();
-			throw new DAOException(FAILED_TO_REFRESH + e.getMessage());
+			throw new DAOException(FAILED_TO_REFRESH + e.getMessage() + CAUSE
+					+ e.getCause());
 		}
 	}
 
@@ -274,7 +283,8 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 			return result;
 		} catch (Exception e) {
 			LOG.error(ERROR + e.getMessage());
-			throw new DAOException(ERROR + e.getMessage());
+			throw new DAOException(ERROR + e.getMessage() + CAUSE
+					+ e.getCause());
 		}
 	}
 
@@ -308,7 +318,8 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 			return result;
 		} catch (Exception e) {
 			LOG.error(ERROR + e.getMessage());
-			throw new DAOException(ERROR + e.getMessage());
+			throw new DAOException(ERROR + e.getMessage() + CAUSE
+					+ e.getCause());
 		}
 	}
 
@@ -323,7 +334,8 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 			return result;
 		} catch (Exception e) {
 			LOG.error(FAILED_TO_EXECUTE_QUERY + e.getMessage());
-			throw new DAOException(FAILED_TO_EXECUTE_QUERY + e.getMessage());
+			throw new DAOException(FAILED_TO_EXECUTE_QUERY + e.getMessage()
+					+ CAUSE + e.getCause());
 		}
 	}
 
@@ -337,7 +349,8 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 			return result;
 		} catch (Exception e) {
 			LOG.error(FAILED_TO_EXECUTE_QUERY + e.getMessage());
-			throw new DAOException(FAILED_TO_EXECUTE_QUERY + e.getMessage());
+			throw new DAOException(FAILED_TO_EXECUTE_QUERY + e.getMessage()
+					+ CAUSE + e.getCause());
 		}
 	}
 
@@ -352,7 +365,8 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 			return result;
 		} catch (Exception e) {
 			LOG.error(FAILED_TO_EXECUTE_QUERY + e.getMessage());
-			throw new DAOException(FAILED_TO_EXECUTE_QUERY + e.getMessage());
+			throw new DAOException(FAILED_TO_EXECUTE_QUERY + e.getMessage()
+					+ CAUSE + e.getCause());
 		}
 	}
 
@@ -371,7 +385,8 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 			return result;
 		} catch (Exception e) {
 			LOG.error(FAILED_TO_EXECUTE_QUERY + e.getMessage());
-			throw new DAOException(FAILED_TO_EXECUTE_QUERY + e.getMessage());
+			throw new DAOException(FAILED_TO_EXECUTE_QUERY + e.getMessage()
+					+ CAUSE + e.getCause());
 		}
 	}
 
@@ -385,7 +400,8 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 			return result;
 		} catch (Exception e) {
 			LOG.error(FAILED_TO_EXECUTE_QUERY + e.getMessage());
-			throw new DAOException(FAILED_TO_EXECUTE_QUERY + e.getMessage());
+			throw new DAOException(FAILED_TO_EXECUTE_QUERY + e.getMessage()
+					+ CAUSE + e.getCause());
 		}
 	}
 
@@ -407,8 +423,9 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 			LOG.debug(RESULT + result);
 			return result;
 		} catch (Exception e) {
-			LOG.error(ERROR + e.getMessage());
-			throw new DAOException(ERROR + e.getMessage());
+			LOG.error(ERROR + e.getMessage() + CAUSE + e.getCause());
+			throw new DAOException(ERROR + e.getMessage() + CAUSE
+					+ e.getCause());
 		}
 	}
 
