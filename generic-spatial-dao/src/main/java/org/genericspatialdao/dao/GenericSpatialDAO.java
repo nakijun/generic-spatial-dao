@@ -19,6 +19,8 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 			.getLogger(GenericSpatialDAO.class);
 	protected final Class<T> entityClass;
 
+	private static final String FINDING_UNIQUE_BY_CRITERIA = "Finding unique by criteria";
+	private static final String FINDING_BY_CRITERIA = "Finding by criteria";
 	private static final String CAUSE = ". Cause: ";
 	private static final String PERSISTING_OBJECT = "Persisting object: ";
 	private static final String REMOVING_OBJECT = "Removing object: ";
@@ -77,7 +79,7 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 			criteria.setMaxResults(maxResults);
 		}
 
-		List<T> result = criteria.list();
+		List<T> result = (List<T>)criteria.list();
 		LOG.debug(RESULT + result);
 		return result;
 	}
@@ -262,6 +264,7 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public List<T> findByCriteria(List<Criterion> list, Order order,
 			Integer firstResult, Integer maxResults) {
+		LOG.info(FINDING_BY_CRITERIA);
 		try {
 			Criteria criteria = PersistenceContext.getSession().createCriteria(
 					entityClass);
@@ -297,6 +300,7 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 	@Override
 	public T findUniqueByCriteria(List<Criterion> list, Order order,
 			Integer firstResult, Integer maxResults) {
+		LOG.info(FINDING_UNIQUE_BY_CRITERIA);
 		try {
 			Criteria criteria = PersistenceContext.getSession().createCriteria(
 					entityClass);
@@ -452,6 +456,11 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 	@Override
 	public void close() {
 		PersistenceContext.close();
+	}
+	
+	@Override
+	public String toString() {
+		return "DAO of " + entityClass;
 	}
 
 	private boolean isEmpty(List<T> list) {
