@@ -1,5 +1,6 @@
 package org.genericspatialdao.dao;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -47,7 +48,9 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 		LOG.info(FINDING + entityClass.getName() + OBJECT_BY_ID + id);
 		beginTransaction();
 		T t = getEntityManager().find(entityClass, id);
-		LOG.debug(RESULT + t);
+		if (LOG.isDebugEnabled()) {
+			LOG.debug(RESULT + t);
+		}
 		return t;
 	}
 
@@ -57,7 +60,9 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 				+ " and properties: " + properties);
 		beginTransaction();
 		T t = getEntityManager().find(entityClass, id, properties);
-		LOG.debug(RESULT + t);
+		if (LOG.isDebugEnabled()) {
+			LOG.debug(RESULT + t);
+		}
 		return t;
 	}
 
@@ -79,26 +84,16 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 			criteria.setMaxResults(maxResults);
 		}
 
-		List<T> result = (List<T>)criteria.list();
-		LOG.debug(RESULT + result);
+		List<T> result = (List<T>) criteria.list();
+		if (LOG.isDebugEnabled()) {
+			LOG.debug(RESULT + result);
+		}
 		return result;
 	}
 
 	@Override
 	public void persist(T... t) {
-		try {
-			beginTransaction();
-			for (T entity : t) {
-				LOG.info(PERSISTING_OBJECT + entity);
-				getEntityManager().persist(entity);
-			}
-			commit();
-		} catch (Exception e) {
-			LOG.error(FAILED_TO_PERSIST + e.getMessage() + CAUSE + e.getCause());
-			rollback();
-			throw new DAOException(FAILED_TO_PERSIST + e.getMessage() + CAUSE
-					+ e.getCause());
-		}
+		persist(Arrays.asList(t));
 	}
 
 	@Override
@@ -119,27 +114,11 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 			throw new DAOException(FAILED_TO_PERSIST + e.getMessage() + CAUSE
 					+ e.getCause());
 		}
-
 	}
 
 	@Override
 	public void remove(T... t) {
-		if (isEmpty(t)) {
-			return;
-		}
-		try {
-			beginTransaction();
-			for (T entity : t) {
-				LOG.info(REMOVING_OBJECT + entity);
-				getEntityManager().remove(entity);
-			}
-			commit();
-		} catch (Exception e) {
-			LOG.error(FAILED_TO_REMOVE + e.getMessage() + CAUSE + e.getCause());
-			rollback();
-			throw new DAOException(FAILED_TO_REMOVE + e.getMessage() + CAUSE
-					+ e.getCause());
-		}
+		remove(Arrays.asList(t));
 	}
 
 	@Override
@@ -164,22 +143,7 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 
 	@Override
 	public void merge(T... t) {
-		if (isEmpty(t)) {
-			return;
-		}
-		try {
-			beginTransaction();
-			for (T entity : t) {
-				LOG.info(MERGING_OBJECT + entity);
-				getEntityManager().merge(entity);
-			}
-			commit();
-		} catch (Exception e) {
-			LOG.error(FAILED_TO_MERGE + e.getMessage() + CAUSE + e.getCause());
-			rollback();
-			throw new DAOException(FAILED_TO_MERGE + e.getMessage() + CAUSE
-					+ e.getCause());
-		}
+		merge(Arrays.asList(t));
 	}
 
 	@Override
@@ -204,22 +168,7 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 
 	@Override
 	public void refresh(T... t) {
-		if (isEmpty(t)) {
-			return;
-		}
-		try {
-			beginTransaction();
-			for (T entity : t) {
-				LOG.info(REFRESHING_OBJECT + entity);
-				getEntityManager().merge(entity);
-			}
-			commit();
-		} catch (Exception e) {
-			LOG.error(FAILED_TO_REFRESH + e.getMessage() + CAUSE + e.getCause());
-			rollback();
-			throw new DAOException(FAILED_TO_REFRESH + e.getMessage() + CAUSE
-					+ e.getCause());
-		}
+		refresh(Arrays.asList(t));
 	}
 
 	@Override
@@ -231,7 +180,7 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 			beginTransaction();
 			for (T entity : list) {
 				LOG.info(REFRESHING_OBJECT + entity);
-				getEntityManager().merge(entity);
+				getEntityManager().refresh(entity);
 			}
 			commit();
 		} catch (Exception e) {
@@ -282,7 +231,9 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 			}
 
 			List result = criteria.list();
-			LOG.debug(RESULT + result);
+			if (LOG.isDebugEnabled()) {
+				LOG.debug(RESULT + result);
+			}
 			return result;
 		} catch (Exception e) {
 			LOG.error(ERROR + e.getMessage());
@@ -318,7 +269,9 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 			}
 
 			T result = (T) criteria.uniqueResult();
-			LOG.debug(RESULT + result);
+			if (LOG.isDebugEnabled()) {
+				LOG.debug(RESULT + result);
+			}
 			return result;
 		} catch (Exception e) {
 			LOG.error(ERROR + e.getMessage());
@@ -329,12 +282,14 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 
 	@Override
 	@SuppressWarnings("rawtypes")
-	public List executeSQLQuery(String sql) {
+	public List executeSQL(String sql) {
 		LOG.info(EXECUTING_QUERY + sql);
 		try {
 			Query q = PersistenceContext.getSession().createSQLQuery(sql);
 			List result = q.list();
-			LOG.debug(RESULT + result);
+			if (LOG.isDebugEnabled()) {
+				LOG.debug(RESULT + result);
+			}
 			return result;
 		} catch (Exception e) {
 			LOG.error(FAILED_TO_EXECUTE_QUERY + e.getMessage());
@@ -349,7 +304,9 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 		try {
 			Query q = PersistenceContext.getSession().createSQLQuery(sql);
 			int result = q.executeUpdate();
-			LOG.debug(RESULT + result);
+			if (LOG.isDebugEnabled()) {
+				LOG.debug(RESULT + result);
+			}
 			return result;
 		} catch (Exception e) {
 			LOG.error(FAILED_TO_EXECUTE_QUERY + e.getMessage());
@@ -365,7 +322,9 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 		try {
 			Query q = PersistenceContext.getSession().createQuery(hql);
 			List result = q.list();
-			LOG.debug(RESULT + result);
+			if (LOG.isDebugEnabled()) {
+				LOG.debug(RESULT + result);
+			}
 			return result;
 		} catch (Exception e) {
 			LOG.error(FAILED_TO_EXECUTE_QUERY + e.getMessage());
@@ -385,7 +344,9 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 			}
 			LOG.info(EXECUTING_QUERY + q.getQueryString());
 			List result = q.list();
-			LOG.debug(RESULT + result);
+			if (LOG.isDebugEnabled()) {
+				LOG.debug(RESULT + result);
+			}
 			return result;
 		} catch (Exception e) {
 			LOG.error(FAILED_TO_EXECUTE_QUERY + e.getMessage());
@@ -400,7 +361,9 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 		try {
 			Query q = PersistenceContext.getSession().createQuery(hql);
 			int result = q.executeUpdate();
-			LOG.debug(RESULT + result);
+			if (LOG.isDebugEnabled()) {
+				LOG.debug(RESULT + result);
+			}
 			return result;
 		} catch (Exception e) {
 			LOG.error(FAILED_TO_EXECUTE_QUERY + e.getMessage());
@@ -424,7 +387,9 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 					entityClass);
 			criteria.setProjection(Projections.rowCount());
 			long result = (Long) criteria.uniqueResult();
-			LOG.debug(RESULT + result);
+			if (LOG.isDebugEnabled()) {
+				LOG.debug(RESULT + result);
+			}
 			return result;
 		} catch (Exception e) {
 			LOG.error(ERROR + e.getMessage() + CAUSE + e.getCause());
@@ -457,7 +422,7 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 	public void close() {
 		PersistenceContext.close();
 	}
-	
+
 	@Override
 	public String toString() {
 		return "DAO of " + entityClass;
@@ -465,14 +430,6 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 
 	private boolean isEmpty(List<T> list) {
 		if (list == null || list.size() == 0) {
-			LOG.warn(EMPTY_LIST);
-			return true;
-		}
-		return false;
-	}
-
-	private boolean isEmpty(T... t) {
-		if (t == null || t.length == 0) {
 			LOG.warn(EMPTY_LIST);
 			return true;
 		}

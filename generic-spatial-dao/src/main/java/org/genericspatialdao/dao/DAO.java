@@ -67,7 +67,7 @@ public interface DAO<T> {
 	int executeHQLUpdate(String hql);
 
 	@SuppressWarnings("rawtypes")
-	List executeSQLQuery(String sql);
+	List executeSQL(String sql);
 
 	int executeSQLUpdate(String sql);
 
