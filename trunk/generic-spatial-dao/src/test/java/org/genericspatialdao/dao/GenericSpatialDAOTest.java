@@ -3,7 +3,9 @@ package org.genericspatialdao.dao;
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.genericspatialdao.data.SpatialTestVO;
 import org.genericspatialdao.data.TestVO;
@@ -53,6 +55,23 @@ public class GenericSpatialDAOTest {
 		assertEquals(2L, testDAO.count());
 		testDAO.removeAll();
 		testDAO.close();
+	}
+
+	@Test(expected = DAOException.class)
+	public void clearTest() {
+		DAO<TestVO> testDAO = new GenericSpatialDAO<TestVO>(TestVO.class);
+		TestVO testVO = new TestVO();
+		testVO.setLogin(TestUtils.randomString());
+		testVO.setPassword(TestUtils.randomString());
+		testDAO.persist(testVO);
+
+		testDAO.clear();
+		try {
+			testDAO.remove(testVO);
+		} finally {
+			testDAO.removeAll();
+			testDAO.close();
+		}
 	}
 
 	@Test
@@ -144,6 +163,58 @@ public class GenericSpatialDAOTest {
 	}
 
 	@Test
+	public void sqlTest() {
+		System.out.println("sqlTest");
+		DAO<TestVO> testDAO = new GenericSpatialDAO<TestVO>(TestVO.class);
+
+		String login1 = TestUtils.randomString();
+
+		TestVO testVO1 = new TestVO();
+		testVO1.setLogin(login1);
+		testVO1.setPassword(TestUtils.randomString());
+		testDAO.persist(testVO1);
+		assertEquals(login1, testDAO.find(testVO1.getId()).getLogin());
+
+		TestVO testVO2 = new TestVO();
+		testVO2.setLogin(TestUtils.randomString());
+		testVO2.setPassword(TestUtils.randomString());
+		testDAO.persist(testVO2);
+		assertEquals(2, testDAO.findAll().size());
+
+		assertEquals(login1, testVO1.getLogin());
+		assertEquals(
+				1,
+				testDAO.executeSQL(
+						"SELECT * FROM TestVO WHERE login = '" + login1 + "'")
+						.size());
+
+		testDAO.remove(testVO1, testVO2);
+		testDAO.close();
+	}
+
+	@Test
+	public void sqlUpdateAndRefreshTest() {
+		System.out.println("sqlUpdateTest");
+		DAO<TestVO> testDAO = new GenericSpatialDAO<TestVO>(TestVO.class);
+
+		String login = TestUtils.randomString();
+		String newLogin = TestUtils.randomString();
+
+		TestVO testVO1 = new TestVO();
+		testVO1.setLogin(login);
+		testVO1.setPassword(TestUtils.randomString());
+		testDAO.persist(testVO1);
+		assertEquals(login, testDAO.find(testVO1.getId()).getLogin());
+		assertEquals(login, testVO1.getLogin());
+
+		testDAO.executeSQLUpdate("UPDATE TestVO SET login = '" + newLogin + "'");
+		testDAO.refresh(testVO1);
+		assertEquals(newLogin, testVO1.getLogin());
+		testDAO.remove(testVO1);
+		testDAO.close();
+	}
+
+	@Test
 	public void hql2Test() {
 		System.out.println("hqlTest");
 		DAO<TestVO> testDAO = new GenericSpatialDAO<TestVO>(TestVO.class);
@@ -172,11 +243,31 @@ public class GenericSpatialDAOTest {
 	}
 
 	@Test
+	public void findAllTest() {
+		System.out.println("findAllTest");
+		DAO<TestVO> testDAO = new GenericSpatialDAO<TestVO>(TestVO.class);
+
+		assertEquals(0, testDAO.findAll(1, 100).size());
+
+		testDAO.close();
+	}
+
+	@Test
 	public void findTest() {
 		System.out.println("findTest");
 		DAO<TestVO> testDAO = new GenericSpatialDAO<TestVO>(TestVO.class);
+		TestVO testVO = new TestVO();
+		String login = TestUtils.randomString();
+		String password = TestUtils.randomString();
+		testVO.setLogin(login);
+		testVO.setPassword(password);
+		testDAO.persist(testVO);
 
-		assertEquals(0, testDAO.findAll().size());
+		Map<String, Object> properties = new HashMap<String, Object>();
+		properties.put("login", login);
+		properties.put("password", password);
+		assertEquals(testVO, testDAO.find(testVO.getId()));
+		assertEquals(testVO, testDAO.find(testVO.getId(), properties));
 
 		testDAO.close();
 	}
@@ -190,10 +281,11 @@ public class GenericSpatialDAOTest {
 		testVO.setId(TestUtils.randomInt());
 		testVO.setLogin(TestUtils.randomString());
 		testVO.setPassword(TestUtils.randomString());
-
-		testDAO.persist(testVO);
-
-		testDAO.close();
+		try {
+			testDAO.persist(testVO);
+		} finally {
+			testDAO.close();
+		}
 	}
 
 	@Test

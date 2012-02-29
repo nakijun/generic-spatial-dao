@@ -4,10 +4,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.genericspatialdao.dao.DAO;
+import org.genericspatialdao.dao.DAOFactory;
 import org.genericspatialdao.dao.GenericSpatialDAO;
 import org.genericspatialdao.example.vo.Department;
 import org.genericspatialdao.example.vo.Employee;
-import org.genericspatialdao.utils.DAOUtils;
 import org.genericspatialdao.utils.DataCreator;
 import org.junit.Test;
 
@@ -49,7 +49,7 @@ public class ExampleTest {
 		testE.remove(e2, e1);
 		testD.remove(d);
 
-		DAOUtils.close(testE, testD);
+		DAOFactory.close(testE, testD);
 	}
 
 }
