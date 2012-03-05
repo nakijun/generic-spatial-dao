@@ -53,8 +53,17 @@ public class SpatialUtils {
 		return createPoint(createCoordinate(x, y), srid);
 	}
 
+	public static Point generateLongLatPoint(int srid) {
+		LOG.info("Generating long/lat point with SRID " + srid);
+		Coordinate coordinate = new Coordinate(randomDouble(-180, 180),
+				randomDouble(-90, 90));
+		Point generatedPoint = createPoint(coordinate, srid);
+		LOG.debug(generatedPoint);
+		return generatedPoint;
+	}
+
 	public static List<Point> generateLongLatPoints(final int number, int srid) {
-		LOG.info("Generating " + number + "lat/long points with SRID " + srid);
+		LOG.info("Generating " + number + "long/lat points with SRID " + srid);
 		List<Point> list = new ArrayList<Point>();
 		Coordinate[] coordinates = new Coordinate[number];
 		for (int i = 0; i < number; i++) {
