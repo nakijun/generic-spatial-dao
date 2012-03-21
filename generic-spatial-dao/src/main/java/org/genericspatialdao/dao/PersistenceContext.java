@@ -18,8 +18,8 @@ import org.hibernate.Session;
  */
 public class PersistenceContext {
 
+	public static final String DEFAULT_PERSISTENCE_UNIT_PROPERTY = "defaultpersistenceunit";
 	public static final String DEFAULT_PERSISTENCE_UNIT = "default";
-	public static final String DEFAULT_PERSISTENCE_UNIT_PROPERTY = "persistence-unit.default";
 
 	private static final String PERSISTENCE_UNIT_LOADED = "Persistence unit loaded: ";
 	private static final String LOADING_PERSISTENCE_UNIT = "Loading persistence unit: ";

@@ -6,8 +6,10 @@ import java.util.Map;
 
 import javax.persistence.EntityManager;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.genericspatialdao.exception.DAOException;
+import org.genericspatialdao.utils.PropertiesUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Criterion;
@@ -39,6 +41,46 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 	private static final String RESULT = "Result: ";
 	private static final String EMPTY_LIST = "Empty list";
 
+	private static final String AUTO_BEGIN_TRANSACTION_PROPERTY = "autobegintransaction";
+	private static final String AUTO_COMMIT_PROPERTY = "autocommit";
+	private static final String AUTO_ROLLBACK_PROPERTY = "autorollback";
+
+	private static final boolean autoBeginTransaction;
+	private static final boolean autoCommit;
+	private static final boolean autoRollback;
+
+	static {
+		String autoBeginTransactionString = PropertiesUtils
+				.getString(AUTO_BEGIN_TRANSACTION_PROPERTY);
+		if (StringUtils.isBlank(autoBeginTransactionString)
+				|| StringUtils.equalsIgnoreCase(autoBeginTransactionString,
+						Boolean.TRUE.toString())) {
+			autoBeginTransaction = true;
+		} else {
+			autoBeginTransaction = false;
+		}
+
+		String autoCommitString = PropertiesUtils
+				.getString(AUTO_COMMIT_PROPERTY);
+		if (StringUtils.isBlank(autoCommitString)
+				|| StringUtils.equalsIgnoreCase(autoCommitString,
+						Boolean.TRUE.toString())) {
+			autoCommit = true;
+		} else {
+			autoCommit = false;
+		}
+
+		String autoRollbackString = PropertiesUtils
+				.getString(AUTO_ROLLBACK_PROPERTY);
+		if (StringUtils.isBlank(autoRollbackString)
+				|| StringUtils.equalsIgnoreCase(autoRollbackString,
+						Boolean.TRUE.toString())) {
+			autoRollback = true;
+		} else {
+			autoRollback = false;
+		}
+	}
+
 	public GenericSpatialDAO(Class<T> entityClass) {
 		this.entityClass = entityClass;
 	}
@@ -46,7 +88,7 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 	@Override
 	public T find(Object id) {
 		LOG.info(FINDING + entityClass.getName() + OBJECT_BY_ID + id);
-		beginTransaction();
+		autoBeginTransaction();
 		T t = getEntityManager().find(entityClass, id);
 		if (LOG.isDebugEnabled()) {
 			LOG.debug(RESULT + t);
@@ -58,7 +100,7 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 	public T find(Object id, Map<String, Object> properties) {
 		LOG.info(FINDING + entityClass.getSimpleName() + OBJECT_BY_ID + id
 				+ " and properties: " + properties);
-		beginTransaction();
+		autoBeginTransaction();
 		T t = getEntityManager().find(entityClass, id, properties);
 		if (LOG.isDebugEnabled()) {
 			LOG.debug(RESULT + t);
@@ -102,15 +144,15 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 			return;
 		}
 		try {
-			beginTransaction();
+			autoBeginTransaction();
 			for (T entity : list) {
 				LOG.info(PERSISTING_OBJECT + entity);
 				getEntityManager().persist(entity);
 			}
-			commit();
+			autoCommit();
 		} catch (Exception e) {
 			LOG.error(FAILED_TO_PERSIST + e.getMessage() + CAUSE + e.getCause());
-			rollback();
+			autoRollback();
 			throw new DAOException(FAILED_TO_PERSIST + e.getMessage() + CAUSE
 					+ e.getCause());
 		}
@@ -127,15 +169,15 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 			return;
 		}
 		try {
-			beginTransaction();
+			autoBeginTransaction();
 			for (T entity : list) {
 				LOG.info(REMOVING_OBJECT + entity);
 				getEntityManager().remove(entity);
 			}
-			commit();
+			autoCommit();
 		} catch (Exception e) {
 			LOG.error(FAILED_TO_REMOVE + e.getMessage() + CAUSE + e.getCause());
-			rollback();
+			autoRollback();
 			throw new DAOException(FAILED_TO_REMOVE + e.getMessage() + CAUSE
 					+ e.getCause());
 		}
@@ -152,15 +194,15 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 			return;
 		}
 		try {
-			beginTransaction();
+			autoBeginTransaction();
 			for (T entity : list) {
 				LOG.info(MERGING_OBJECT + entity);
 				getEntityManager().merge(entity);
 			}
-			commit();
+			autoCommit();
 		} catch (Exception e) {
 			LOG.error(FAILED_TO_MERGE + e.getMessage() + CAUSE + e.getCause());
-			rollback();
+			autoRollback();
 			throw new DAOException(FAILED_TO_MERGE + e.getMessage() + CAUSE
 					+ e.getCause());
 		}
@@ -177,15 +219,15 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 			return;
 		}
 		try {
-			beginTransaction();
+			autoBeginTransaction();
 			for (T entity : list) {
 				LOG.info(REFRESHING_OBJECT + entity);
 				getEntityManager().refresh(entity);
 			}
-			commit();
+			autoCommit();
 		} catch (Exception e) {
 			LOG.error(FAILED_TO_REFRESH + e.getMessage() + CAUSE + e.getCause());
-			rollback();
+			autoRollback();
 			throw new DAOException(FAILED_TO_REFRESH + e.getMessage() + CAUSE
 					+ e.getCause());
 		}
@@ -200,7 +242,7 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 	@Override
 	public void flush() {
 		LOG.info("Flushing session");
-		beginTransaction();
+		autoBeginTransaction();
 		getEntityManager().flush();
 	}
 
@@ -234,7 +276,7 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 			if (result == null || result.isEmpty()) {
 				result = null;
 			}
-			
+
 			if (LOG.isDebugEnabled()) {
 				LOG.debug(RESULT + result);
 			}
@@ -273,7 +315,7 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 			}
 
 			T result = (T) criteria.uniqueResult();
-			
+
 			if (LOG.isDebugEnabled()) {
 				LOG.debug(RESULT + result);
 			}
@@ -315,6 +357,7 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 			return result;
 		} catch (Exception e) {
 			LOG.error(FAILED_TO_EXECUTE_QUERY + e.getMessage());
+			autoRollback();
 			throw new DAOException(FAILED_TO_EXECUTE_QUERY + e.getMessage()
 					+ CAUSE + e.getCause());
 		}
@@ -372,6 +415,7 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 			return result;
 		} catch (Exception e) {
 			LOG.error(FAILED_TO_EXECUTE_QUERY + e.getMessage());
+			autoRollback();
 			throw new DAOException(FAILED_TO_EXECUTE_QUERY + e.getMessage()
 					+ CAUSE + e.getCause());
 		}
@@ -431,6 +475,24 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 	@Override
 	public String toString() {
 		return "DAO of " + entityClass;
+	}
+
+	private void autoBeginTransaction() {
+		if (autoBeginTransaction) {
+			beginTransaction();
+		}
+	}
+
+	private void autoRollback() {
+		if (autoRollback) {
+			rollback();
+		}
+	}
+
+	private void autoCommit() {
+		if (autoCommit) {
+			commit();
+		}
 	}
 
 	private boolean isEmpty(List<T> list) {

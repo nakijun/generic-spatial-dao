@@ -11,9 +11,9 @@ import org.apache.log4j.Logger;
  */
 public class PropertiesUtils {
 
-	private static final String APPLICATION_PROPERTIES = "application.properties";
-	private static Configuration configApp;
+	private static final String APPLICATION_PROPERTIES = "genericspatialdao.properties";
 	private static final Logger LOG = Logger.getLogger(PropertiesUtils.class);
+	private static Configuration configApp;
 
 	static {
 		try {
