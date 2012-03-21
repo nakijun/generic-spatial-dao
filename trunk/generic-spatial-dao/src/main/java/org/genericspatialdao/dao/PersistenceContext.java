@@ -14,7 +14,7 @@ import org.hibernate.Session;
 /**
  * 
  * @author joaosavio
- * 
+ *
  */
 public class PersistenceContext {
 
@@ -94,6 +94,17 @@ public class PersistenceContext {
 		LOG.info("Closing session");
 		session.set(null);
 	}
+	
+	/**
+	 * Close quietly entity manager and session
+	 */
+	public static synchronized void closeQuietly() {
+		try {
+			close();
+		} catch (DAOException e) {
+			
+		}
+	}
 
 	/**
 	 * @return if there is a persistence unit loaded
@@ -108,10 +119,11 @@ public class PersistenceContext {
 	/**
 	 * Close entity manager factory
 	 */
-	public static synchronized void closeFactory() {
+	public static synchronized void closeFactory() {		
+		closeQuietly();
 		if (factory != null) {
 			if (factory.isOpen()) {
-				LOG.debug("Closing entity manager factory");
+				LOG.info("Closing entity manager factory");
 				factory.close();
 			}
 			factory = null;
