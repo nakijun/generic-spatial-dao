@@ -1,6 +1,7 @@
 package org.genericspatialdao.dao;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -271,6 +272,29 @@ public class GenericSpatialDAOTest {
 
 		testDAO.close();
 	}
+	
+	@Test
+	public void findListTest() {
+		System.out.println("findListTest");
+		DAO<TestVO> testDAO = new GenericSpatialDAO<TestVO>(TestVO.class);
+		TestVO testVO = new TestVO();	
+		testVO.setLogin(TestUtils.randomString());
+		testVO.setPassword(TestUtils.randomString());
+		
+		TestVO testVO2 = new TestVO();	
+		testVO2.setLogin(TestUtils.randomString());
+		testVO2.setPassword(TestUtils.randomString());
+		
+		List<TestVO> list = new ArrayList<TestVO>();
+		list.add(testVO);
+		list.add(testVO2);
+		testDAO.persist(list);
+
+		assertEquals(list, testDAO.find(testVO.getId(), testVO2.getId()));
+
+		testDAO.remove(list);
+		testDAO.close();
+	}
 
 	@Test(expected = DAOException.class)
 	public void insertWrongTest() {
@@ -318,13 +342,15 @@ public class GenericSpatialDAOTest {
 	}
 
 	@Test
-	public void addUpdateAndRemoveEmptyTest() {
-		System.out.println("addUpdateAndRemoveEmptyTest");
+	public void findAddMergeRemoveAndRefreshEmptyTest() {
+		System.out.println("findAddMergeRemoveAndRefreshEmptyTest");
 		DAO<SpatialTestVO> testDAO = new GenericSpatialDAO<SpatialTestVO>(
 				SpatialTestVO.class);
+		assertNull(testDAO.find());		
 		testDAO.persist(new ArrayList<SpatialTestVO>());
 		testDAO.merge(new ArrayList<SpatialTestVO>());
 		testDAO.remove(new ArrayList<SpatialTestVO>());
+		testDAO.merge(new ArrayList<SpatialTestVO>());
 	}
 
 }

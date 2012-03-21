@@ -1,5 +1,6 @@
 package org.genericspatialdao.dao;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -34,6 +35,7 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 	private static final String FAILED_TO_PERSIST = "Failed to persist: ";
 	private static final String FAILED_TO_REFRESH = "Failed to refresh: ";
 	private static final String OBJECT_BY_ID = " object by id ";
+	private static final String OBJECTS_BY_IDS = " objects by ids ";
 	private static final String FINDING = "Finding ";
 	private static final String EXECUTING_QUERY = "Executing query: ";
 	private static final String FAILED_TO_EXECUTE_QUERY = "Failed to execute query: ";
@@ -94,6 +96,24 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 			LOG.debug(RESULT + t);
 		}
 		return t;
+	}
+
+	@Override
+	public List<T> find(Object... id) {
+		LOG.info(FINDING + entityClass.getName() + OBJECTS_BY_IDS
+				+ Arrays.toString(id));
+		autoBeginTransaction();
+		List<T> resultList = new ArrayList<T>();
+		for (Object idEntity : id) {
+			T result = getEntityManager().find(entityClass, idEntity);
+			if (result != null) {
+				resultList.add(result);
+			}
+		}
+		if (resultList == null || resultList.isEmpty()) {
+			return null;
+		}
+		return resultList;
 	}
 
 	@Override
