@@ -2,6 +2,7 @@ package org.genericspatialdao.dao;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -171,6 +172,29 @@ public class GenericSpatialDAOTest {
 				.executeHQL(hqlTemplate, login1, password1).get(0));
 
 		testDAO.remove(testVO1, testVO2);
+		testDAO.close();
+	}
+	
+	@Test
+	public void hqlEmptyResultTest() {
+		System.out.println("hqlEmptyResultTest");
+		DAO<TestVO> testDAO = new GenericSpatialDAO<TestVO>(TestVO.class);
+
+		String login1 = TestUtils.randomString();
+		String password1 = TestUtils.randomString();
+
+		TestVO testVO1 = new TestVO();
+		testVO1.setLogin(login1);
+		testVO1.setPassword(password1);
+		testDAO.persist(testVO1);
+		assertEquals(login1, testDAO.find(testVO1.getId()).getLogin());
+
+		assertEquals(login1, testVO1.getLogin());
+		
+		assertTrue(testDAO.executeHQL(
+				"FROM TestVO t WHERE login = '1'").isEmpty());		
+
+		testDAO.remove(testVO1);
 		testDAO.close();
 	}
 

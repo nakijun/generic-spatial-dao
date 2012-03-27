@@ -293,9 +293,6 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 			}
 
 			List result = criteria.list();
-			if (result == null || result.isEmpty()) {
-				result = null;
-			}
 
 			if (LOG.isDebugEnabled()) {
 				LOG.debug(RESULT + result);
