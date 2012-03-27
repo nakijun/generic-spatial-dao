@@ -21,12 +21,13 @@
 		value="warn"/> <appender-ref ref="stdout"/> </logger> <logger name="org.ajax4jsf"> 
 		<level value="warn"/> <appender-ref ref="stdout"/> </logger> -->
 		
-	<logger name="org.genericspatialdao">
+	<logger name="org.genericspatialdao" additivity="false">
 		<level value="debug" />
-		<appender-ref ref="stdout" />
+		<appender-ref ref="stdout" />		
 	</logger>
 	<root>
 		<priority value="info" />
 		<appender-ref ref="stdout" />
+		
 	</root>
 </log4j:configuration>

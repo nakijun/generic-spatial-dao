@@ -140,10 +140,11 @@ public class GenericSpatialDAOTest {
 		DAO<TestVO> testDAO = new GenericSpatialDAO<TestVO>(TestVO.class);
 
 		String login1 = TestUtils.randomString();
+		String password1 = TestUtils.randomString();
 
 		TestVO testVO1 = new TestVO();
 		testVO1.setLogin(login1);
-		testVO1.setPassword(TestUtils.randomString());
+		testVO1.setPassword(password1);
 		testDAO.persist(testVO1);
 		assertEquals(login1, testDAO.find(testVO1.getId()).getLogin());
 
@@ -158,6 +159,16 @@ public class GenericSpatialDAOTest {
 				1,
 				testDAO.executeHQL(
 						"FROM TestVO t WHERE login = '" + login1 + "'").size());
+
+		assertEquals(
+				testVO1,
+				testDAO.executeHQL(
+						"FROM TestVO t WHERE login = '" + login1 + "'"
+								+ " AND password = '" + password1 + "'").get(0));
+
+		String hqlTemplate = "FROM TestVO t WHERE login = ? AND password = ?";
+		assertEquals(testVO1, testDAO
+				.executeHQL(hqlTemplate, login1, password1).get(0));
 
 		testDAO.remove(testVO1, testVO2);
 		testDAO.close();
@@ -272,19 +283,19 @@ public class GenericSpatialDAOTest {
 
 		testDAO.close();
 	}
-	
+
 	@Test
 	public void findListTest() {
 		System.out.println("findListTest");
 		DAO<TestVO> testDAO = new GenericSpatialDAO<TestVO>(TestVO.class);
-		TestVO testVO = new TestVO();	
+		TestVO testVO = new TestVO();
 		testVO.setLogin(TestUtils.randomString());
 		testVO.setPassword(TestUtils.randomString());
-		
-		TestVO testVO2 = new TestVO();	
+
+		TestVO testVO2 = new TestVO();
 		testVO2.setLogin(TestUtils.randomString());
 		testVO2.setPassword(TestUtils.randomString());
-		
+
 		List<TestVO> list = new ArrayList<TestVO>();
 		list.add(testVO);
 		list.add(testVO2);
@@ -346,7 +357,7 @@ public class GenericSpatialDAOTest {
 		System.out.println("findAddMergeRemoveAndRefreshEmptyTest");
 		DAO<SpatialTestVO> testDAO = new GenericSpatialDAO<SpatialTestVO>(
 				SpatialTestVO.class);
-		assertNull(testDAO.find());		
+		assertNull(testDAO.find());
 		testDAO.persist(new ArrayList<SpatialTestVO>());
 		testDAO.merge(new ArrayList<SpatialTestVO>());
 		testDAO.remove(new ArrayList<SpatialTestVO>());
