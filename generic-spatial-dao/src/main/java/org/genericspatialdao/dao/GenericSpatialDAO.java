@@ -166,8 +166,7 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 		try {
 			autoBeginTransaction();
 			for (T entity : list) {
-				LOG.info(PERSISTING_OBJECT + entity);
-				getEntityManager().persist(entity);
+				persist(entity);
 			}
 			autoCommit();
 		} catch (Exception e) {
@@ -176,6 +175,11 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 			throw new DAOException(FAILED_TO_PERSIST + e.getMessage() + CAUSE
 					+ e.getCause());
 		}
+	}
+
+	protected void persist(T t) {
+		LOG.info(PERSISTING_OBJECT + t);
+		getEntityManager().persist(t);
 	}
 
 	@Override
@@ -191,8 +195,7 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 		try {
 			autoBeginTransaction();
 			for (T entity : list) {
-				LOG.info(REMOVING_OBJECT + entity);
-				getEntityManager().remove(entity);
+				remove(entity);
 			}
 			autoCommit();
 		} catch (Exception e) {
@@ -201,6 +204,11 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 			throw new DAOException(FAILED_TO_REMOVE + e.getMessage() + CAUSE
 					+ e.getCause());
 		}
+	}
+
+	protected void remove(T t) {
+		LOG.info(REMOVING_OBJECT + t);
+		getEntityManager().remove(t);
 	}
 
 	@Override
@@ -216,8 +224,7 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 		try {
 			autoBeginTransaction();
 			for (T entity : list) {
-				LOG.info(MERGING_OBJECT + entity);
-				getEntityManager().merge(entity);
+				merge(entity);
 			}
 			autoCommit();
 		} catch (Exception e) {
@@ -226,6 +233,11 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 			throw new DAOException(FAILED_TO_MERGE + e.getMessage() + CAUSE
 					+ e.getCause());
 		}
+	}
+
+	protected void merge(T t) {
+		LOG.info(MERGING_OBJECT + t);
+		getEntityManager().merge(t);
 	}
 
 	@Override
@@ -241,8 +253,7 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 		try {
 			autoBeginTransaction();
 			for (T entity : list) {
-				LOG.info(REFRESHING_OBJECT + entity);
-				getEntityManager().refresh(entity);
+				refresh(entity);
 			}
 			autoCommit();
 		} catch (Exception e) {
@@ -251,6 +262,11 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 			throw new DAOException(FAILED_TO_REFRESH + e.getMessage() + CAUSE
 					+ e.getCause());
 		}
+	}
+
+	protected void refresh(T t) {
+		LOG.info(REFRESHING_OBJECT + t);
+		getEntityManager().refresh(t);
 	}
 
 	@Override
