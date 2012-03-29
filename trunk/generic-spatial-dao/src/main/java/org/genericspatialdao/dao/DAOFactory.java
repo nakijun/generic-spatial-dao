@@ -37,6 +37,7 @@ public class DAOFactory {
 	 * 
 	 * @param entityClass
 	 * @param persistenceUnitName
+	 * @param autoTransaction
 	 * @return a DAO implementation
 	 */
 	public static <T> DAO<T> getDAO(Class<T> entityClass,
