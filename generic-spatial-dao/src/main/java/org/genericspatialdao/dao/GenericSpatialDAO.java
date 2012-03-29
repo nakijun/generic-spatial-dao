@@ -7,11 +7,10 @@ import java.util.Map;
 
 import javax.persistence.EntityManager;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.genericspatialdao.exception.DAOException;
 import org.genericspatialdao.services.EntityManagerService;
-import org.genericspatialdao.utils.PropertiesUtils;
+import org.genericspatialdao.utils.ConstantsUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -24,6 +23,9 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 	protected static final Logger LOG = Logger
 			.getLogger(GenericSpatialDAO.class);
 
+	protected static final boolean autoBeginTransaction;
+	protected static final boolean autoCommit;
+	protected static final boolean autoRollback;
 	protected final Class<T> entityClass;
 	protected final String persistenceUnitName;
 
@@ -47,44 +49,15 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 	private static final String RESULT = "Result: ";
 	private static final String EMPTY_LIST = "Empty list";
 
-	private static final String AUTO_BEGIN_TRANSACTION_PROPERTY = "begintransaction.auto";
-	private static final String AUTO_COMMIT_PROPERTY = "commit.auto";
-	private static final String AUTO_ROLLBACK_PROPERTY = "rollback.auto";
-
-	private static final boolean autoBeginTransaction;
-	private static final boolean autoCommit;
-	private static final boolean autoRollback;
-
 	static {
-		String autoBeginTransactionString = PropertiesUtils
-				.getString(AUTO_BEGIN_TRANSACTION_PROPERTY);
-		if (StringUtils.isBlank(autoBeginTransactionString)
-				|| StringUtils.equalsIgnoreCase(autoBeginTransactionString,
-						Boolean.TRUE.toString())) {
-			autoBeginTransaction = true;
-		} else {
-			autoBeginTransaction = false;
-		}
+		autoBeginTransaction = ConstantsUtils.AUTO_BEGIN_TRANSACTION;
+		autoCommit = ConstantsUtils.AUTO_COMMIT;
+		autoRollback = ConstantsUtils.AUTO_ROLLBACK;
+	}
 
-		String autoCommitString = PropertiesUtils
-				.getString(AUTO_COMMIT_PROPERTY);
-		if (StringUtils.isBlank(autoCommitString)
-				|| StringUtils.equalsIgnoreCase(autoCommitString,
-						Boolean.TRUE.toString())) {
-			autoCommit = true;
-		} else {
-			autoCommit = false;
-		}
-
-		String autoRollbackString = PropertiesUtils
-				.getString(AUTO_ROLLBACK_PROPERTY);
-		if (StringUtils.isBlank(autoRollbackString)
-				|| StringUtils.equalsIgnoreCase(autoRollbackString,
-						Boolean.TRUE.toString())) {
-			autoRollback = true;
-		} else {
-			autoRollback = false;
-		}
+	public GenericSpatialDAO(Class<T> entityClass) {
+		this.entityClass = entityClass;
+		this.persistenceUnitName = ConstantsUtils.DEFAULT_APPLICATION_PERSISTENCE_UNIT;
 	}
 
 	public GenericSpatialDAO(Class<T> entityClass, String persistenceUnitName) {
@@ -142,8 +115,8 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 	@Override
 	public List<T> findAll(Integer firstResult, Integer maxResults) {
 		LOG.info("Finding all " + entityClass.getSimpleName() + " objects");
-		Criteria criteria = EntityManagerService.getSession(persistenceUnitName)
-				.createCriteria(entityClass);
+		Criteria criteria = EntityManagerService
+				.getSession(persistenceUnitName).createCriteria(entityClass);
 		if (firstResult != null) {
 			criteria.setFirstResult(firstResult);
 		}
@@ -297,9 +270,6 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 			}
 
 			List result = criteria.list();
-			if (result == null || result.isEmpty()) {
-				result = null;
-			}
 
 			if (LOG.isDebugEnabled()) {
 				LOG.debug(RESULT + result);
