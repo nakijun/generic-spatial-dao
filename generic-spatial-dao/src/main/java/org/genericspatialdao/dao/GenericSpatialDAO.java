@@ -23,11 +23,9 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 	protected static final Logger LOG = Logger
 			.getLogger(GenericSpatialDAO.class);
 
-	protected static final boolean autoBeginTransaction;
-	protected static final boolean autoCommit;
-	protected static final boolean autoRollback;
 	protected final Class<T> entityClass;
 	protected final String persistenceUnitName;
+	protected final boolean autoTransaction;
 
 	private static final String FINDING_UNIQUE_BY_CRITERIA = "Finding unique by criteria";
 	private static final String FINDING_BY_CRITERIA = "Finding by criteria";
@@ -49,20 +47,35 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 	private static final String RESULT = "Result: ";
 	private static final String EMPTY_LIST = "Empty list";
 
-	static {
-		autoBeginTransaction = ConstantsUtils.AUTO_BEGIN_TRANSACTION;
-		autoCommit = ConstantsUtils.AUTO_COMMIT;
-		autoRollback = ConstantsUtils.AUTO_ROLLBACK;
-	}
-
+	/**
+	 * 
+	 * @param entityClass
+	 */
 	public GenericSpatialDAO(Class<T> entityClass) {
-		this.entityClass = entityClass;
-		this.persistenceUnitName = ConstantsUtils.DEFAULT_APPLICATION_PERSISTENCE_UNIT;
+		this(entityClass, ConstantsUtils.DEFAULT_PERSISTENCE_UNIT);
 	}
 
+	/**
+	 * 
+	 * @param entityClass
+	 * @param persistenceUnitName
+	 */
 	public GenericSpatialDAO(Class<T> entityClass, String persistenceUnitName) {
+		this(entityClass, persistenceUnitName,
+				ConstantsUtils.DEFAULT_AUTO_TRANSACTION);
+	}
+
+	/**
+	 * 
+	 * @param entityClass
+	 * @param persistenceUnitName
+	 * @param autoTransaction
+	 */
+	public GenericSpatialDAO(Class<T> entityClass, String persistenceUnitName,
+			boolean autoTransaction) {
 		this.entityClass = entityClass;
 		this.persistenceUnitName = persistenceUnitName;
+		this.autoTransaction = autoTransaction;
 	}
 
 	@Override
@@ -474,19 +487,19 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 	}
 
 	private void autoBeginTransaction() {
-		if (autoBeginTransaction) {
+		if (autoTransaction) {
 			beginTransaction();
 		}
 	}
 
 	private void autoRollback() {
-		if (autoRollback) {
+		if (autoTransaction) {
 			rollback();
 		}
 	}
 
 	private void autoCommit() {
-		if (autoCommit) {
+		if (autoTransaction) {
 			commit();
 		}
 	}

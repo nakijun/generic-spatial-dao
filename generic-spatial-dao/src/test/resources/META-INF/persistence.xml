@@ -26,7 +26,7 @@
 			<property name="hibernate.dialect" value="org.hibernatespatial.postgis.PostgisDialect" />
 			<property name="hibernate.connection.url"
 				value="jdbc:postgresql://baquara:5432/genericspatialdao2" />
-			<property name="hibernate.hbm2ddl.auto" value="create-drop" />
+			<property name="hibernate.hbm2ddl.auto" value="update" />
 			<property name="hibernate.connection.username" value="postgres" />
 			<property name="hibernate.connection.password" value="postgres" />
 			<property name="hibernate.id.new_generator_mappings" value="true" />
@@ -40,7 +40,7 @@
 			<property name="hibernate.dialect" value="org.hibernatespatial.postgis.PostgisDialect" />
 			<property name="hibernate.connection.url"
 				value="jdbc:postgresql://baquara:5432/genericspatialdao3" />
-			<property name="hibernate.hbm2ddl.auto" value="create-drop" />
+			<property name="hibernate.hbm2ddl.auto" value="update" />
 			<property name="hibernate.connection.username" value="postgres" />
 			<property name="hibernate.connection.password" value="postgres" />
 			<property name="hibernate.id.new_generator_mappings" value="true" />
@@ -54,7 +54,7 @@
 			<property name="hibernate.dialect" value="org.hibernatespatial.postgis.PostgisDialect" />
 			<property name="hibernate.connection.url"
 				value="jdbc:postgresql://baquara:5432/genericspatialdao4" />
-			<property name="hibernate.hbm2ddl.auto" value="create-drop" />
+			<property name="hibernate.hbm2ddl.auto" value="update" />
 			<property name="hibernate.connection.username" value="postgres" />
 			<property name="hibernate.connection.password" value="postgres" />
 			<property name="hibernate.id.new_generator_mappings" value="true" />
