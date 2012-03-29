@@ -42,8 +42,8 @@ public class DAOFactory {
 	public static <T> DAO<T> getDAO(Class<T> entityClass,
 			String persistenceUnitName, boolean autoTransaction) {
 		LOG.info(CREATING_DAO_FOR_CLASS + entityClass.getName()
-				+ " using persistence unit: " + persistenceUnitName
-				+ " . Auto transaction: " + autoTransaction);
+				+ ". Persistence unit: " + persistenceUnitName
+				+ ". Auto transaction: " + autoTransaction);
 		return new GenericSpatialDAO<T>(entityClass, persistenceUnitName,
 				autoTransaction);
 	}
