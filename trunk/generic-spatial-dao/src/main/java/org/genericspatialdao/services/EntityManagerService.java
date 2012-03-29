@@ -21,23 +21,6 @@ public class EntityManagerService {
 	private static ThreadLocal<EntityManager> session = new ThreadLocal<EntityManager>();
 
 	/**
-	 * Load a persistence unit
-	 * 
-	 * @param persistenceUnit
-	 * 
-	 *            public static synchronized void loadPersistenceUnit(String
-	 *            persistenceUnit) { closeFactory();
-	 *            LOG.info(LOADING_PERSISTENCE_UNIT + persistenceUnit); try {
-	 *            factory =
-	 *            Persistence.createEntityManagerFactory(persistenceUnit);
-	 *            LOG.info(PERSISTENCE_UNIT_LOADED + persistenceUnit); } catch
-	 *            (Exception e) { LOG.error(FAILED_TO_LOAD_PERSISTENCE_UNIT +
-	 *            e.getMessage() + ". Cause: " + e.getCause().getMessage());
-	 *            throw new DAOException(FAILED_TO_LOAD_PERSISTENCE_UNIT +
-	 *            e.getMessage() + ". Cause: " + e.getCause().getMessage()); } }
-	 */
-
-	/**
 	 * @return an entity manager of a target persistence unit
 	 */
 	public static synchronized EntityManager getEntityManager(
@@ -78,20 +61,6 @@ public class EntityManagerService {
 
 		}
 	}
-
-	/*
-	 * public static synchronized boolean isPersistenceUnitLoaded() { if
-	 * (factory == null) { return false; } return true; }
-	 */
-
-	/**
-	 * Close entity manager factory
-	 * 
-	 * public static synchronized void closeFactory() { closeQuietly(); if
-	 * (factory != null) { if (factory.isOpen()) {
-	 * LOG.info("Closing entity manager factory"); factory.close(); } factory =
-	 * null; } }
-	 */
 
 	/**
 	 * Begins a transaction if it is not active
