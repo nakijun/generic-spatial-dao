@@ -10,7 +10,8 @@
 		<properties>
 			<property name="hibernate.connection.driver_class" value="org.postgresql.Driver" />
 			<property name="hibernate.dialect" value="org.hibernatespatial.postgis.PostgisDialect" />
-			<property name="hibernate.connection.url" value="jdbc:postgresql://baquara:5432/test_gis" />
+			<property name="hibernate.connection.url"
+				value="jdbc:postgresql://baquara:5432/genericspatialdao1" />
 			<property name="hibernate.hbm2ddl.auto" value="create-drop" />
 			<property name="hibernate.connection.username" value="postgres" />
 			<property name="hibernate.connection.password" value="postgres" />
@@ -18,16 +19,48 @@
 		</properties>
 	</persistence-unit>
 
-	<persistence-unit name="test">
+	<persistence-unit name="genericspatialdao2">
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
 		<properties>
 			<property name="hibernate.connection.driver_class" value="org.postgresql.Driver" />
 			<property name="hibernate.dialect" value="org.hibernatespatial.postgis.PostgisDialect" />
-			<property name="hibernate.connection.url" value="jdbc:postgresql://baquara:5432/test_gis_2" />
+			<property name="hibernate.connection.url"
+				value="jdbc:postgresql://baquara:5432/genericspatialdao2" />
 			<property name="hibernate.hbm2ddl.auto" value="create-drop" />
 			<property name="hibernate.connection.username" value="postgres" />
 			<property name="hibernate.connection.password" value="postgres" />
+			<property name="hibernate.id.new_generator_mappings" value="true" />
 		</properties>
 	</persistence-unit>
+
+	<persistence-unit name="genericspatialdao3">
+		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+		<properties>
+			<property name="hibernate.connection.driver_class" value="org.postgresql.Driver" />
+			<property name="hibernate.dialect" value="org.hibernatespatial.postgis.PostgisDialect" />
+			<property name="hibernate.connection.url"
+				value="jdbc:postgresql://baquara:5432/genericspatialdao3" />
+			<property name="hibernate.hbm2ddl.auto" value="create-drop" />
+			<property name="hibernate.connection.username" value="postgres" />
+			<property name="hibernate.connection.password" value="postgres" />
+			<property name="hibernate.id.new_generator_mappings" value="true" />
+		</properties>
+	</persistence-unit>
+
+	<persistence-unit name="genericspatialdao4">
+		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+		<properties>
+			<property name="hibernate.connection.driver_class" value="org.postgresql.Driver" />
+			<property name="hibernate.dialect" value="org.hibernatespatial.postgis.PostgisDialect" />
+			<property name="hibernate.connection.url"
+				value="jdbc:postgresql://baquara:5432/genericspatialdao4" />
+			<property name="hibernate.hbm2ddl.auto" value="create-drop" />
+			<property name="hibernate.connection.username" value="postgres" />
+			<property name="hibernate.connection.password" value="postgres" />
+			<property name="hibernate.id.new_generator_mappings" value="true" />
+		</properties>
+	</persistence-unit>
+
+
 
 </persistence>

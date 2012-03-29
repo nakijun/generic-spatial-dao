@@ -9,7 +9,7 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
 
-public class SpatialTestUtils {
+public class SpatialUtilsTest {
 
 	private static final int SRID = 4326;
 

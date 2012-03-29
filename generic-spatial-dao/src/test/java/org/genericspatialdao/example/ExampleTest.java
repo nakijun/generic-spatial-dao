@@ -5,7 +5,6 @@ import static org.junit.Assert.assertTrue;
 
 import org.genericspatialdao.dao.DAO;
 import org.genericspatialdao.dao.DAOFactory;
-import org.genericspatialdao.dao.GenericSpatialDAO;
 import org.genericspatialdao.example.vo.Department;
 import org.genericspatialdao.example.vo.Employee;
 import org.genericspatialdao.utils.DataCreator;
@@ -16,9 +15,9 @@ public class ExampleTest {
 	@Test
 	public void oneToManyTest() {
 		// setup
-		DAO<Department> testD = new GenericSpatialDAO<Department>(Department.class);
+		DAO<Department> testD = DAOFactory.getDAO(Department.class);
 
-		DAO<Employee> testE = new GenericSpatialDAO<Employee>(Employee.class);
+		DAO<Employee> testE = DAOFactory.getDAO(Employee.class);
 
 		Department d = DataCreator.createDepartment();
 		testD.persist(d);
