@@ -1,6 +1,7 @@
 package org.genericspatialdao.dao;
 
 import org.apache.log4j.Logger;
+import org.genericspatialdao.utils.ConstantsUtils;
 
 public class DAOFactory {
 
@@ -13,24 +14,38 @@ public class DAOFactory {
 
 	/**
 	 * 
-	 * @param clazz
+	 * @param entityClass
 	 * @return a DAO implementation
 	 */
-	public static <T> DAO<T> getDAO(Class<T> clazz) {
-		LOG.info(CREATING_DAO_FOR_CLASS + clazz.getName()
-				+ " using default persistence unit");
-		return new GenericSpatialDAO<T>(clazz);
+	public static <T> DAO<T> getDAO(Class<T> entityClass) {
+		return getDAO(entityClass, ConstantsUtils.DEFAULT_PERSISTENCE_UNIT);
 	}
 
 	/**
 	 * 
-	 * @param clazz
+	 * @param entityClass
+	 * @param persistenceUnitName
 	 * @return a DAO implementation
 	 */
-	public static <T> DAO<T> getDAO(Class<T> clazz, String persistenceUnitName) {
-		LOG.info(CREATING_DAO_FOR_CLASS + clazz.getName()
-				+ " using persistence unit: " + persistenceUnitName);
-		return new GenericSpatialDAO<T>(clazz, persistenceUnitName);
+	public static <T> DAO<T> getDAO(Class<T> entityClass,
+			String persistenceUnitName) {
+		return getDAO(entityClass, ConstantsUtils.DEFAULT_PERSISTENCE_UNIT,
+				ConstantsUtils.DEFAULT_AUTO_TRANSACTION);
+	}
+
+	/**
+	 * 
+	 * @param entityClass
+	 * @param persistenceUnitName
+	 * @return a DAO implementation
+	 */
+	public static <T> DAO<T> getDAO(Class<T> entityClass,
+			String persistenceUnitName, boolean autoTransaction) {
+		LOG.info(CREATING_DAO_FOR_CLASS + entityClass.getName()
+				+ " using persistence unit: " + persistenceUnitName
+				+ " . Auto transaction: " + autoTransaction);
+		return new GenericSpatialDAO<T>(entityClass, persistenceUnitName,
+				autoTransaction);
 	}
 
 	public static void close(DAO<?>... dao) {
