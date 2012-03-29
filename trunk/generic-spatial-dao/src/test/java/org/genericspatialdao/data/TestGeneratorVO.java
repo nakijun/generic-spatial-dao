@@ -11,7 +11,7 @@ import javax.persistence.SequenceGenerator;
 public class TestGeneratorVO {
 
 	@Id
-	@GeneratedValue(generator = "my_generator", strategy = GenerationType.SEQUENCE)
+	@GeneratedValue(generator = "my_generator", strategy = GenerationType.AUTO)
 	/*
 	 * @GenericGenerator(name = "my_generator", strategy =
 	 * "org.hibernate.id.enhanced.SequenceStyleGenerator", parameters = {

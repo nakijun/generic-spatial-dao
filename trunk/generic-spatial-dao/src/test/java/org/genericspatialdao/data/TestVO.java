@@ -17,7 +17,7 @@ public class TestVO implements Serializable {
 	private static final long serialVersionUID = 2244382590365908425L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 	private String login;
 	private String password;

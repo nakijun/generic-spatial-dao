@@ -23,7 +23,7 @@ public class SpatialTestVO implements Serializable {
 	private static final long serialVersionUID = -1791595461594359407L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 
 	@Type(type = "org.hibernatespatial.GeometryUserType")
