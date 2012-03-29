@@ -29,7 +29,7 @@ public class DAOFactory {
 	 */
 	public static <T> DAO<T> getDAO(Class<T> entityClass,
 			String persistenceUnitName) {
-		return getDAO(entityClass, ConstantsUtils.DEFAULT_PERSISTENCE_UNIT,
+		return getDAO(entityClass, persistenceUnitName,
 				ConstantsUtils.DEFAULT_AUTO_TRANSACTION);
 	}
 
