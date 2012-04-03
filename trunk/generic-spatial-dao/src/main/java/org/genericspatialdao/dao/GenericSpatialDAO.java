@@ -20,32 +20,32 @@ import org.hibernate.criterion.Projections;
 
 public class GenericSpatialDAO<T> implements DAO<T> {
 
+	protected static final String FINDING_UNIQUE_BY_CRITERIA = "Finding unique by criteria";
+	protected static final String FINDING_BY_CRITERIA = "Finding by criteria";
+	protected static final String CAUSE = ". Cause: ";
+	protected static final String PERSISTING_OBJECT = "Persisting object: ";
+	protected static final String REMOVING_OBJECT = "Removing object: ";
+	protected static final String MERGING_OBJECT = "Merging object: ";
+	protected static final String REFRESHING_OBJECT = "Refreshing object: ";
+	protected static final String FAILED_TO_MERGE = "Failed to merge: ";
+	protected static final String FAILED_TO_REMOVE = "Failed to remove: ";
+	protected static final String FAILED_TO_PERSIST = "Failed to persist: ";
+	protected static final String FAILED_TO_REFRESH = "Failed to refresh: ";
+	protected static final String OBJECT_BY_ID = " object by id ";
+	protected static final String OBJECTS_BY_IDS = " objects by ids ";
+	protected static final String FINDING = "Finding ";
+	protected static final String EXECUTING_QUERY = "Executing query: ";
+	protected static final String FAILED_TO_EXECUTE_QUERY = "Failed to execute query: ";
+	protected static final String ERROR = "Error: ";
+	protected static final String RESULT = "Result: ";
+	protected static final String EMPTY_LIST = "Empty list";
+
 	protected static final Logger LOG = Logger
 			.getLogger(GenericSpatialDAO.class);
 
 	protected final Class<T> entityClass;
 	protected final String persistenceUnitName;
 	protected final boolean autoTransaction;
-
-	private static final String FINDING_UNIQUE_BY_CRITERIA = "Finding unique by criteria";
-	private static final String FINDING_BY_CRITERIA = "Finding by criteria";
-	private static final String CAUSE = ". Cause: ";
-	private static final String PERSISTING_OBJECT = "Persisting object: ";
-	private static final String REMOVING_OBJECT = "Removing object: ";
-	private static final String MERGING_OBJECT = "Merging object: ";
-	private static final String REFRESHING_OBJECT = "Refreshing object: ";
-	private static final String FAILED_TO_MERGE = "Failed to merge: ";
-	private static final String FAILED_TO_REMOVE = "Failed to remove: ";
-	private static final String FAILED_TO_PERSIST = "Failed to persist: ";
-	private static final String FAILED_TO_REFRESH = "Failed to refresh: ";
-	private static final String OBJECT_BY_ID = " object by id ";
-	private static final String OBJECTS_BY_IDS = " objects by ids ";
-	private static final String FINDING = "Finding ";
-	private static final String EXECUTING_QUERY = "Executing query: ";
-	private static final String FAILED_TO_EXECUTE_QUERY = "Failed to execute query: ";
-	private static final String ERROR = "Error: ";
-	private static final String RESULT = "Result: ";
-	private static final String EMPTY_LIST = "Empty list";
 
 	/**
 	 * 
@@ -498,29 +498,29 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 		return "DAO of " + entityClass;
 	}
 
-	private Session getSession() {
+	protected Session getSession() {
 		return EntityManagerService.getSession(persistenceUnitName);
 	}
 
-	private void autoBeginTransaction() {
+	protected void autoBeginTransaction() {
 		if (autoTransaction) {
 			beginTransaction();
 		}
 	}
 
-	private void autoRollback() {
+	protected void autoRollback() {
 		if (autoTransaction) {
 			rollback();
 		}
 	}
 
-	private void autoCommit() {
+	protected void autoCommit() {
 		if (autoTransaction) {
 			commit();
 		}
 	}
 
-	private boolean isEmpty(List<T> list) {
+	protected boolean isEmpty(List<T> list) {
 		if (list == null || list.size() == 0) {
 			LOG.warn(EMPTY_LIST);
 			return true;
