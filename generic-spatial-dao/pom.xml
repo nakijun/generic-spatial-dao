@@ -114,7 +114,7 @@
 				</configuration>
 				<executions>
 					<execution>
-						<phase>compile</phase>
+						<phase>verify</phase>
 						<goals>
 							<goal>generate</goal>
 						</goals>
