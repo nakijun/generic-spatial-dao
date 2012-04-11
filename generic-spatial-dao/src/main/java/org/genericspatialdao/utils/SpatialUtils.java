@@ -22,7 +22,7 @@ public class SpatialUtils {
 	private static final Logger LOG = Logger.getLogger(SpatialUtils.class);
 
 	public static Point createPoint(String wktPoint, int srid) {
-		LOG.info("Creating point from wkt " + wktPoint + " and SRID " + srid);
+		LOG.debug("Creating point from wkt " + wktPoint + " and SRID " + srid);
 		try {
 			Point point = (Point) new WKTReader().read(wktPoint);
 			if (point != null) {
@@ -38,7 +38,7 @@ public class SpatialUtils {
 	}
 
 	public static Point createPoint(Coordinate coordinate, int srid) {
-		LOG.info("Creating point from coordinate " + coordinate + " and SRID "
+		LOG.debug("Creating point from coordinate " + coordinate + " and SRID "
 				+ srid);
 		Point point = new GeometryFactory().createPoint(coordinate);
 		if (point != null) {
@@ -54,7 +54,7 @@ public class SpatialUtils {
 	}
 
 	public static Point generateLongLatPoint(int srid) {
-		LOG.info("Generating long/lat point with SRID " + srid);
+		LOG.debug("Generating long/lat point with SRID " + srid);
 		Coordinate coordinate = new Coordinate(randomDouble(-180, 180),
 				randomDouble(-90, 90));
 		Point generatedPoint = createPoint(coordinate, srid);
@@ -63,7 +63,7 @@ public class SpatialUtils {
 	}
 
 	public static List<Point> generateLongLatPoints(final int number, int srid) {
-		LOG.info("Generating " + number + "long/lat points with SRID " + srid);
+		LOG.debug("Generating " + number + "long/lat points with SRID " + srid);
 		List<Point> list = new ArrayList<Point>();
 		Coordinate[] coordinates = new Coordinate[number];
 		for (int i = 0; i < number; i++) {
@@ -81,7 +81,7 @@ public class SpatialUtils {
 	}
 
 	public static Polygon createPolygon(String wktPolygon, int srid) {
-		LOG.info("Creating polygon from wkt " + wktPolygon + " and SRID "
+		LOG.debug("Creating polygon from wkt " + wktPolygon + " and SRID "
 				+ srid);
 		try {
 			Polygon polygon = (Polygon) new WKTReader().read(wktPolygon);
