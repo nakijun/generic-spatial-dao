@@ -12,7 +12,7 @@ public class DAOException extends RuntimeException {
 	}
 
 	public DAOException(Exception e) {
-		super(e);
+		this(e.getMessage(), e);
 	}
 
 	public DAOException(String message, Exception e) {

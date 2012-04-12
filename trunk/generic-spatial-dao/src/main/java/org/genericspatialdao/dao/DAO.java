@@ -41,10 +41,10 @@ public interface DAO<T> {
 	void flush();
 
 	T find(Object id);
-	
+
 	List<T> find(Object... id);
 
-	T find(Object id, Map<String, Object> properties);	
+	T find(Object id, Map<String, Object> properties);
 
 	List<T> findAll();
 

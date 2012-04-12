@@ -55,6 +55,7 @@ public class GenericSpatialDAOTest {
 		assertEquals(2, testDAO.findAll().size());
 		assertEquals(2L, testDAO.count());
 		testDAO.removeAll();
+		
 		testDAO.close();
 	}
 
@@ -105,7 +106,7 @@ public class GenericSpatialDAOTest {
 	}
 
 	@Test
-	public void persistUpdateRemoveSpatialTest() {
+	public void persistUpdateByFlushAndRemoveSpatialTest() {
 		System.out.println("persistUpdateRemoveSpatialTest");
 		DAO<SpatialTestVO> testDAO = DAOFactory.getDAO(SpatialTestVO.class);
 
