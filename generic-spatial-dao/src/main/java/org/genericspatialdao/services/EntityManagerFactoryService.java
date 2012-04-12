@@ -40,5 +40,6 @@ public class EntityManagerFactoryService {
 				.entrySet()) {
 			entry.getValue().close();
 		}
+		factories.clear();
 	}
 }
