@@ -7,15 +7,17 @@ import org.apache.log4j.Logger;
 import org.genericspatialdao.exception.SpatialException;
 
 import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.LineString;
+import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.io.WKTReader;
 
 public class SpatialUtils {
 
-	private static final String INVALID_POINT = "Invalid point: ";
-	private static final String INVALID_POLYGON = "Invalid polygon: ";
+	private static final String INVALID_GEOMETRY = "Invalid geometry: ";
 	private static final String ERROR = "Error: ";
 	private static final String RESULT = "Result: ";
 
@@ -28,7 +30,7 @@ public class SpatialUtils {
 			if (point != null) {
 				point.setSRID(srid);
 			}
-			checkPoint(point);
+			checkGeometry(point);
 			LOG.debug(RESULT + point);
 			return point;
 		} catch (Exception e) {
@@ -44,7 +46,7 @@ public class SpatialUtils {
 		if (point != null) {
 			point.setSRID(srid);
 		}
-		checkPoint(point);
+		checkGeometry(point);
 		LOG.debug(RESULT + point);
 		return point;
 	}
@@ -80,6 +82,24 @@ public class SpatialUtils {
 		return new Coordinate(x, y);
 	}
 
+	public static LineString createLineString(String wktLineString, int srid) {
+		LOG.debug("Creating linestring from wkt " + wktLineString
+				+ " and SRID " + srid);
+		try {
+			LineString lineString = (LineString) new WKTReader()
+					.read(wktLineString);
+			if (lineString != null) {
+				lineString.setSRID(srid);
+			}
+			checkGeometry(lineString);
+			LOG.debug(RESULT + lineString);
+			return lineString;
+		} catch (Exception e) {
+			LOG.error(ERROR + e.getMessage());
+			throw new SpatialException(ERROR + e.getMessage());
+		}
+	}
+
 	public static Polygon createPolygon(String wktPolygon, int srid) {
 		LOG.debug("Creating polygon from wkt " + wktPolygon + " and SRID "
 				+ srid);
@@ -88,7 +108,7 @@ public class SpatialUtils {
 			if (polygon != null) {
 				polygon.setSRID(srid);
 			}
-			checkPolygon(polygon);
+			checkGeometry(polygon);
 			LOG.debug(RESULT + polygon);
 			return polygon;
 		} catch (Exception e) {
@@ -97,17 +117,29 @@ public class SpatialUtils {
 		}
 	}
 
-	private static void checkPoint(Point point) {
-		if (point == null || point.isEmpty() || !point.isValid()) {
-			LOG.error(INVALID_POINT + point);
-			throw new SpatialException(INVALID_POINT + point);
+	public static MultiPolygon createMultiPolygon(String wktMultiPolygon,
+			int srid) {
+		LOG.debug("Creating multipolygon from wkt " + wktMultiPolygon
+				+ " and SRID " + srid);
+		try {
+			MultiPolygon multiPolygon = (MultiPolygon) new WKTReader()
+					.read(wktMultiPolygon);
+			if (multiPolygon != null) {
+				multiPolygon.setSRID(srid);
+			}
+			checkGeometry(multiPolygon);
+			LOG.debug(RESULT + multiPolygon);
+			return multiPolygon;
+		} catch (Exception e) {
+			LOG.error(ERROR + e.getMessage());
+			throw new SpatialException(ERROR + e.getMessage());
 		}
 	}
 
-	private static void checkPolygon(Polygon polygon) {
-		if (polygon == null || polygon.isEmpty() || !polygon.isValid()) {
-			LOG.error(INVALID_POLYGON + polygon);
-			throw new SpatialException(INVALID_POLYGON + polygon);
+	private static void checkGeometry(Geometry geometry) {
+		if (geometry == null || geometry.isEmpty() || !geometry.isValid()) {
+			LOG.error(INVALID_GEOMETRY + geometry);
+			throw new SpatialException(INVALID_GEOMETRY + geometry);
 		}
 	}
 
