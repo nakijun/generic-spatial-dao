@@ -14,7 +14,8 @@ public class GenericSpatialDAOIT {
 
 	public static final int TIMES = 100;
 	public static final int THREADS = 10;
-	private ExecutorService executor = Executors.newFixedThreadPool(THREADS*4);
+	private ExecutorService executor = Executors
+			.newFixedThreadPool(THREADS * 4);
 
 	@Test
 	public void persistUpdateRemoveMultiThreadSamePUTest()
