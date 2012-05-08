@@ -23,7 +23,7 @@ public class EntityManagerService {
 	/**
 	 * Get or create an entity manager
 	 * 
-	 * @return an entity manager of a target persistence unit
+	 * @return an entity manager for a target persistence unit
 	 */
 	public static synchronized EntityManager getEntityManager(
 			String persistenceUnitName) {
