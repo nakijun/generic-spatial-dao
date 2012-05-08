@@ -288,17 +288,17 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 
 	@Override
 	public void beginTransaction() {
-		EntityManagerService.beginTransaction(persistenceUnitName);
+		EntityManagerService.beginTransaction();
 	}
 
 	@Override
 	public void commit() {
-		EntityManagerService.commit(persistenceUnitName);
+		EntityManagerService.commit();
 	}
 
 	@Override
 	public void rollback() {
-		EntityManagerService.rollback(persistenceUnitName);
+		EntityManagerService.rollback();
 	}
 
 	@Override
@@ -313,7 +313,7 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 	}
 
 	protected Session getSession() {
-		return EntityManagerService.getSession(persistenceUnitName);
+		return EntityManagerService.getSession();
 	}
 
 	protected void autoBeginTransaction() {

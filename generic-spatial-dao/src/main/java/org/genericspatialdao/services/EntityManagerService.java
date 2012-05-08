@@ -11,7 +11,7 @@ import org.hibernate.Session;
 /**
  * 
  * @author joaosavio
- * 
+ *
  */
 public class EntityManagerService {
 
@@ -21,6 +21,8 @@ public class EntityManagerService {
 	private static ThreadLocal<EntityManager> session = new ThreadLocal<EntityManager>();
 
 	/**
+	 * Get or create an entity manager
+	 * 
 	 * @return an entity manager of a target persistence unit
 	 */
 	public static synchronized EntityManager getEntityManager(
@@ -32,6 +34,19 @@ public class EntityManagerService {
 			LOG.debug("Creating entity manager");
 			em = emf.createEntityManager();
 			session.set(em);
+		}
+		return em;
+	}
+
+	/**
+	 * Get the entity manager in session
+	 * 
+	 * @return the entity manager in session
+	 */
+	public static synchronized EntityManager getEntityManagerFromSession() {
+		EntityManager em = session.get();
+		if (em == null) {
+			throw new DAOException("There is no entity manager in session");
 		}
 		return em;
 	}
@@ -63,10 +78,10 @@ public class EntityManagerService {
 	}
 
 	/**
-	 * Begins a transaction if it is not active
+	 * Begin a transaction if it is not active
 	 */
-	public static void beginTransaction(String persistenceUnitName) {
-		EntityManager em = getEntityManager(persistenceUnitName);
+	public static void beginTransaction() {
+		EntityManager em = getEntityManagerFromSession();
 		EntityTransaction transaction = em.getTransaction();
 		if (!transaction.isActive()) {
 			LOG.info("Beginning transaction");
@@ -75,10 +90,10 @@ public class EntityManagerService {
 	}
 
 	/**
-	 * Commits if transaction is active
+	 * Commit if transaction is active
 	 */
-	public static void commit(String persistenceUnitName) {
-		EntityManager em = getEntityManager(persistenceUnitName);
+	public static void commit() {
+		EntityManager em = getEntityManagerFromSession();
 		EntityTransaction transaction = em.getTransaction();
 		if (transaction.isActive()) {
 			LOG.info("Commiting");
@@ -89,8 +104,8 @@ public class EntityManagerService {
 	/**
 	 * Rollback if transaction is active
 	 */
-	public static void rollback(String persistenceUnitName) {
-		EntityManager em = getEntityManager(persistenceUnitName);
+	public static void rollback() {
+		EntityManager em = getEntityManagerFromSession();
 		EntityTransaction transaction = em.getTransaction();
 		if (transaction.isActive()) {
 			LOG.info("Rollbacking");
@@ -101,8 +116,8 @@ public class EntityManagerService {
 	/**
 	 * @return session for Hibernate
 	 */
-	public static Session getSession(String persistenceUnitName) {
-		EntityManager em = getEntityManager(persistenceUnitName);
+	public static Session getSession() {
+		EntityManager em = getEntityManagerFromSession();
 		return ((Session) em.getDelegate());
 	}
 }
