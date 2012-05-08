@@ -65,7 +65,7 @@ public class EntityManagerService {
 	/**
 	 * Begins a transaction if it is not active
 	 */
-	public static synchronized void beginTransaction(String persistenceUnitName) {
+	public static void beginTransaction(String persistenceUnitName) {
 		EntityManager em = getEntityManager(persistenceUnitName);
 		EntityTransaction transaction = em.getTransaction();
 		if (!transaction.isActive()) {
@@ -77,7 +77,7 @@ public class EntityManagerService {
 	/**
 	 * Commits if transaction is active
 	 */
-	public static synchronized void commit(String persistenceUnitName) {
+	public static void commit(String persistenceUnitName) {
 		EntityManager em = getEntityManager(persistenceUnitName);
 		EntityTransaction transaction = em.getTransaction();
 		if (transaction.isActive()) {
@@ -89,7 +89,7 @@ public class EntityManagerService {
 	/**
 	 * Rollback if transaction is active
 	 */
-	public static synchronized void rollback(String persistenceUnitName) {
+	public static void rollback(String persistenceUnitName) {
 		EntityManager em = getEntityManager(persistenceUnitName);
 		EntityTransaction transaction = em.getTransaction();
 		if (transaction.isActive()) {
@@ -101,7 +101,7 @@ public class EntityManagerService {
 	/**
 	 * @return session for Hibernate
 	 */
-	public static synchronized Session getSession(String persistenceUnitName) {
+	public static Session getSession(String persistenceUnitName) {
 		EntityManager em = getEntityManager(persistenceUnitName);
 		return ((Session) em.getDelegate());
 	}
