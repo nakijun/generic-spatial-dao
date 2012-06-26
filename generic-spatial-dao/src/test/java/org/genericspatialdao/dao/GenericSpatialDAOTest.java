@@ -26,6 +26,7 @@ public class GenericSpatialDAOTest {
 
 	@Test
 	public void removeAllTest() {
+		System.out.println("removeAllTest");
 		DAO<TestVO> testDAO = DAOFactory.getDAO(TestVO.class);
 		TestVO testVO = new TestVO();
 		testVO.setLogin(TestUtils.randomString());
@@ -42,6 +43,7 @@ public class GenericSpatialDAOTest {
 
 	@Test
 	public void countTest() {
+		System.out.println("countTest");
 		DAO<TestVO> testDAO = DAOFactory.getDAO(TestVO.class);
 		TestVO testVO = new TestVO();
 		testVO.setLogin(TestUtils.randomString());
@@ -107,7 +109,7 @@ public class GenericSpatialDAOTest {
 
 	@Test
 	public void persistUpdateByFlushAndRemoveSpatialTest() {
-		System.out.println("persistUpdateRemoveSpatialTest");
+		System.out.println("persistUpdateByFlushAndRemoveSpatialTest");
 		DAO<SpatialTestVO> testDAO = DAOFactory.getDAO(SpatialTestVO.class);
 
 		SpatialTestVO spatialTestVO = new SpatialTestVO();

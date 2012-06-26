@@ -13,7 +13,7 @@ import org.junit.Test;
 public class GenericSpatialDAOIT {
 
 	public static final int TIMES = 100;
-	public static final int THREADS = 5;
+	public static final int THREADS = 10;
 	private ExecutorService executor = Executors
 			.newFixedThreadPool(THREADS * 4);
 
