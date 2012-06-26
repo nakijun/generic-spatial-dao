@@ -28,6 +28,7 @@ public class GenericSpatialDAOTest {
 	public void removeAllTest() {
 		System.out.println("removeAllTest");
 		DAO<TestVO> testDAO = DAOFactory.getDAO(TestVO.class);
+
 		TestVO testVO = new TestVO();
 		testVO.setLogin(TestUtils.randomString());
 		testVO.setPassword(TestUtils.randomString());
@@ -271,6 +272,7 @@ public class GenericSpatialDAOTest {
 		assertEquals(testVO, testDAO.find(testVO.getId()));
 		assertEquals(testVO, testDAO.find(testVO.getId(), properties));
 
+		testDAO.removeAll();
 		testDAO.close();
 	}
 
