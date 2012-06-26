@@ -57,12 +57,13 @@ public class GenericSpatialDAOTest {
 		assertEquals(2, testDAO.findAll().size());
 		assertEquals(2L, testDAO.count());
 		testDAO.removeAll();
-		
+
 		testDAO.close();
 	}
 
 	@Test(expected = DAOException.class)
 	public void clearTest() {
+		System.out.println("clearTest");
 		DAO<TestVO> testDAO = DAOFactory.getDAO(TestVO.class);
 		TestVO testVO = new TestVO();
 		testVO.setLogin(TestUtils.randomString());
@@ -249,9 +250,7 @@ public class GenericSpatialDAOTest {
 	public void findAllTest() {
 		System.out.println("findAllTest");
 		DAO<TestVO> testDAO = DAOFactory.getDAO(TestVO.class);
-
 		assertEquals(0, testDAO.findAll(1, 100).size());
-
 		testDAO.close();
 	}
 
