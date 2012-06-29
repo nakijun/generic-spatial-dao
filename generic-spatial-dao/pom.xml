@@ -149,7 +149,7 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>findbugs-maven-plugin</artifactId>
-				<version>2.4.0</version>
+				<version>2.5</version>
 				<configuration>
 					<outputDirectory>target/reports/findbugs</outputDirectory>
 					<xmlOutputDirectory>target/findbugs</xmlOutputDirectory>
@@ -225,6 +225,8 @@
 						<phase>verify</phase>
 						<goals>
 							<goal>jxr</goal>
+							<goal>test-jxr</goal>
+							<goal>aggregate</goal>
 						</goals>
 					</execution>
 				</executions>
@@ -256,13 +258,18 @@
 					<reportPlugins>
 						<plugin>
 							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-jxr-plugin</artifactId>
+							<version>2.3</version>
+						</plugin>
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
 							<artifactId>maven-surefire-plugin</artifactId>
 							<version>2.12</version>
 						</plugin>
 						<plugin>
 							<groupId>org.codehaus.mojo</groupId>
 							<artifactId>findbugs-maven-plugin</artifactId>
-							<version>2.4.0</version>
+							<version>2.5</version>
 						</plugin>
 						<plugin>
 							<groupId>org.codehaus.mojo</groupId>
@@ -273,11 +280,6 @@
 							<groupId>org.codehaus.mojo</groupId>
 							<artifactId>jdepend-maven-plugin</artifactId>
 							<version>2.0-beta-2</version>
-						</plugin>
-						<plugin>
-							<groupId>org.apache.maven.plugins</groupId>
-							<artifactId>maven-jxr-plugin</artifactId>
-							<version>2.3</version>
 						</plugin>
 						<plugin>
 							<groupId>org.apache.maven.plugins</groupId>
