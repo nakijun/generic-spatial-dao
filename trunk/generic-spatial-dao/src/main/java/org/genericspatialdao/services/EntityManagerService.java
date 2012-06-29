@@ -6,12 +6,11 @@ import javax.persistence.EntityTransaction;
 
 import org.apache.log4j.Logger;
 import org.genericspatialdao.exception.DAOException;
-import org.hibernate.Session;
 
 /**
  * 
- * @author joaosavio
- *
+ * @author Joao Savio C. Longo - joaosavio@gmail.com
+ * 
  */
 public class EntityManagerService {
 
@@ -52,7 +51,7 @@ public class EntityManagerService {
 	}
 
 	/**
-	 * Close entity manager remove it from session
+	 * Closes entity manager and remove it from session
 	 */
 	public static synchronized void close() {
 		EntityManager em = session.get();
@@ -67,13 +66,14 @@ public class EntityManagerService {
 	}
 
 	/**
-	 * Close quietly entity manager and session
+	 * Closes quietly entity manager and session
 	 */
 	public static synchronized void closeQuietly() {
 		try {
 			close();
 		} catch (DAOException e) {
-
+			LOG.warn("Exception caught in closeQuietly method: "
+					+ e.getMessage());
 		}
 	}
 
@@ -84,7 +84,7 @@ public class EntityManagerService {
 		EntityManager em = getEntityManagerFromSession();
 		EntityTransaction transaction = em.getTransaction();
 		if (!transaction.isActive()) {
-			LOG.info("Beginning transaction");
+			LOG.debug("Beginning transaction");
 			transaction.begin();
 		}
 	}
@@ -96,8 +96,10 @@ public class EntityManagerService {
 		EntityManager em = getEntityManagerFromSession();
 		EntityTransaction transaction = em.getTransaction();
 		if (transaction.isActive()) {
-			LOG.info("Commiting");
+			LOG.debug("Commiting");
 			transaction.commit();
+		} else {
+			LOG.warn("Commit invoked but transaction is not active");
 		}
 	}
 
@@ -110,14 +112,8 @@ public class EntityManagerService {
 		if (transaction.isActive()) {
 			LOG.info("Rollbacking");
 			transaction.rollback();
+		} else {
+			LOG.warn("Rollback invoked but transaction is not active");
 		}
-	}
-
-	/**
-	 * @return session for Hibernate
-	 */
-	public static Session getSession() {
-		EntityManager em = getEntityManagerFromSession();
-		return ((Session) em.getDelegate());
 	}
 }

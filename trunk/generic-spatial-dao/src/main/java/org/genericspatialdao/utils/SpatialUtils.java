@@ -15,6 +15,11 @@ import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.io.WKTReader;
 
+/**
+ * 
+ * @author Joao Savio C. Longo - joaosavio@gmail.com
+ * 
+ */
 public class SpatialUtils {
 
 	private static final String INVALID_GEOMETRY = "Invalid geometry: ";
@@ -130,6 +135,23 @@ public class SpatialUtils {
 			checkGeometry(multiPolygon);
 			LOG.debug(RESULT + multiPolygon);
 			return multiPolygon;
+		} catch (Exception e) {
+			LOG.error(ERROR + e.getMessage());
+			throw new SpatialException(ERROR + e.getMessage());
+		}
+	}
+
+	public static Geometry createGeometry(String wktGeometry, int srid) {
+		LOG.debug("Creating geometry from wkt " + wktGeometry + " and SRID "
+				+ srid);
+		try {
+			Geometry geometry = (Geometry) new WKTReader().read(wktGeometry);
+			if (geometry != null) {
+				geometry.setSRID(srid);
+			}
+			checkGeometry(geometry);
+			LOG.debug(RESULT + geometry);
+			return geometry;
 		} catch (Exception e) {
 			LOG.error(ERROR + e.getMessage());
 			throw new SpatialException(ERROR + e.getMessage());

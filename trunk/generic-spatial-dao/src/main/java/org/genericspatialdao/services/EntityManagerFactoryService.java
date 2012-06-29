@@ -11,7 +11,7 @@ import org.genericspatialdao.exception.DAOException;
 
 /**
  * 
- * @author joaosavio
+ * @author Joao Savio C. Longo - joaosavio@gmail.com
  * 
  */
 public class EntityManagerFactoryService {
