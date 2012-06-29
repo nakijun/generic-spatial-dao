@@ -10,10 +10,14 @@ import org.apache.log4j.Logger;
 import org.genericspatialdao.exception.DAOException;
 import org.genericspatialdao.services.EntityManagerService;
 import org.genericspatialdao.utils.ConstantsUtils;
-import org.hibernate.Session;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
 
+/**
+ * 
+ * @author Joao Savio C. Longo - joaosavio@gmail.com
+ * 
+ */
 public class GenericSpatialDAO<T> implements DAO<T> {
 
 	protected final Class<T> entityClass;
@@ -310,10 +314,6 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 	@Override
 	public String toString() {
 		return "DAO of " + entityClass;
-	}
-
-	protected Session getSession() {
-		return EntityManagerService.getSession();
 	}
 
 	protected void autoBeginTransaction() {

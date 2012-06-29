@@ -6,6 +6,7 @@ import org.genericspatialdao.exception.SpatialException;
 import org.junit.Test;
 
 import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
 
@@ -62,6 +63,17 @@ public class SpatialUtilsTest {
 		assertEquals(false, p.isEmpty());
 		assertEquals(true, p.isValid());
 		assertEquals(SRID, p.getSRID());
+	}
+
+	@Test
+	public void createGeometryFromWKTTest() {
+		Geometry g = SpatialUtils
+				.createGeometry(
+						"POLYGON((0 0,4 0,4 4,0 4,0 0),(1 1, 2 1, 2 2, 1 2,1 1))",
+						SRID);
+		assertEquals(false, g.isEmpty());
+		assertEquals(true, g.isValid());
+		assertEquals(SRID, g.getSRID());
 	}
 
 	@Test(expected = SpatialException.class)

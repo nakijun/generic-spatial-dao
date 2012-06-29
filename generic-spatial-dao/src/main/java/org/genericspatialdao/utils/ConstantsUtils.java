@@ -1,5 +1,10 @@
 package org.genericspatialdao.utils;
 
+/**
+ * 
+ * @author Joao Savio C. Longo - joaosavio@gmail.com
+ * 
+ */
 public class ConstantsUtils {
 
 	public static final String SPACE = " ";

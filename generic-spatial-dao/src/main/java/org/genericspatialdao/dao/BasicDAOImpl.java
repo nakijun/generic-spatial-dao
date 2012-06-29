@@ -16,6 +16,11 @@ import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 
+/**
+ * 
+ * @author Joao Savio C. Longo - joaosavio@gmail.com
+ * 
+ */
 public class BasicDAOImpl<T> implements BasicDAO<T> {
 
 	private static final String FINDING_UNIQUE_BY_CRITERIA = "Finding unique by criteria";
@@ -108,6 +113,7 @@ public class BasicDAOImpl<T> implements BasicDAO<T> {
 	@Override
 	public List<T> findAll(Integer firstResult, Integer maxResults) {
 		LOG.info("Finding all " + entityClass.getSimpleName() + " objects");
+
 		Criteria criteria = getSession().createCriteria(entityClass);
 		if (firstResult != null) {
 			criteria.setFirstResult(firstResult);
@@ -173,13 +179,13 @@ public class BasicDAOImpl<T> implements BasicDAO<T> {
 
 	@Override
 	public void clear() {
-		LOG.info("Clearing");
+		LOG.info("Clearing entity manager");
 		entityManager.clear();
 	}
 
 	@Override
 	public void flush() {
-		LOG.info("Flushing session");
+		LOG.info("Flushing");
 		entityManager.flush();
 	}
 
@@ -289,7 +295,6 @@ public class BasicDAOImpl<T> implements BasicDAO<T> {
 			return result;
 		} catch (Exception e) {
 			LOG.error(FAILED_TO_EXECUTE_QUERY + e.getMessage());
-
 			throw new DAOException(FAILED_TO_EXECUTE_QUERY + e.getMessage()
 					+ CAUSE + e.getCause());
 		}
@@ -377,7 +382,8 @@ public class BasicDAOImpl<T> implements BasicDAO<T> {
 		}
 	}
 
-	protected Session getSession() {
+	@Override
+	public Session getSession() {
 		return ((Session) entityManager.getDelegate());
 	}
 

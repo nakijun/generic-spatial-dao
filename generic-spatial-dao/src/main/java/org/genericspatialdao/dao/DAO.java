@@ -8,6 +8,11 @@ import javax.persistence.EntityManager;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
 
+/**
+ * 
+ * @author Joao Savio C. Longo - joaosavio@gmail.com
+ * 
+ */
 public interface DAO<T> {
 
 	void beginTransaction();

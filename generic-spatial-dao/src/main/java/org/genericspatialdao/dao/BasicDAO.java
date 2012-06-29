@@ -5,12 +5,20 @@ import java.util.Map;
 
 import javax.persistence.EntityManager;
 
+import org.hibernate.Session;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
 
+/**
+ * 
+ * @author Joao Savio C. Longo - joaosavio@gmail.com
+ * 
+ */
 public interface BasicDAO<T> {
 
 	EntityManager getEntityManager();
+
+	Session getSession();
 
 	void persist(T t);
 

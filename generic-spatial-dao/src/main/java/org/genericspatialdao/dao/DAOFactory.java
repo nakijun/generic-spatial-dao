@@ -3,6 +3,11 @@ package org.genericspatialdao.dao;
 import org.apache.log4j.Logger;
 import org.genericspatialdao.utils.ConstantsUtils;
 
+/**
+ * 
+ * @author Joao Savio C. Longo - joaosavio@gmail.com
+ * 
+ */
 public class DAOFactory {
 
 	private static final String CREATING_DAO_FOR_CLASS = "Creating DAO for class ";
