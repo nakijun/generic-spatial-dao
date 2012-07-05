@@ -8,10 +8,11 @@
 	<packaging>jar</packaging>
 
 	<name>generic-spatial-dao</name>
-	<url>http://maven.apache.org</url>
+	<url>http://generic-spatial-dao.googlecode.com</url>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<hibernate.version>3.6.10.Final</hibernate.version>
 		<slf4j.version>1.6.2</slf4j.version>
 	</properties>
