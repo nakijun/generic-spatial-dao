@@ -196,11 +196,11 @@
 						<haltOnFailure>true</haltOnFailure>
 					</check>
 					<instrumentation>
-						<ignores>
-							<ignore>org.genericspatialdao.exceptions.*</ignore>
-							<ignore>org.genericspatialdao.utils.dao.DAOFactory</ignore>
-							<ignore>org.genericspatialdao.utils.ConstantsUtils</ignore>
-						</ignores>
+						<excludes>
+							<exclude>org/genericspatialdao/exceptions/**/*.class</exclude>
+							<exclude>org/genericspatialdao/dao/DAOFactory.class</exclude>
+							<exclude>org/genericspatialdao/utils/ConstantsUtils.class</exclude>
+						</excludes>
 					</instrumentation>
 					<outputDirectory>target/reports/cobertura</outputDirectory>
 					<formats>
