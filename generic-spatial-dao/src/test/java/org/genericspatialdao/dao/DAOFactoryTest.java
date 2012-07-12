@@ -20,4 +20,9 @@ public class DAOFactoryTest {
 		DAO<SpatialTestVO> testDAO2 = DAOFactory.getDAO(SpatialTestVO.class);
 		DAOFactory.close(testDAO, testDAO2);
 	}
+
+	@Test
+	public void closeAllTest() {
+		DAOFactory.closeAll();
+	}
 }

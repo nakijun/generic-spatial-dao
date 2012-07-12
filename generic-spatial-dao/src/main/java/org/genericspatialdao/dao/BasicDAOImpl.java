@@ -8,7 +8,7 @@ import java.util.Map;
 import javax.persistence.EntityManager;
 
 import org.apache.log4j.Logger;
-import org.genericspatialdao.exception.DAOException;
+import org.genericspatialdao.exceptions.DAOException;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
