@@ -56,6 +56,10 @@ public class DAOFactory {
 				autoTransaction);
 	}
 
+	/**
+	 * 
+	 * @param dao
+	 */
 	public static void close(DAO<?>... dao) {
 		LOG.info("Closing sessions");
 		for (DAO<?> d : dao) {
@@ -63,6 +67,9 @@ public class DAOFactory {
 		}
 	}
 
+	/**
+	 * Close entity manager and all factories
+	 */
 	public static void closeAll() {
 		LOG.info("Closing all");
 		EntityManagerService.close();
