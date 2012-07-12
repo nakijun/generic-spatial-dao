@@ -197,7 +197,7 @@
 					</check>
 					<instrumentation>
 						<excludes>
-							<exclude>org/genericspatialdao/exceptions/**/*.class</exclude>
+							<exclude>org/genericspatialdao/exception/**/*.class</exclude>
 							<exclude>org/genericspatialdao/dao/DAOFactory.class</exclude>
 							<exclude>org/genericspatialdao/utils/ConstantsUtils.class</exclude>
 						</excludes>
