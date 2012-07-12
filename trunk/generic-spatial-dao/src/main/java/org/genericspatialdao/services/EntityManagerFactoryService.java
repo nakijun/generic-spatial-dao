@@ -7,7 +7,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 import org.apache.log4j.Logger;
-import org.genericspatialdao.exception.DAOException;
+import org.genericspatialdao.exceptions.DAOException;
 
 /**
  * 
@@ -28,18 +28,25 @@ public class EntityManagerFactoryService {
 	 */
 	public static EntityManagerFactory getEntityManagerFactory(
 			String persistenceUnitName) {
+		LOG.info("Getting entity manager factory for persistence unit: "
+				+ persistenceUnitName);
 		if (factories.containsKey(persistenceUnitName)) {
+			LOG.info("Entity manager factor unit cached. Returning it");
 			return factories.get(persistenceUnitName);
 		}
 		EntityManagerFactory emf;
 		try {
+			LOG.info("Creating a new entity manager factory");
 			emf = Persistence.createEntityManagerFactory(persistenceUnitName);
 		} catch (Exception e) {
-			LOG.error(FAILED_TO_LOAD_PERSISTENCE_UNIT + e.getMessage()
-					+ ". Cause: " + e.getCause().getMessage());
-			throw new DAOException(FAILED_TO_LOAD_PERSISTENCE_UNIT
-					+ e.getMessage() + ". Cause: " + e.getCause().getMessage());
+			String message = FAILED_TO_LOAD_PERSISTENCE_UNIT + e.getMessage();
+			if (e.getCause() != null) {
+				message = message + ". Cause: " + e.getCause().getMessage();
+			}
+			LOG.error(message);
+			throw new DAOException(message);
 		}
+
 		factories.put(persistenceUnitName, emf);
 		return emf;
 	}

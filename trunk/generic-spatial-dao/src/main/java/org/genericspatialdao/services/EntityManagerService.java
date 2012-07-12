@@ -5,7 +5,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 
 import org.apache.log4j.Logger;
-import org.genericspatialdao.exception.DAOException;
+import org.genericspatialdao.exceptions.DAOException;
 
 /**
  * 
@@ -96,7 +96,7 @@ public class EntityManagerService {
 		EntityManager em = getEntityManagerFromSession();
 		EntityTransaction transaction = em.getTransaction();
 		if (transaction.isActive()) {
-			LOG.debug("Commiting");
+			LOG.info("Commiting");
 			transaction.commit();
 		} else {
 			LOG.warn("Commit invoked but transaction is not active");

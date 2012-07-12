@@ -1,6 +1,8 @@
 package org.genericspatialdao.dao;
 
 import org.apache.log4j.Logger;
+import org.genericspatialdao.services.EntityManagerFactoryService;
+import org.genericspatialdao.services.EntityManagerService;
 import org.genericspatialdao.utils.ConstantsUtils;
 
 /**
@@ -59,5 +61,11 @@ public class DAOFactory {
 		for (DAO<?> d : dao) {
 			d.close();
 		}
+	}
+
+	public static void closeAll() {
+		LOG.info("Closing all");
+		EntityManagerService.close();
+		EntityManagerFactoryService.closeFactories();
 	}
 }

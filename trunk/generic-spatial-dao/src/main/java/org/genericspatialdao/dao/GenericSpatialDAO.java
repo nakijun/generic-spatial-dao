@@ -7,7 +7,7 @@ import java.util.Map;
 import javax.persistence.EntityManager;
 
 import org.apache.log4j.Logger;
-import org.genericspatialdao.exception.DAOException;
+import org.genericspatialdao.exceptions.DAOException;
 import org.genericspatialdao.services.EntityManagerService;
 import org.genericspatialdao.utils.ConstantsUtils;
 import org.hibernate.criterion.Criterion;
