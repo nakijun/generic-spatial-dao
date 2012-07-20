@@ -179,6 +179,24 @@ public class SpatialUtils {
 
 		Geometry newGeometry = (Geometry) geometry.clone();
 
+		for (int i = 0; i < newGeometry.getCoordinates().length; i++) {
+			Coordinate finalCoordinate = new Coordinate(
+					newGeometry.getCoordinates()[i].x * factor,
+					newGeometry.getCoordinates()[i].y * factor);
+			newGeometry.getCoordinates()[i].setCoordinate(finalCoordinate);
+		}
+		if (LOG.isDebugEnabled()) {
+			LOG.debug(RESULT + newGeometry);
+		}
+		return newGeometry;
+	}
+
+	public static Geometry changeScaleCentroidBased(Geometry geometry,
+			double factor) {
+		LOG.info("Changing scale centroid based using factor " + factor);
+
+		Geometry newGeometry = (Geometry) geometry.clone();
+
 		Point centroid = newGeometry.getCentroid();
 		for (int i = 0; i < newGeometry.getCoordinates().length; i++) {
 			Coordinate translatedCoordinate = new Coordinate(
