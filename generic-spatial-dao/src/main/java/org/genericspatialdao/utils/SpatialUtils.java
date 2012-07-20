@@ -36,7 +36,9 @@ public class SpatialUtils {
 				point.setSRID(srid);
 			}
 			checkGeometry(point);
-			LOG.debug(RESULT + point);
+			if (LOG.isDebugEnabled()) {
+				LOG.debug(RESULT + point);
+			}
 			return point;
 		} catch (Exception e) {
 			LOG.error(ERROR + e.getMessage());
@@ -52,7 +54,9 @@ public class SpatialUtils {
 			point.setSRID(srid);
 		}
 		checkGeometry(point);
-		LOG.debug(RESULT + point);
+		if (LOG.isDebugEnabled()) {
+			LOG.debug(RESULT + point);
+		}
 		return point;
 	}
 
@@ -65,7 +69,9 @@ public class SpatialUtils {
 		Coordinate coordinate = new Coordinate(randomDouble(-180, 180),
 				randomDouble(-90, 90));
 		Point generatedPoint = createPoint(coordinate, srid);
-		LOG.debug(generatedPoint);
+		if (LOG.isDebugEnabled()) {
+			LOG.debug(generatedPoint);
+		}
 		return generatedPoint;
 	}
 
@@ -79,7 +85,9 @@ public class SpatialUtils {
 			Point point = createPoint(coordinates[i], srid);
 			list.add(point);
 		}
-		LOG.debug(list);
+		if (LOG.isDebugEnabled()) {
+			LOG.debug(list);
+		}
 		return list;
 	}
 
@@ -97,7 +105,9 @@ public class SpatialUtils {
 				lineString.setSRID(srid);
 			}
 			checkGeometry(lineString);
-			LOG.debug(RESULT + lineString);
+			if (LOG.isDebugEnabled()) {
+				LOG.debug(RESULT + lineString);
+			}
 			return lineString;
 		} catch (Exception e) {
 			LOG.error(ERROR + e.getMessage());
@@ -114,7 +124,9 @@ public class SpatialUtils {
 				polygon.setSRID(srid);
 			}
 			checkGeometry(polygon);
-			LOG.debug(RESULT + polygon);
+			if (LOG.isDebugEnabled()) {
+				LOG.debug(RESULT + polygon);
+			}
 			return polygon;
 		} catch (Exception e) {
 			LOG.error(ERROR + e.getMessage());
@@ -133,7 +145,9 @@ public class SpatialUtils {
 				multiPolygon.setSRID(srid);
 			}
 			checkGeometry(multiPolygon);
-			LOG.debug(RESULT + multiPolygon);
+			if (LOG.isDebugEnabled()) {
+				LOG.debug(RESULT + multiPolygon);
+			}
 			return multiPolygon;
 		} catch (Exception e) {
 			LOG.error(ERROR + e.getMessage());
@@ -150,12 +164,38 @@ public class SpatialUtils {
 				geometry.setSRID(srid);
 			}
 			checkGeometry(geometry);
-			LOG.debug(RESULT + geometry);
+			if (LOG.isDebugEnabled()) {
+				LOG.debug(RESULT + geometry);
+			}
 			return geometry;
 		} catch (Exception e) {
 			LOG.error(ERROR + e.getMessage());
 			throw new SpatialException(ERROR + e.getMessage());
 		}
+	}
+
+	public static Geometry changeScale(Geometry geometry, double factor) {
+		LOG.info("Changing scale using factor " + factor);
+
+		Geometry newGeometry = (Geometry) geometry.clone();
+
+		Point centroid = newGeometry.getCentroid();
+		for (int i = 0; i < newGeometry.getCoordinates().length; i++) {
+			Coordinate translatedCoordinate = new Coordinate(
+					newGeometry.getCoordinates()[i].x - centroid.getX(),
+					newGeometry.getCoordinates()[i].y - centroid.getY());
+			Coordinate translatedResizedCoordinated = new Coordinate(
+					translatedCoordinate.x * factor, translatedCoordinate.y
+							* factor);
+			Coordinate finalCoordinate = new Coordinate(
+					translatedResizedCoordinated.x + centroid.getX(),
+					translatedResizedCoordinated.y + centroid.getY());
+			newGeometry.getCoordinates()[i].setCoordinate(finalCoordinate);
+		}
+		if (LOG.isDebugEnabled()) {
+			LOG.debug(RESULT + newGeometry);
+		}
+		return newGeometry;
 	}
 
 	private static void checkGeometry(Geometry geometry) {

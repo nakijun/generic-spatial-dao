@@ -139,4 +139,22 @@ public class SpatialUtilsTest {
 			assertEquals(SRID, p.getSRID());
 		}
 	}
+
+	@Test
+	public void changeScaleTest() {
+		double factor = 2;
+		Polygon polygon = SpatialUtils.createPolygon(
+				"POLYGON ((0 0, 0 3, 3 3, 3 0, 0 0))", SRID);
+		Polygon expectedPolygon = SpatialUtils
+				.createPolygon(
+						"POLYGON ((-1.5 -1.5, -1.5 4.5, 4.5 4.5, 4.5 -1.5, -1.5 -1.5))",
+						SRID);
+		Point point = SpatialUtils.createPoint("POINT (4 2)", SRID);
+		Point expectedPoint = SpatialUtils.createPoint("POINT (4 2)", SRID);
+		assertEquals(expectedPolygon, SpatialUtils.changeScale(polygon, factor));
+		assertEquals(expectedPoint, SpatialUtils.changeScale(point, factor));
+		// test clone method
+		assertEquals(SpatialUtils.createPolygon(
+				"POLYGON ((0 0, 0 3, 3 3, 3 0, 0 0))", SRID), polygon);
+	}
 }
