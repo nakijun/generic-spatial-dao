@@ -185,6 +185,7 @@ public class SpatialUtils {
 					newGeometry.getCoordinates()[i].y * factor);
 			newGeometry.getCoordinates()[i].setCoordinate(finalCoordinate);
 		}
+		checkGeometry(newGeometry);
 		if (LOG.isDebugEnabled()) {
 			LOG.debug(RESULT + newGeometry);
 		}
@@ -210,6 +211,7 @@ public class SpatialUtils {
 					translatedResizedCoordinated.y + centroid.getY());
 			newGeometry.getCoordinates()[i].setCoordinate(finalCoordinate);
 		}
+		checkGeometry(newGeometry);
 		if (LOG.isDebugEnabled()) {
 			LOG.debug(RESULT + newGeometry);
 		}
@@ -226,5 +228,4 @@ public class SpatialUtils {
 	private static double randomDouble(double low, double high) {
 		return (double) (Math.min(low, high) + Math.random() * (high - low));
 	}
-
 }
