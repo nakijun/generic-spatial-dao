@@ -23,6 +23,7 @@ public class EntityManagerService {
 	private static final Logger LOG = Logger
 			.getLogger(EntityManagerService.class);
 
+	// there is a session for each persistence unit
 	private static Map<String, ThreadLocal<EntityManager>> sessions = new HashMap<String, ThreadLocal<EntityManager>>();
 
 	/**
