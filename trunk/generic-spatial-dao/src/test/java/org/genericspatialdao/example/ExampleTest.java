@@ -7,7 +7,7 @@ import org.genericspatialdao.dao.DAO;
 import org.genericspatialdao.dao.DAOFactory;
 import org.genericspatialdao.example.vo.Department;
 import org.genericspatialdao.example.vo.Employee;
-import org.genericspatialdao.utils.DataCreator;
+import org.genericspatialdao.util.DataCreator;
 import org.junit.Test;
 
 public class ExampleTest {

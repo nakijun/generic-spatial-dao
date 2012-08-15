@@ -1,4 +1,4 @@
-package org.genericspatialdao.dao;
+package org.genericspatialdao.dao.impl;
 
 import static org.junit.Assert.assertEquals;
 
@@ -6,8 +6,10 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import org.genericspatialdao.dao.DAO;
+import org.genericspatialdao.dao.DAOFactory;
 import org.genericspatialdao.data.TestVO;
-import org.genericspatialdao.utils.TestUtils;
+import org.genericspatialdao.util.TestUtils;
 import org.junit.Test;
 
 public class GenericSpatialDAOIT {

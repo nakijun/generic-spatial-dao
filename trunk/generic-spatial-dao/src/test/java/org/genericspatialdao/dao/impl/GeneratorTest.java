@@ -1,12 +1,14 @@
-package org.genericspatialdao.dao;
+package org.genericspatialdao.dao.impl;
 
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import org.genericspatialdao.dao.DAO;
+import org.genericspatialdao.dao.DAOFactory;
 import org.genericspatialdao.data.TestGeneratorVO;
-import org.genericspatialdao.utils.TestUtils;
+import org.genericspatialdao.util.TestUtils;
 import org.junit.Test;
 
 public class GeneratorTest {
@@ -21,7 +23,7 @@ public class GeneratorTest {
 			list.add(tg);
 		}
 		testG.persist(list);
-		
+
 		for (TestGeneratorVO tg : list) {
 			assertTrue(tg.getId() >= 100);
 		}
