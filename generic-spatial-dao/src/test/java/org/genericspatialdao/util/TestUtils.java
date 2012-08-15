@@ -1,4 +1,4 @@
-package org.genericspatialdao.utils;
+package org.genericspatialdao.util;
 
 import java.util.UUID;
 

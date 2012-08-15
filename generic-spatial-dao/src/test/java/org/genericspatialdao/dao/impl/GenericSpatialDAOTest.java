@@ -1,4 +1,4 @@
-package org.genericspatialdao.dao;
+package org.genericspatialdao.dao.impl;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -8,11 +8,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.genericspatialdao.dao.DAO;
+import org.genericspatialdao.dao.DAOFactory;
 import org.genericspatialdao.data.SpatialTestVO;
 import org.genericspatialdao.data.TestVO;
 import org.genericspatialdao.exception.DAOException;
 import org.genericspatialdao.util.SpatialUtils;
-import org.genericspatialdao.utils.TestUtils;
+import org.genericspatialdao.util.TestUtils;
 import org.hibernate.criterion.Criterion;
 import org.hibernatespatial.criterion.SpatialRestrictions;
 import org.junit.Test;
