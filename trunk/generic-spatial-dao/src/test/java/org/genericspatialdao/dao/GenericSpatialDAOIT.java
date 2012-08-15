@@ -141,5 +141,4 @@ class MultiThreadDifferentPUTest implements Runnable {
 			assertEquals(null, testDAO.find(testVO.getId()));
 		}
 	}
-
 }

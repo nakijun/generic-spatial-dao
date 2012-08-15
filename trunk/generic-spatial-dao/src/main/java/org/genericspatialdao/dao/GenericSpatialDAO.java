@@ -292,22 +292,22 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 
 	@Override
 	public void beginTransaction() {
-		EntityManagerService.beginTransaction();
+		EntityManagerService.beginTransaction(persistenceUnitName);
 	}
 
 	@Override
 	public void commit() {
-		EntityManagerService.commit();
+		EntityManagerService.commit(persistenceUnitName);
 	}
 
 	@Override
 	public void rollback() {
-		EntityManagerService.rollback();
+		EntityManagerService.rollback(persistenceUnitName);
 	}
 
 	@Override
 	public void close() {
-		EntityManagerService.close();
+		EntityManagerService.close(persistenceUnitName);
 		basicDAO = null;
 	}
 
