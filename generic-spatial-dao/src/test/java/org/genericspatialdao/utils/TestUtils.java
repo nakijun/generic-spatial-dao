@@ -2,6 +2,8 @@ package org.genericspatialdao.utils;
 
 import java.util.UUID;
 
+import org.genericspatialdao.util.SpatialUtils;
+
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Point;
 

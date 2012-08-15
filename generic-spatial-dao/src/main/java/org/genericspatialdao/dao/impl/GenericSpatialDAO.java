@@ -1,4 +1,4 @@
-package org.genericspatialdao.dao;
+package org.genericspatialdao.dao.impl;
 
 import java.util.Arrays;
 import java.util.List;
@@ -7,9 +7,11 @@ import java.util.Map;
 import javax.persistence.EntityManager;
 
 import org.apache.log4j.Logger;
-import org.genericspatialdao.exceptions.DAOException;
-import org.genericspatialdao.services.EntityManagerService;
-import org.genericspatialdao.utils.ConstantsUtils;
+import org.genericspatialdao.dao.BasicDAO;
+import org.genericspatialdao.dao.DAO;
+import org.genericspatialdao.exception.DAOException;
+import org.genericspatialdao.service.EntityManagerService;
+import org.genericspatialdao.util.ConstantUtils;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
 
@@ -32,7 +34,7 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 	 * @param entityClass
 	 */
 	public GenericSpatialDAO(Class<T> entityClass) {
-		this(entityClass, ConstantsUtils.DEFAULT_PERSISTENCE_UNIT);
+		this(entityClass, ConstantUtils.DEFAULT_PERSISTENCE_UNIT);
 	}
 
 	/**
@@ -42,7 +44,7 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 	 */
 	public GenericSpatialDAO(Class<T> entityClass, String persistenceUnitName) {
 		this(entityClass, persistenceUnitName,
-				ConstantsUtils.DEFAULT_AUTO_TRANSACTION);
+				ConstantUtils.DEFAULT_AUTO_TRANSACTION);
 	}
 
 	/**
