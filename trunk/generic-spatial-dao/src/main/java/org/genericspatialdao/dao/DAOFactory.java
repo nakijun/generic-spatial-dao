@@ -1,9 +1,10 @@
 package org.genericspatialdao.dao;
 
 import org.apache.log4j.Logger;
-import org.genericspatialdao.services.EntityManagerFactoryService;
-import org.genericspatialdao.services.EntityManagerService;
-import org.genericspatialdao.utils.ConstantsUtils;
+import org.genericspatialdao.dao.impl.GenericSpatialDAO;
+import org.genericspatialdao.service.EntityManagerFactoryService;
+import org.genericspatialdao.service.EntityManagerService;
+import org.genericspatialdao.util.ConstantUtils;
 
 /**
  * 
@@ -25,7 +26,7 @@ public class DAOFactory {
 	 * @return a DAO implementation
 	 */
 	public static <T> DAO<T> getDAO(Class<T> entityClass) {
-		return getDAO(entityClass, ConstantsUtils.DEFAULT_PERSISTENCE_UNIT);
+		return getDAO(entityClass, ConstantUtils.DEFAULT_PERSISTENCE_UNIT);
 	}
 
 	/**
@@ -37,7 +38,7 @@ public class DAOFactory {
 	public static <T> DAO<T> getDAO(Class<T> entityClass,
 			String persistenceUnitName) {
 		return getDAO(entityClass, persistenceUnitName,
-				ConstantsUtils.DEFAULT_AUTO_TRANSACTION);
+				ConstantUtils.DEFAULT_AUTO_TRANSACTION);
 	}
 
 	/**

@@ -1,4 +1,4 @@
-package org.genericspatialdao.dao;
+package org.genericspatialdao.dao.impl;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -8,7 +8,8 @@ import java.util.Map;
 import javax.persistence.EntityManager;
 
 import org.apache.log4j.Logger;
-import org.genericspatialdao.exceptions.DAOException;
+import org.genericspatialdao.dao.BasicDAO;
+import org.genericspatialdao.exception.DAOException;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;

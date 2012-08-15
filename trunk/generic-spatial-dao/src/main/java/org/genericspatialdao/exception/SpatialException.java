@@ -1,4 +1,4 @@
-package org.genericspatialdao.exceptions;
+package org.genericspatialdao.exception;
 
 /**
  * 

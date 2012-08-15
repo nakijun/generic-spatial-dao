@@ -1,7 +1,8 @@
 package org.genericspatialdao.services;
 
 import org.genericspatialdao.dao.DAOFactory;
-import org.genericspatialdao.exceptions.DAOException;
+import org.genericspatialdao.exception.DAOException;
+import org.genericspatialdao.service.EntityManagerFactoryService;
 import org.junit.Test;
 
 public class EntityManagerFactoryServiceTest {

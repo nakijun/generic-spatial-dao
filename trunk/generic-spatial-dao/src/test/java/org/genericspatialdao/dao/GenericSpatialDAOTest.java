@@ -10,8 +10,8 @@ import java.util.Map;
 
 import org.genericspatialdao.data.SpatialTestVO;
 import org.genericspatialdao.data.TestVO;
-import org.genericspatialdao.exceptions.DAOException;
-import org.genericspatialdao.utils.SpatialUtils;
+import org.genericspatialdao.exception.DAOException;
+import org.genericspatialdao.util.SpatialUtils;
 import org.genericspatialdao.utils.TestUtils;
 import org.hibernate.criterion.Criterion;
 import org.hibernatespatial.criterion.SpatialRestrictions;

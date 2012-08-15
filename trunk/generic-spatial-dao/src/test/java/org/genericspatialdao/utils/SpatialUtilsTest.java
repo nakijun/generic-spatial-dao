@@ -4,7 +4,8 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
-import org.genericspatialdao.exceptions.SpatialException;
+import org.genericspatialdao.exception.SpatialException;
+import org.genericspatialdao.util.SpatialUtils;
 import org.junit.Test;
 
 import com.vividsolutions.jts.geom.Coordinate;
