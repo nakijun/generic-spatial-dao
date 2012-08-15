@@ -72,7 +72,7 @@ public class DAOFactory {
 	 */
 	public static void closeAll() {
 		LOG.info("Closing all");
-		EntityManagerService.close();
+		EntityManagerService.closeAll();
 		EntityManagerFactoryService.closeFactories();
 	}
 }
