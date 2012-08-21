@@ -5,7 +5,6 @@ import static org.junit.Assert.assertEquals;
 import java.util.List;
 
 import org.genericspatialdao.exception.SpatialException;
-import org.genericspatialdao.util.SpatialUtils;
 import org.junit.Test;
 
 import com.vividsolutions.jts.geom.Coordinate;
@@ -184,5 +183,18 @@ public class SpatialUtilsTest {
 		// test clone method
 		assertEquals(SpatialUtils.createPolygon(
 				"POLYGON ((0 0, 0 3, 3 3, 3 0, 0 0))", SRID), polygon);
+	}
+
+	@Test
+	public void roundGeometryTest() {
+		Polygon polygon = SpatialUtils
+				.createPolygon(
+						"POLYGON ((-23.6001133922035 -11.447739600371, -23.6001133922035 -11.4433407775865, -23.5930538180765 -11.4433407775865, -23.5930538180765 -11.447739600371, -23.6001133922035 -11.447739600371))",
+						SRID);
+		Polygon expected = SpatialUtils
+				.createPolygon(
+						"POLYGON ((-23.6001 -11.4477, -23.6001 -11.4433, -23.5931 -11.4433, -23.5931 -11.4477, -23.6001 -11.4477))",
+						SRID);
+		assertEquals(expected, SpatialUtils.roundGeometry(polygon, 4));
 	}
 }
