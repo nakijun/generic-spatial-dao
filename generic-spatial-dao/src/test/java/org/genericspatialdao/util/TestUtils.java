@@ -2,8 +2,6 @@ package org.genericspatialdao.util;
 
 import java.util.UUID;
 
-import org.genericspatialdao.util.SpatialUtils;
-
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Point;
 
@@ -45,5 +43,4 @@ public class TestUtils {
 				randomDouble(yMin, yMax));
 		return SpatialUtils.createPoint(c, srid);
 	}
-
 }

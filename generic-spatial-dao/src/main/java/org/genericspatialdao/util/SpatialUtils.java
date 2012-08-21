@@ -186,6 +186,7 @@ public class SpatialUtils {
 					newGeometry.getCoordinates()[i].y * factor);
 			newGeometry.getCoordinates()[i].setCoordinate(finalCoordinate);
 		}
+		newGeometry.geometryChanged();
 		checkGeometry(newGeometry);
 		if (LOG.isDebugEnabled()) {
 			LOG.debug(RESULT + newGeometry);
@@ -212,6 +213,7 @@ public class SpatialUtils {
 					translatedResizedCoordinated.y + centroid.getY());
 			newGeometry.getCoordinates()[i].setCoordinate(finalCoordinate);
 		}
+		newGeometry.geometryChanged();
 		checkGeometry(newGeometry);
 		if (LOG.isDebugEnabled()) {
 			LOG.debug(RESULT + newGeometry);
@@ -249,6 +251,7 @@ public class SpatialUtils {
 			Coordinate roundedCoordinate = new Coordinate(roundedX, roundedY);
 			newGeometry.getCoordinates()[i].setCoordinate(roundedCoordinate);
 		}
+		newGeometry.geometryChanged();
 		checkGeometry(newGeometry);
 		if (LOG.isDebugEnabled()) {
 			LOG.debug(RESULT + newGeometry);
