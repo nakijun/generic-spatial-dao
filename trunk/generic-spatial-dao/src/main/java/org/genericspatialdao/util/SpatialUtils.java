@@ -1,5 +1,6 @@
 package org.genericspatialdao.util;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -210,6 +211,45 @@ public class SpatialUtils {
 					translatedResizedCoordinated.x + centroid.getX(),
 					translatedResizedCoordinated.y + centroid.getY());
 			newGeometry.getCoordinates()[i].setCoordinate(finalCoordinate);
+		}
+		checkGeometry(newGeometry);
+		if (LOG.isDebugEnabled()) {
+			LOG.debug(RESULT + newGeometry);
+		}
+		return newGeometry;
+	}
+
+	/**
+	 * Be careful, this method can create invalid geometries depending on the
+	 * case
+	 * 
+	 * @param geometry
+	 * @param maxFractionDigits
+	 * @return
+	 */
+	public static Geometry roundGeometry(Geometry geometry,
+			int maxFractionDigits) {
+		LOG.info("Rounding geometry " + geometry + " to " + maxFractionDigits
+				+ " fraction digits");
+
+		LOG.warn("Be careful, this method can create invalid geometries depending on the case. In these cases, an exception will be throw");
+
+		if (maxFractionDigits < 1) {
+			LOG.warn("It is recommended to use maxFractionDigits > 1");
+		}
+
+		Geometry newGeometry = (Geometry) geometry.clone();
+
+		NumberFormat nf = NumberFormat.getInstance();
+		// set decimal places
+		nf.setMaximumFractionDigits(maxFractionDigits);
+
+		for (int i = 0; i < newGeometry.getCoordinates().length; i++) {
+			Coordinate coordinate = newGeometry.getCoordinates()[i];
+			double roundedX = Double.valueOf(nf.format(coordinate.x));
+			double roundedY = Double.valueOf(nf.format(coordinate.y));
+			Coordinate roundedCoordinate = new Coordinate(roundedX, roundedY);
+			newGeometry.getCoordinates()[i].setCoordinate(roundedCoordinate);
 		}
 		checkGeometry(newGeometry);
 		if (LOG.isDebugEnabled()) {
