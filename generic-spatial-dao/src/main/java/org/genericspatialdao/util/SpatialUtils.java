@@ -221,7 +221,7 @@ public class SpatialUtils {
 
 	/**
 	 * Be careful, this method can create invalid geometries depending on the
-	 * case
+	 * case. In these cases, an exception will be throw
 	 * 
 	 * @param geometry
 	 * @param maxFractionDigits
@@ -231,8 +231,6 @@ public class SpatialUtils {
 			int maxFractionDigits) {
 		LOG.info("Rounding geometry " + geometry + " to " + maxFractionDigits
 				+ " fraction digits");
-
-		LOG.warn("Be careful, this method can create invalid geometries depending on the case. In these cases, an exception will be throw");
 
 		if (maxFractionDigits < 1) {
 			LOG.warn("It is recommended to use maxFractionDigits > 1");
