@@ -66,9 +66,12 @@ public class BasicDAOImpl<T> implements BasicDAO<T> {
 
 	@Override
 	public T find(Object id) {
-		LOG.info(FINDING + entityClass.getName() + OBJECT_BY_ID + id);
+		if (LOG.isInfoEnabled()) {
+			LOG.info(FINDING + entityClass.getName() + OBJECT_BY_ID + id);
+		}
 
 		T t = entityManager.find(entityClass, id);
+
 		if (LOG.isDebugEnabled()) {
 			LOG.debug(RESULT + t);
 		}
@@ -77,8 +80,10 @@ public class BasicDAOImpl<T> implements BasicDAO<T> {
 
 	@Override
 	public List<T> find(Object... id) {
-		LOG.info(FINDING + entityClass.getName() + OBJECTS_BY_IDS
-				+ Arrays.toString(id));
+		if (LOG.isInfoEnabled()) {
+			LOG.info(FINDING + entityClass.getName() + OBJECTS_BY_IDS
+					+ Arrays.toString(id));
+		}
 
 		List<T> resultList = new ArrayList<T>();
 		for (Object idEntity : id) {
@@ -95,10 +100,13 @@ public class BasicDAOImpl<T> implements BasicDAO<T> {
 
 	@Override
 	public T find(Object id, Map<String, Object> properties) {
-		LOG.info(FINDING + entityClass.getSimpleName() + OBJECT_BY_ID + id
-				+ " and properties: " + properties);
+		if (LOG.isInfoEnabled()) {
+			LOG.info(FINDING + entityClass.getSimpleName() + OBJECT_BY_ID + id
+					+ " and properties: " + properties);
+		}
 
 		T t = entityManager.find(entityClass, id, properties);
+
 		if (LOG.isDebugEnabled()) {
 			LOG.debug(RESULT + t);
 		}
@@ -113,7 +121,9 @@ public class BasicDAOImpl<T> implements BasicDAO<T> {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<T> findAll(Integer firstResult, Integer maxResults) {
-		LOG.info("Finding all " + entityClass.getSimpleName() + " objects");
+		if (LOG.isInfoEnabled()) {
+			LOG.info("Finding all " + entityClass.getSimpleName() + " objects");
+		}
 
 		Criteria criteria = getSession().createCriteria(entityClass);
 		if (firstResult != null) {
@@ -132,7 +142,10 @@ public class BasicDAOImpl<T> implements BasicDAO<T> {
 
 	@Override
 	public void persist(T t) {
-		LOG.info(PERSISTING_OBJECT + t);
+		if (LOG.isInfoEnabled()) {
+			LOG.info(PERSISTING_OBJECT + t);
+		}
+
 		try {
 			entityManager.persist(t);
 		} catch (Exception e) {
@@ -144,7 +157,10 @@ public class BasicDAOImpl<T> implements BasicDAO<T> {
 
 	@Override
 	public void remove(T t) {
-		LOG.info(REMOVING_OBJECT + t);
+		if (LOG.isInfoEnabled()) {
+			LOG.info(REMOVING_OBJECT + t);
+		}
+
 		try {
 			entityManager.remove(t);
 		} catch (Exception e) {
@@ -156,7 +172,10 @@ public class BasicDAOImpl<T> implements BasicDAO<T> {
 
 	@Override
 	public void merge(T t) {
-		LOG.info(MERGING_OBJECT + t);
+		if (LOG.isInfoEnabled()) {
+			LOG.info(MERGING_OBJECT + t);
+		}
+
 		try {
 			entityManager.merge(t);
 		} catch (Exception e) {
@@ -168,7 +187,10 @@ public class BasicDAOImpl<T> implements BasicDAO<T> {
 
 	@Override
 	public void refresh(T t) {
-		LOG.info(REFRESHING_OBJECT + t);
+		if (LOG.isInfoEnabled()) {
+			LOG.info(REFRESHING_OBJECT + t);
+		}
+
 		try {
 			entityManager.refresh(t);
 		} catch (Exception e) {
@@ -269,7 +291,10 @@ public class BasicDAOImpl<T> implements BasicDAO<T> {
 	@Override
 	@SuppressWarnings("rawtypes")
 	public List executeSQL(String sql) {
-		LOG.info(EXECUTING_QUERY + sql);
+		if (LOG.isInfoEnabled()) {
+			LOG.info(EXECUTING_QUERY + sql);
+		}
+
 		try {
 			Query q = getSession().createSQLQuery(sql);
 			List result = q.list();
@@ -286,7 +311,10 @@ public class BasicDAOImpl<T> implements BasicDAO<T> {
 
 	@Override
 	public int executeSQLUpdate(String sql) {
-		LOG.info(EXECUTING_QUERY + sql);
+		if (LOG.isInfoEnabled()) {
+			LOG.info(EXECUTING_QUERY + sql);
+		}
+
 		try {
 			Query q = getSession().createSQLQuery(sql);
 			int result = q.executeUpdate();
@@ -304,7 +332,10 @@ public class BasicDAOImpl<T> implements BasicDAO<T> {
 	@SuppressWarnings("rawtypes")
 	@Override
 	public List executeHQL(String hql) {
-		LOG.info(EXECUTING_QUERY + hql);
+		if (LOG.isInfoEnabled()) {
+			LOG.info(EXECUTING_QUERY + hql);
+		}
+
 		try {
 			Query q = getSession().createQuery(hql);
 			List result = q.list();
@@ -328,7 +359,9 @@ public class BasicDAOImpl<T> implements BasicDAO<T> {
 			for (Object param : params) {
 				q.setParameter(index++, param);
 			}
-			LOG.info(EXECUTING_QUERY + q.getQueryString());
+			if (LOG.isInfoEnabled()) {
+				LOG.info(EXECUTING_QUERY + q.getQueryString());
+			}
 			List result = q.list();
 			if (LOG.isDebugEnabled()) {
 				LOG.debug(RESULT + result);
@@ -343,7 +376,10 @@ public class BasicDAOImpl<T> implements BasicDAO<T> {
 
 	@Override
 	public int executeHQLUpdate(String hql) {
-		LOG.info(EXECUTING_QUERY + hql);
+		if (LOG.isInfoEnabled()) {
+			LOG.info(EXECUTING_QUERY + hql);
+		}
+
 		try {
 			Query q = getSession().createQuery(hql);
 			int result = q.executeUpdate();
@@ -360,14 +396,19 @@ public class BasicDAOImpl<T> implements BasicDAO<T> {
 
 	@Override
 	public void removeAll() {
-		LOG.info("Removing all of type " + entityClass.getSimpleName());
+		if (LOG.isInfoEnabled()) {
+			LOG.info("Removing all of type " + entityClass.getSimpleName());
+		}
 		String hql = "DELETE FROM " + entityClass.getSimpleName();
 		executeHQLUpdate(hql);
 	}
 
 	@Override
 	public long count() {
-		LOG.info("Counting rows of " + entityClass.getSimpleName());
+		if (LOG.isInfoEnabled()) {
+			LOG.info("Counting rows of " + entityClass.getSimpleName());
+		}
+
 		try {
 			Criteria criteria = getSession().createCriteria(entityClass);
 			criteria.setProjection(Projections.rowCount());
