@@ -30,7 +30,11 @@ public class SpatialUtils {
 	private static final Logger LOG = Logger.getLogger(SpatialUtils.class);
 
 	public static Point createPoint(String wktPoint, int srid) {
-		LOG.debug("Creating point from wkt " + wktPoint + " and SRID " + srid);
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("Creating point from wkt " + wktPoint + " and SRID "
+					+ srid);
+		}
+
 		try {
 			Point point = (Point) new WKTReader().read(wktPoint);
 			if (point != null) {
@@ -48,8 +52,11 @@ public class SpatialUtils {
 	}
 
 	public static Point createPoint(Coordinate coordinate, int srid) {
-		LOG.debug("Creating point from coordinate " + coordinate + " and SRID "
-				+ srid);
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("Creating point from coordinate " + coordinate
+					+ " and SRID " + srid);
+		}
+
 		Point point = new GeometryFactory().createPoint(coordinate);
 		if (point != null) {
 			point.setSRID(srid);
@@ -66,7 +73,10 @@ public class SpatialUtils {
 	}
 
 	public static Point generateLongLatPoint(int srid) {
-		LOG.debug("Generating long/lat point with SRID " + srid);
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("Generating long/lat point with SRID " + srid);
+		}
+
 		Coordinate coordinate = new Coordinate(randomDouble(-180, 180),
 				randomDouble(-90, 90));
 		Point generatedPoint = createPoint(coordinate, srid);
@@ -77,7 +87,11 @@ public class SpatialUtils {
 	}
 
 	public static List<Point> generateLongLatPoints(final int number, int srid) {
-		LOG.debug("Generating " + number + "long/lat points with SRID " + srid);
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("Generating " + number + "long/lat points with SRID "
+					+ srid);
+		}
+
 		List<Point> list = new ArrayList<Point>();
 		Coordinate[] coordinates = new Coordinate[number];
 		for (int i = 0; i < number; i++) {
@@ -97,8 +111,11 @@ public class SpatialUtils {
 	}
 
 	public static LineString createLineString(String wktLineString, int srid) {
-		LOG.debug("Creating linestring from wkt " + wktLineString
-				+ " and SRID " + srid);
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("Creating linestring from wkt " + wktLineString
+					+ " and SRID " + srid);
+		}
+
 		try {
 			LineString lineString = (LineString) new WKTReader()
 					.read(wktLineString);
@@ -117,8 +134,11 @@ public class SpatialUtils {
 	}
 
 	public static Polygon createPolygon(String wktPolygon, int srid) {
-		LOG.debug("Creating polygon from wkt " + wktPolygon + " and SRID "
-				+ srid);
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("Creating polygon from wkt " + wktPolygon + " and SRID "
+					+ srid);
+		}
+
 		try {
 			Polygon polygon = (Polygon) new WKTReader().read(wktPolygon);
 			if (polygon != null) {
@@ -137,8 +157,11 @@ public class SpatialUtils {
 
 	public static MultiPolygon createMultiPolygon(String wktMultiPolygon,
 			int srid) {
-		LOG.debug("Creating multipolygon from wkt " + wktMultiPolygon
-				+ " and SRID " + srid);
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("Creating multipolygon from wkt " + wktMultiPolygon
+					+ " and SRID " + srid);
+		}
+
 		try {
 			MultiPolygon multiPolygon = (MultiPolygon) new WKTReader()
 					.read(wktMultiPolygon);
@@ -157,8 +180,11 @@ public class SpatialUtils {
 	}
 
 	public static Geometry createGeometry(String wktGeometry, int srid) {
-		LOG.debug("Creating geometry from wkt " + wktGeometry + " and SRID "
-				+ srid);
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("Creating geometry from wkt " + wktGeometry
+					+ " and SRID " + srid);
+		}
+
 		try {
 			Geometry geometry = (Geometry) new WKTReader().read(wktGeometry);
 			if (geometry != null) {
@@ -176,7 +202,9 @@ public class SpatialUtils {
 	}
 
 	public static Geometry changeScale(Geometry geometry, double factor) {
-		LOG.info("Changing scale using factor " + factor);
+		if (LOG.isInfoEnabled()) {
+			LOG.info("Changing scale using factor " + factor);
+		}
 
 		Geometry newGeometry = (Geometry) geometry.clone();
 
@@ -196,7 +224,9 @@ public class SpatialUtils {
 
 	public static Geometry changeScaleCentroidBased(Geometry geometry,
 			double factor) {
-		LOG.info("Changing scale centroid based using factor " + factor);
+		if (LOG.isInfoEnabled()) {
+			LOG.info("Changing scale centroid based using factor " + factor);
+		}
 
 		Geometry newGeometry = (Geometry) geometry.clone();
 
@@ -231,8 +261,10 @@ public class SpatialUtils {
 	 */
 	public static Geometry roundGeometry(Geometry geometry,
 			int maxFractionDigits) {
-		LOG.info("Rounding geometry " + geometry + " to " + maxFractionDigits
-				+ " fraction digits");
+		if (LOG.isInfoEnabled()) {
+			LOG.info("Rounding geometry " + geometry + " to "
+					+ maxFractionDigits + " fraction digits");
+		}
 
 		if (maxFractionDigits < 1) {
 			LOG.warn("It is recommended to use maxFractionDigits > 1");
