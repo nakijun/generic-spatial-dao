@@ -24,9 +24,9 @@
 			<url>dav:https://generic-spatial-dao.googlecode.com/svn/maven/repository</url>
 		</repository>
 		<snapshotRepository>
-			<id>generic-spatial-dao-snapshot</id>
-			<url>dav:https://generic-spatial-dao.googlecode.com/svn/maven/repository-snapshot</url>
-			<uniqueVersion>false</uniqueVersion>
+			<id>generic-spatial-dao</id>
+			<url>dav:https://generic-spatial-dao.googlecode.com/svn/maven/repository</url>
+			<uniqueVersion>true</uniqueVersion>
 		</snapshotRepository>
 	</distributionManagement>
 
