@@ -77,7 +77,7 @@
 						<excludes>
 							<exclude>org/genericspatialdao/exception/**/*.class</exclude>
 							<exclude>org/genericspatialdao/dao/DAOFactory.class</exclude>
-							<exclude>org/genericspatialdao/utils/ConstantUtils.class</exclude>
+							<exclude>org/genericspatialdao/util/ConstantUtils.class</exclude>
 						</excludes>
 					</instrumentation>					
 				</configuration>
