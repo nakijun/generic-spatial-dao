@@ -61,7 +61,7 @@ public class GenericSpatialDAOTest {
 		testDAO.persist(testVO, testVO2);
 		assertEquals(2, testDAO.findAll().size());
 		assertEquals(2L, testDAO.count());
-		
+
 		testDAO.removeAll();
 		testDAO.close();
 	}
@@ -360,11 +360,11 @@ public class GenericSpatialDAOTest {
 		testDAO.remove(new ArrayList<SpatialTestVO>());
 		testDAO.merge(new ArrayList<SpatialTestVO>());
 	}
-	
+
 	@Test
 	public void findUniqueByCriteriaTest() {
 		System.out.println("findByCriteriaTest");
-		
+
 		DAO<TestVO> testDAO = DAOFactory.getDAO(TestVO.class);
 		TestVO testVO = new TestVO();
 		String login1 = TestUtils.randomString();
@@ -376,11 +376,11 @@ public class GenericSpatialDAOTest {
 		testVO2.setPassword(TestUtils.randomString());
 
 		testDAO.persist(testVO, testVO2);
-        
+
 		List<Criterion> conditions = new ArrayList<Criterion>();
 		conditions.add(Restrictions.eq("login", login1));
-        assertEquals(testVO, testDAO.findUniqueByCriteria(conditions));		
-		
+		assertEquals(testVO, testDAO.findUniqueByCriteria(conditions));
+
 		testDAO.removeAll();
 		testDAO.close();
 	}
