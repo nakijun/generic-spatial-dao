@@ -1,4 +1,4 @@
-package org.genericspatialdao.services;
+package org.genericspatialdao.service;
 
 import static org.junit.Assert.assertNotNull;
 
@@ -12,5 +12,10 @@ public class EntityManagerServiceTest {
 	public void getEntityManagerTest() {
 		assertNotNull(EntityManagerService
 				.getEntityManager(ConstantUtils.DEFAULT_PERSISTENCE_UNIT));
+	}
+
+	@Test
+	public void closeQuietlyTest() {
+		EntityManagerService.closeQuietly("notExistPU");
 	}
 }

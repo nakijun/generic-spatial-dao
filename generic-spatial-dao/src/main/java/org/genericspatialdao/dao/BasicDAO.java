@@ -44,10 +44,14 @@ public interface BasicDAO<T> {
 
 	List<T> findByCriteria(List<Criterion> list);
 
+	List<T> findByCriteria(List<Criterion> list, Order order);
+
 	List<T> findByCriteria(List<Criterion> list, Order order,
 			Integer firstResult, Integer maxResults);
 
 	T findUniqueByCriteria(List<Criterion> list);
+
+	T findUniqueByCriteria(List<Criterion> list, Order order);
 
 	T findUniqueByCriteria(List<Criterion> list, Order order,
 			Integer firstResult, Integer maxResults);
