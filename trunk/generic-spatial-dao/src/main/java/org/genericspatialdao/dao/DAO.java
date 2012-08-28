@@ -67,11 +67,6 @@ public interface DAO<T> {
 
 	T findUniqueByCriteria(List<Criterion> list);
 
-	T findUniqueByCriteria(List<Criterion> list, Order order);
-
-	T findUniqueByCriteria(List<Criterion> list, Order order,
-			Integer firstResult, Integer maxResults);
-
 	@SuppressWarnings("rawtypes")
 	List executeHQL(String hql);
 
