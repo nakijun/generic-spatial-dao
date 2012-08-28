@@ -31,7 +31,7 @@
 		<snapshotRepository>
 			<id>generic-spatial-dao</id>
 			<url>dav:https://generic-spatial-dao.googlecode.com/svn/maven/repository</url>
-			<uniqueVersion>true</uniqueVersion>
+			<uniqueVersion>false</uniqueVersion>
 		</snapshotRepository>
 	</distributionManagement>
 
