@@ -43,7 +43,7 @@
 	    <repository>
 			<id>generic-parent-pom</id>
 			<name>generic-parent-pom</name>
-			<url>dav:https://generic-parent-pom.googlecode.com/svn/maven/repository</url>
+			<url>dav:http://generic-parent-pom.googlecode.com/svn/maven/repository</url>
 		</repository>
 		<repository>
 			<id>OSGEO GeoTools repo</id>
