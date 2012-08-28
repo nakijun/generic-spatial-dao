@@ -360,34 +360,14 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 		}
 	}
 
-	@Override
-	public T findUniqueByCriteria(List<Criterion> list) {
-		return findUniqueByCriteria(list, null, null, null);
-	}
-
-	@Override
-	public T findUniqueByCriteria(List<Criterion> list, Order order) {
-		return findUniqueByCriteria(list, order, null, null);
-	}
-
 	@SuppressWarnings("unchecked")
 	@Override
-	public T findUniqueByCriteria(List<Criterion> list, Order order,
-			Integer firstResult, Integer maxResults) {
+	public T findUniqueByCriteria(List<Criterion> list) {
 		LOG.info(FINDING_UNIQUE_BY_CRITERIA);
 		try {
 			Criteria criteria = getSession().createCriteria(entityClass);
 			for (int i = 0; i < list.size(); i++) {
 				criteria.add(list.get(i));
-			}
-			if (order != null) {
-				criteria.addOrder(order);
-			}
-			if (firstResult != null) {
-				criteria.setFirstResult(firstResult);
-			}
-			if (maxResults != null) {
-				criteria.setMaxResults(maxResults);
 			}
 
 			T result = (T) criteria.uniqueResult();

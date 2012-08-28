@@ -17,6 +17,7 @@ import org.genericspatialdao.util.SpatialUtils;
 import org.genericspatialdao.util.TestUtils;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 import org.hibernatespatial.criterion.SpatialRestrictions;
 import org.junit.Test;
 
@@ -60,8 +61,8 @@ public class GenericSpatialDAOTest {
 		testDAO.persist(testVO, testVO2);
 		assertEquals(2, testDAO.findAll().size());
 		assertEquals(2L, testDAO.count());
+		
 		testDAO.removeAll();
-
 		testDAO.close();
 	}
 
@@ -346,7 +347,6 @@ public class GenericSpatialDAOTest {
 						.size());
 
 		testDAO.remove(list);
-
 		testDAO.close();
 	}
 
@@ -359,6 +359,30 @@ public class GenericSpatialDAOTest {
 		testDAO.merge(new ArrayList<SpatialTestVO>());
 		testDAO.remove(new ArrayList<SpatialTestVO>());
 		testDAO.merge(new ArrayList<SpatialTestVO>());
+	}
+	
+	@Test
+	public void findUniqueByCriteriaTest() {
+		System.out.println("findByCriteriaTest");
+		
+		DAO<TestVO> testDAO = DAOFactory.getDAO(TestVO.class);
+		TestVO testVO = new TestVO();
+		String login1 = TestUtils.randomString();
+		testVO.setLogin(login1);
+		testVO.setPassword(TestUtils.randomString());
+
+		TestVO testVO2 = new TestVO();
+		testVO2.setLogin(TestUtils.randomString());
+		testVO2.setPassword(TestUtils.randomString());
+
+		testDAO.persist(testVO, testVO2);
+        
+		List<Criterion> conditions = new ArrayList<Criterion>();
+		conditions.add(Restrictions.eq("login", login1));
+        assertEquals(testVO, testDAO.findUniqueByCriteria(conditions));		
+		
+		testDAO.removeAll();
+		testDAO.close();
 	}
 
 }
