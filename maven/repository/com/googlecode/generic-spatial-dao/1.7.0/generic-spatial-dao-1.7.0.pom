@@ -40,6 +40,11 @@
 	</scm>
 
 	<repositories>
+	    <repository>
+			<id>generic-parent-pom</id>
+			<name>generic-parent-pom</name>
+			<url>dav:http://generic-parent-pom.googlecode.com/svn/maven/repository</url>
+		</repository>
 		<repository>
 			<id>OSGEO GeoTools repo</id>
 			<url>http://download.osgeo.org/webdav/geotools</url>
