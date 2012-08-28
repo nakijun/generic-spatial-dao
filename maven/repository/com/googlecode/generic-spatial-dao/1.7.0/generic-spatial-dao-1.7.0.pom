@@ -31,7 +31,7 @@
 		<snapshotRepository>
 			<id>generic-spatial-dao</id>
 			<url>dav:https://generic-spatial-dao.googlecode.com/svn/maven/repository</url>
-			<uniqueVersion>true</uniqueVersion>
+			<uniqueVersion>false</uniqueVersion>
 		</snapshotRepository>
 	</distributionManagement>
 
@@ -65,7 +65,6 @@
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>cobertura-maven-plugin</artifactId>
 				<configuration>
-				    <outputDirectory>${project.reporting.outputDirectory}/cobertura</outputDirectory>
 					<check>
 						<totalBranchRate>85</totalBranchRate>
 						<totalLineRate>85</totalLineRate>
@@ -81,14 +80,6 @@
 						</excludes>
 					</instrumentation>					
 				</configuration>
-				<!-- executions>
-					<execution>
-						<phase>test</phase>
-						<goals>
-							<goal>cobertura</goal>
-						</goals>
-					</execution>
-				</executions-->
 			</plugin>			
 		</plugins>
 	</build>
