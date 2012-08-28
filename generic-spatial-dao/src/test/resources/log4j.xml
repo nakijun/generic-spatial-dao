@@ -10,7 +10,7 @@
 	</appender>
 
 	<logger name="org.genericspatialdao" additivity="false">
-		<level value="debug" />
+		<level value="info" />
 		<appender-ref ref="stdout" />
 	</logger>
 	<root>
