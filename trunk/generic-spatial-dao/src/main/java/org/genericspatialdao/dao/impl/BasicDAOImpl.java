@@ -218,6 +218,11 @@ public class BasicDAOImpl<T> implements BasicDAO<T> {
 	}
 
 	@Override
+	public List<T> findByCriteria(List<Criterion> list, Order order) {
+		return findByCriteria(list, order, null, null);
+	}
+
+	@Override
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public List<T> findByCriteria(List<Criterion> list, Order order,
 			Integer firstResult, Integer maxResults) {
@@ -253,6 +258,11 @@ public class BasicDAOImpl<T> implements BasicDAO<T> {
 	@Override
 	public T findUniqueByCriteria(List<Criterion> list) {
 		return findUniqueByCriteria(list, null, null, null);
+	}
+
+	@Override
+	public T findUniqueByCriteria(List<Criterion> list, Order order) {
+		return findUniqueByCriteria(list, order, null, null);
 	}
 
 	@SuppressWarnings("unchecked")

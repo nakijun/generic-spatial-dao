@@ -216,6 +216,11 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 	}
 
 	@Override
+	public List<T> findByCriteria(List<Criterion> list, Order order) {
+		return findByCriteria(list, order, null, null);
+	}
+
+	@Override
 	public List<T> findByCriteria(List<Criterion> list, Order order,
 			Integer firstResult, Integer maxResults) {
 		return getBasicDAO().findByCriteria(list, order, firstResult,
@@ -225,6 +230,11 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 	@Override
 	public T findUniqueByCriteria(List<Criterion> list) {
 		return findUniqueByCriteria(list, null, null, null);
+	}
+
+	@Override
+	public T findUniqueByCriteria(List<Criterion> list, Order order) {
+		return findUniqueByCriteria(list, order, null, null);
 	}
 
 	@Override

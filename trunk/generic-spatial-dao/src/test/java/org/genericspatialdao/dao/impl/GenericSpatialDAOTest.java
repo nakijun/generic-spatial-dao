@@ -16,6 +16,7 @@ import org.genericspatialdao.exception.DAOException;
 import org.genericspatialdao.util.SpatialUtils;
 import org.genericspatialdao.util.TestUtils;
 import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.Order;
 import org.hibernatespatial.criterion.SpatialRestrictions;
 import org.junit.Test;
 
@@ -253,6 +254,7 @@ public class GenericSpatialDAOTest {
 	public void findAllTest() {
 		System.out.println("findAllTest");
 		DAO<TestVO> testDAO = DAOFactory.getDAO(TestVO.class);
+		assertEquals(0, testDAO.findAll().size());
 		assertEquals(0, testDAO.findAll(1, 100).size());
 		testDAO.close();
 	}
@@ -339,6 +341,9 @@ public class GenericSpatialDAOTest {
 		conditions.add(c1);
 
 		assertEquals(NUM, testDAO.findByCriteria(conditions).size());
+		assertEquals(NUM,
+				testDAO.findByCriteria(conditions, Order.asc("id"), 0, 100)
+						.size());
 
 		testDAO.remove(list);
 

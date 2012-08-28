@@ -1,4 +1,4 @@
-package org.genericspatialdao.services;
+package org.genericspatialdao.service;
 
 import org.genericspatialdao.dao.DAOFactory;
 import org.genericspatialdao.exception.DAOException;
