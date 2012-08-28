@@ -1,5 +1,6 @@
 package org.genericspatialdao.dao.impl;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -7,13 +8,16 @@ import java.util.Map;
 import javax.persistence.EntityManager;
 
 import org.apache.log4j.Logger;
-import org.genericspatialdao.dao.BasicDAO;
 import org.genericspatialdao.dao.DAO;
 import org.genericspatialdao.exception.DAOException;
 import org.genericspatialdao.service.EntityManagerService;
 import org.genericspatialdao.util.ConstantUtils;
+import org.hibernate.Criteria;
+import org.hibernate.Query;
+import org.hibernate.Session;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
 
 /**
  * 
@@ -25,7 +29,27 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 	protected final Class<T> entityClass;
 	protected final String persistenceUnitName;
 	protected final boolean autoTransaction;
-	protected BasicDAO<T> basicDAO;
+
+	private static final String FAILED_TO_REMOVE_ALL = "Failed to remove all: ";
+	private static final String FINDING_UNIQUE_BY_CRITERIA = "Finding unique by criteria";
+	private static final String FINDING_BY_CRITERIA = "Finding by criteria";
+	private static final String CAUSE = ". Cause: ";
+	private static final String PERSISTING_OBJECT = "Persisting object: ";
+	private static final String REMOVING_OBJECT = "Removing object: ";
+	private static final String MERGING_OBJECT = "Merging object: ";
+	private static final String REFRESHING_OBJECT = "Refreshing object: ";
+	private static final String FAILED_TO_MERGE = "Failed to merge: ";
+	private static final String FAILED_TO_REMOVE = "Failed to remove: ";
+	private static final String FAILED_TO_PERSIST = "Failed to persist: ";
+	private static final String FAILED_TO_REFRESH = "Failed to refresh: ";
+	private static final String OBJECT_BY_ID = " object by id ";
+	private static final String OBJECTS_BY_IDS = " objects by ids ";
+	private static final String FINDING = "Finding ";
+	private static final String EXECUTING_QUERY = "Executing query: ";
+	private static final String FAILED_TO_EXECUTE_QUERY = "Failed to execute query: ";
+	private static final String ERROR = "Error: ";
+	private static final String RESULT = "Result: ";
+	private static final String EMPTY_LIST = "Empty list";
 
 	private static final Logger LOG = Logger.getLogger(GenericSpatialDAO.class);
 
@@ -58,31 +82,55 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 		this.entityClass = entityClass;
 		this.persistenceUnitName = persistenceUnitName;
 		this.autoTransaction = autoTransaction;
-		basicDAO = getBasicDAO();
-	}
-
-	public BasicDAO<T> getBasicDAO() {
-		if (basicDAO == null) {
-			EntityManager entityManager = EntityManagerService
-					.getEntityManager(persistenceUnitName);
-			basicDAO = new BasicDAOImpl<T>(entityManager, entityClass);
-		}
-		return basicDAO;
 	}
 
 	@Override
 	public T find(Object id) {
-		return getBasicDAO().find(id);
+		if (LOG.isInfoEnabled()) {
+			LOG.info(FINDING + entityClass.getName() + OBJECT_BY_ID + id);
+		}
+
+		T t = getEntityManager().find(entityClass, id);
+
+		if (LOG.isDebugEnabled()) {
+			LOG.debug(RESULT + t);
+		}
+		return t;
 	}
 
 	@Override
 	public List<T> find(Object... id) {
-		return getBasicDAO().find(id);
+		if (LOG.isInfoEnabled()) {
+			LOG.info(FINDING + entityClass.getName() + OBJECTS_BY_IDS
+					+ Arrays.toString(id));
+		}
+
+		List<T> resultList = new ArrayList<T>();
+		for (Object idEntity : id) {
+			T result = getEntityManager().find(entityClass, idEntity);
+			if (result != null) {
+				resultList.add(result);
+			}
+		}
+		if (resultList == null || resultList.isEmpty()) {
+			return null;
+		}
+		return resultList;
 	}
 
 	@Override
 	public T find(Object id, Map<String, Object> properties) {
-		return getBasicDAO().find(id, properties);
+		if (LOG.isInfoEnabled()) {
+			LOG.info(FINDING + entityClass.getSimpleName() + OBJECT_BY_ID + id
+					+ " and properties: " + properties);
+		}
+
+		T t = getEntityManager().find(entityClass, id, properties);
+
+		if (LOG.isDebugEnabled()) {
+			LOG.debug(RESULT + t);
+		}
+		return t;
 	}
 
 	@Override
@@ -90,9 +138,26 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 		return findAll(null, null);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<T> findAll(Integer firstResult, Integer maxResults) {
-		return getBasicDAO().findAll(firstResult, maxResults);
+		if (LOG.isInfoEnabled()) {
+			LOG.info("Finding all " + entityClass.getSimpleName() + " objects");
+		}
+
+		Criteria criteria = getSession().createCriteria(entityClass);
+		if (firstResult != null) {
+			criteria.setFirstResult(firstResult);
+		}
+		if (maxResults != null) {
+			criteria.setMaxResults(maxResults);
+		}
+
+		List<T> result = (List<T>) criteria.list();
+		if (LOG.isDebugEnabled()) {
+			LOG.debug(RESULT + result);
+		}
+		return result;
 	}
 
 	@Override
@@ -118,7 +183,17 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 	}
 
 	protected void persist(T t) {
-		getBasicDAO().persist(t);
+		if (LOG.isInfoEnabled()) {
+			LOG.info(PERSISTING_OBJECT + t);
+		}
+
+		try {
+			getEntityManager().persist(t);
+		} catch (Exception e) {
+			LOG.error(FAILED_TO_PERSIST + e.getMessage() + CAUSE + e.getCause());
+			throw new DAOException(FAILED_TO_PERSIST + e.getMessage() + CAUSE
+					+ e.getCause());
+		}
 	}
 
 	@Override
@@ -144,7 +219,17 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 	}
 
 	protected void remove(T t) {
-		getBasicDAO().remove(t);
+		if (LOG.isInfoEnabled()) {
+			LOG.info(REMOVING_OBJECT + t);
+		}
+
+		try {
+			getEntityManager().remove(t);
+		} catch (Exception e) {
+			LOG.error(FAILED_TO_REMOVE + e.getMessage() + CAUSE + e.getCause());
+			throw new DAOException(FAILED_TO_REMOVE + e.getMessage() + CAUSE
+					+ e.getCause());
+		}
 	}
 
 	@Override
@@ -170,7 +255,17 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 	}
 
 	protected void merge(T t) {
-		getBasicDAO().merge(t);
+		if (LOG.isInfoEnabled()) {
+			LOG.info(MERGING_OBJECT + t);
+		}
+
+		try {
+			getEntityManager().merge(t);
+		} catch (Exception e) {
+			LOG.error(FAILED_TO_MERGE + e.getMessage() + CAUSE + e.getCause());
+			throw new DAOException(FAILED_TO_MERGE + e.getMessage() + CAUSE
+					+ e.getCause());
+		}
 	}
 
 	@Override
@@ -196,18 +291,30 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 	}
 
 	protected void refresh(T t) {
-		getBasicDAO().refresh(t);
+		if (LOG.isInfoEnabled()) {
+			LOG.info(REFRESHING_OBJECT + t);
+		}
+
+		try {
+			getEntityManager().refresh(t);
+		} catch (Exception e) {
+			LOG.error(FAILED_TO_REFRESH + e.getMessage() + CAUSE + e.getCause());
+			throw new DAOException(FAILED_TO_REFRESH + e.getMessage() + CAUSE
+					+ e.getCause());
+		}
 	}
 
 	@Override
 	public void clear() {
-		getBasicDAO().clear();
+		LOG.info("Clearing entity manager");
+		getEntityManager().clear();
 	}
 
 	@Override
 	public void flush() {
+		LOG.info("Flushing");
 		autoBeginTransaction();
-		getBasicDAO().flush();
+		getEntityManager().flush();
 	}
 
 	@Override
@@ -220,11 +327,37 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 		return findByCriteria(list, order, null, null);
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public List<T> findByCriteria(List<Criterion> list, Order order,
 			Integer firstResult, Integer maxResults) {
-		return getBasicDAO().findByCriteria(list, order, firstResult,
-				maxResults);
+		LOG.info(FINDING_BY_CRITERIA);
+		try {
+			Criteria criteria = getSession().createCriteria(entityClass);
+			for (int i = 0; i < list.size(); i++) {
+				criteria.add(list.get(i));
+			}
+			if (order != null) {
+				criteria.addOrder(order);
+			}
+			if (firstResult != null) {
+				criteria.setFirstResult(firstResult);
+			}
+			if (maxResults != null) {
+				criteria.setMaxResults(maxResults);
+			}
+
+			List result = criteria.list();
+
+			if (LOG.isDebugEnabled()) {
+				LOG.debug(RESULT + result);
+			}
+			return result;
+		} catch (Exception e) {
+			LOG.error(ERROR + e.getMessage());
+			throw new DAOException(ERROR + e.getMessage() + CAUSE
+					+ e.getCause());
+		}
 	}
 
 	@Override
@@ -237,64 +370,187 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 		return findUniqueByCriteria(list, order, null, null);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public T findUniqueByCriteria(List<Criterion> list, Order order,
 			Integer firstResult, Integer maxResults) {
-		return getBasicDAO().findUniqueByCriteria(list, order, firstResult,
-				maxResults);
+		LOG.info(FINDING_UNIQUE_BY_CRITERIA);
+		try {
+			Criteria criteria = getSession().createCriteria(entityClass);
+			for (int i = 0; i < list.size(); i++) {
+				criteria.add(list.get(i));
+			}
+			if (order != null) {
+				criteria.addOrder(order);
+			}
+			if (firstResult != null) {
+				criteria.setFirstResult(firstResult);
+			}
+			if (maxResults != null) {
+				criteria.setMaxResults(maxResults);
+			}
+
+			T result = (T) criteria.uniqueResult();
+
+			if (LOG.isDebugEnabled()) {
+				LOG.debug(RESULT + result);
+			}
+			return result;
+		} catch (Exception e) {
+			LOG.error(ERROR + e.getMessage());
+			throw new DAOException(ERROR + e.getMessage() + CAUSE
+					+ e.getCause());
+		}
 	}
 
 	@SuppressWarnings("rawtypes")
 	@Override
 	public List executeSQL(String sql) {
-		return getBasicDAO().executeSQL(sql);
+		if (LOG.isInfoEnabled()) {
+			LOG.info(EXECUTING_QUERY + sql);
+		}
+
+		try {
+			Query q = getSession().createSQLQuery(sql);
+			List result = q.list();
+			if (LOG.isDebugEnabled()) {
+				LOG.debug(RESULT + result);
+			}
+			return result;
+		} catch (Exception e) {
+			LOG.error(FAILED_TO_EXECUTE_QUERY + e.getMessage());
+			throw new DAOException(FAILED_TO_EXECUTE_QUERY + e.getMessage()
+					+ CAUSE + e.getCause());
+		}
 	}
 
 	@Override
 	public int executeSQLUpdate(String sql) {
+		if (LOG.isInfoEnabled()) {
+			LOG.info(EXECUTING_QUERY + sql);
+		}
+
 		try {
-			return getBasicDAO().executeSQLUpdate(sql);
+			Query q = getSession().createSQLQuery(sql);
+			int result = q.executeUpdate();
+			if (LOG.isDebugEnabled()) {
+				LOG.debug(RESULT + result);
+			}
+			return result;
 		} catch (Exception e) {
 			autoRollback();
-			throw new DAOException(e);
+			LOG.error(FAILED_TO_EXECUTE_QUERY + e.getMessage());
+			throw new DAOException(FAILED_TO_EXECUTE_QUERY + e.getMessage()
+					+ CAUSE + e.getCause());
 		}
 	}
 
 	@SuppressWarnings("rawtypes")
 	@Override
 	public List executeHQL(String hql) {
-		return getBasicDAO().executeHQL(hql);
+		if (LOG.isInfoEnabled()) {
+			LOG.info(EXECUTING_QUERY + hql);
+		}
+
+		try {
+			Query q = getSession().createQuery(hql);
+			List result = q.list();
+			if (LOG.isDebugEnabled()) {
+				LOG.debug(RESULT + result);
+			}
+			return result;
+		} catch (Exception e) {
+			LOG.error(FAILED_TO_EXECUTE_QUERY + e.getMessage());
+			throw new DAOException(FAILED_TO_EXECUTE_QUERY + e.getMessage()
+					+ CAUSE + e.getCause());
+		}
 	}
 
 	@SuppressWarnings("rawtypes")
 	@Override
 	public List executeHQL(String hqlTemplate, Object... params) {
-		return getBasicDAO().executeHQL(hqlTemplate, params);
+		try {
+			Query q = getSession().createQuery(hqlTemplate);
+			int index = 0;
+			for (Object param : params) {
+				q.setParameter(index++, param);
+			}
+			if (LOG.isInfoEnabled()) {
+				LOG.info(EXECUTING_QUERY + q.getQueryString());
+			}
+			List result = q.list();
+			if (LOG.isDebugEnabled()) {
+				LOG.debug(RESULT + result);
+			}
+			return result;
+		} catch (Exception e) {
+			LOG.error(FAILED_TO_EXECUTE_QUERY + e.getMessage());
+			throw new DAOException(FAILED_TO_EXECUTE_QUERY + e.getMessage()
+					+ CAUSE + e.getCause());
+		}
 	}
 
 	@Override
 	public int executeHQLUpdate(String hql) {
+		if (LOG.isInfoEnabled()) {
+			LOG.info(EXECUTING_QUERY + hql);
+		}
+
 		try {
-			return getBasicDAO().executeHQLUpdate(hql);
+			Query q = getSession().createQuery(hql);
+			int result = q.executeUpdate();
+			if (LOG.isDebugEnabled()) {
+				LOG.debug(RESULT + result);
+			}
+			return result;
 		} catch (Exception e) {
 			autoRollback();
-			throw new DAOException(e);
+			LOG.error(FAILED_TO_EXECUTE_QUERY + e.getMessage());
+			throw new DAOException(FAILED_TO_EXECUTE_QUERY + e.getMessage()
+					+ CAUSE + e.getCause());
 		}
 	}
 
 	@Override
 	public void removeAll() {
+		if (LOG.isInfoEnabled()) {
+			LOG.info("Removing all of type " + entityClass.getSimpleName());
+		}
 		try {
-			getBasicDAO().removeAll();
+			String hql = "DELETE FROM " + entityClass.getSimpleName();
+			executeHQLUpdate(hql);
 		} catch (Exception e) {
 			autoRollback();
-			throw new DAOException(e);
+			LOG.error(FAILED_TO_REMOVE_ALL + e.getMessage());
+			throw new DAOException(FAILED_TO_REMOVE_ALL + e.getMessage()
+					+ CAUSE + e.getCause());
 		}
 	}
 
 	@Override
 	public long count() {
-		return getBasicDAO().count();
+		if (LOG.isInfoEnabled()) {
+			LOG.info("Counting rows of " + entityClass.getSimpleName());
+		}
+
+		try {
+			Criteria criteria = getSession().createCriteria(entityClass);
+			criteria.setProjection(Projections.rowCount());
+			long result = (Long) criteria.uniqueResult();
+			if (LOG.isDebugEnabled()) {
+				LOG.debug(RESULT + result);
+			}
+			return result;
+		} catch (Exception e) {
+			LOG.error(ERROR + e.getMessage() + CAUSE + e.getCause());
+			throw new DAOException(ERROR + e.getMessage() + CAUSE
+					+ e.getCause());
+		}
+	}
+
+	@Override
+	public Session getSession() {
+		return ((Session) getEntityManager().getDelegate());
 	}
 
 	@Override
@@ -320,7 +576,6 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 	@Override
 	public void close() {
 		EntityManagerService.close(persistenceUnitName);
-		basicDAO = null;
 	}
 
 	@Override
@@ -348,7 +603,7 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 
 	protected boolean isEmpty(List<T> list) {
 		if (list == null || list.size() == 0) {
-			LOG.warn("Empty list");
+			LOG.warn(EMPTY_LIST);
 			return true;
 		}
 		return false;

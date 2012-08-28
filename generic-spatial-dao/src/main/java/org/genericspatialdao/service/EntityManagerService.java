@@ -17,7 +17,6 @@ import org.genericspatialdao.exception.DAOException;
  */
 public class EntityManagerService {
 
-	private static final String THERE_IS_NO_ENTITY_MANAGER_IN_SESSION = "There is no entity manager in session";
 	private static final String THERE_IS_NO_SESSION = "There is no session";
 
 	private static final Logger LOG = Logger
@@ -47,21 +46,6 @@ public class EntityManagerService {
 			session.set(em);
 		}
 		return em;
-	}
-
-	/**
-	 * Get the entity manager for session of a target persistence unit
-	 * 
-	 * @return the entity manager for session of a target persistence unit
-	 */
-	public static synchronized EntityManager getEntityManagerForSession(
-			String persistenceUnit) {
-		LOG.debug("Getting entity manager for session: " + persistenceUnit);
-		ThreadLocal<EntityManager> session = sessions.get(persistenceUnit);
-		checkSession(session);
-		EntityManager entityManager = session.get();
-		checkEntityManager(entityManager);
-		return entityManager;
 	}
 
 	/**
@@ -105,7 +89,7 @@ public class EntityManagerService {
 	 * Begin a transaction if it is not active
 	 */
 	public static void beginTransaction(String persistenceUnit) {
-		EntityManager em = getEntityManagerForSession(persistenceUnit);
+		EntityManager em = getEntityManager(persistenceUnit);
 		EntityTransaction transaction = em.getTransaction();
 		if (!transaction.isActive()) {
 			LOG.debug("Beginning transaction");
@@ -117,7 +101,7 @@ public class EntityManagerService {
 	 * Commit if transaction is active
 	 */
 	public static void commit(String persistenceUnit) {
-		EntityManager em = getEntityManagerForSession(persistenceUnit);
+		EntityManager em = getEntityManager(persistenceUnit);
 		EntityTransaction transaction = em.getTransaction();
 		if (transaction.isActive()) {
 			LOG.info("Commiting");
@@ -131,20 +115,13 @@ public class EntityManagerService {
 	 * Rollback if transaction is active
 	 */
 	public static void rollback(String persistenceUnit) {
-		EntityManager em = getEntityManagerForSession(persistenceUnit);
+		EntityManager em = getEntityManager(persistenceUnit);
 		EntityTransaction transaction = em.getTransaction();
 		if (transaction.isActive()) {
 			LOG.info("Rollbacking");
 			transaction.rollback();
 		} else {
 			LOG.warn("Rollback invoked but transaction is not active");
-		}
-	}
-
-	private static void checkEntityManager(EntityManager entityManager) {
-		if (entityManager == null) {
-			LOG.error(THERE_IS_NO_ENTITY_MANAGER_IN_SESSION);
-			throw new DAOException(THERE_IS_NO_ENTITY_MANAGER_IN_SESSION);
 		}
 	}
 
