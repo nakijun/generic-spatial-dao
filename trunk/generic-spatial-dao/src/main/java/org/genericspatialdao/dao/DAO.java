@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.persistence.EntityManager;
 
+import org.hibernate.Session;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
 
@@ -22,6 +23,8 @@ public interface DAO<T> {
 	void rollback();
 
 	void close();
+
+	Session getSession();
 
 	EntityManager getEntityManager();
 
