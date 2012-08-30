@@ -387,7 +387,7 @@ public class SpatialUtils {
 		return new Coordinate(x, y);
 	}
 
-	private static void checkGeometry(Geometry geometry) {
+	public static void checkGeometry(Geometry geometry) {
 		if (geometry == null || geometry.isEmpty() || !geometry.isValid()) {
 			String message = INVALID_GEOMETRY + geometry;
 			LOG.error(message);
