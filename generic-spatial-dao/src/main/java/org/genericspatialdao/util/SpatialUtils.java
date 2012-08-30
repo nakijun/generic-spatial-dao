@@ -2,6 +2,7 @@ package org.genericspatialdao.util;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -9,8 +10,11 @@ import org.genericspatialdao.exception.SpatialException;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryCollection;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
+import com.vividsolutions.jts.geom.MultiLineString;
+import com.vividsolutions.jts.geom.MultiPoint;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
@@ -29,26 +33,12 @@ public class SpatialUtils {
 
 	private static final Logger LOG = Logger.getLogger(SpatialUtils.class);
 
-	public static Point createPoint(String wktPoint, int srid) {
-		if (LOG.isDebugEnabled()) {
-			LOG.debug("Creating point from wkt " + wktPoint + " and SRID "
-					+ srid);
-		}
+	//
+	// POINT
+	//
 
-		try {
-			Point point = (Point) new WKTReader().read(wktPoint);
-			if (point != null) {
-				point.setSRID(srid);
-			}
-			checkGeometry(point);
-			if (LOG.isDebugEnabled()) {
-				LOG.debug(RESULT + point);
-			}
-			return point;
-		} catch (Exception e) {
-			LOG.error(ERROR + e.getMessage());
-			throw new SpatialException(ERROR + e.getMessage());
-		}
+	public static Point createPoint(String wkt, int srid) {
+		return (Point) createGeometry(wkt, srid);
 	}
 
 	public static Point createPoint(Coordinate coordinate, int srid) {
@@ -56,7 +46,6 @@ public class SpatialUtils {
 			LOG.debug("Creating point from coordinate " + coordinate
 					+ " and SRID " + srid);
 		}
-
 		Point point = new GeometryFactory().createPoint(coordinate);
 		if (point != null) {
 			point.setSRID(srid);
@@ -76,7 +65,6 @@ public class SpatialUtils {
 		if (LOG.isDebugEnabled()) {
 			LOG.debug("Generating long/lat point with SRID " + srid);
 		}
-
 		Coordinate coordinate = new Coordinate(randomDouble(-180, 180),
 				randomDouble(-90, 90));
 		Point generatedPoint = createPoint(coordinate, srid);
@@ -86,12 +74,11 @@ public class SpatialUtils {
 		return generatedPoint;
 	}
 
-	public static List<Point> generateLongLatPoints(final int number, int srid) {
+	public static List<Point> generateLongLatPoints(int number, int srid) {
 		if (LOG.isDebugEnabled()) {
 			LOG.debug("Generating " + number + "long/lat points with SRID "
 					+ srid);
 		}
-
 		List<Point> list = new ArrayList<Point>();
 		Coordinate[] coordinates = new Coordinate[number];
 		for (int i = 0; i < number; i++) {
@@ -106,87 +93,190 @@ public class SpatialUtils {
 		return list;
 	}
 
-	public static Coordinate createCoordinate(double x, double y) {
-		return new Coordinate(x, y);
+	//
+	// MULTI-POINT
+	//
+
+	public static MultiPoint createMultiPoint(String wkt, int srid) {
+		return (MultiPoint) createGeometry(wkt, srid);
 	}
 
-	public static LineString createLineString(String wktLineString, int srid) {
-		if (LOG.isDebugEnabled()) {
-			LOG.debug("Creating linestring from wkt " + wktLineString
-					+ " and SRID " + srid);
-		}
+	public static MultiPoint createMultiPoint(List<Point> list) {
+		Point[] geometries = getPointArrayFromList(list);
+		return createMultiPoint(geometries);
+	}
 
+	public static MultiPoint createMultiPoint(Point[] geometries) {
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("Creating multi-point from points "
+					+ Arrays.toString(geometries));
+		}
 		try {
-			LineString lineString = (LineString) new WKTReader()
-					.read(wktLineString);
-			if (lineString != null) {
-				lineString.setSRID(srid);
+			MultiPoint multiPoint = new GeometryFactory()
+					.createMultiPoint(geometries);
+			checkSRIDs(geometries);
+			if (multiPoint != null) {
+				multiPoint.setSRID(geometries[0].getSRID());
 			}
-			checkGeometry(lineString);
+			checkGeometry(multiPoint);
 			if (LOG.isDebugEnabled()) {
-				LOG.debug(RESULT + lineString);
+				LOG.debug(RESULT + multiPoint);
 			}
-			return lineString;
+			return multiPoint;
 		} catch (Exception e) {
-			LOG.error(ERROR + e.getMessage());
-			throw new SpatialException(ERROR + e.getMessage());
+			String message = ERROR + e.getMessage();
+			LOG.error(message);
+			throw new SpatialException(message);
 		}
 	}
 
-	public static Polygon createPolygon(String wktPolygon, int srid) {
-		if (LOG.isDebugEnabled()) {
-			LOG.debug("Creating polygon from wkt " + wktPolygon + " and SRID "
-					+ srid);
-		}
+	//
+	// LINE-STRING
+	//
 
+	public static LineString createLineString(String wkt, int srid) {
+		return (LineString) createGeometry(wkt, srid);
+	}
+
+	public static LineString createLineString(Coordinate[] coordinates, int srid) {
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("Creating line from coordinates "
+					+ Arrays.toString(coordinates) + " and SRID " + srid);
+		}
+		LineString line = new GeometryFactory().createLineString(coordinates);
+		if (line != null) {
+			line.setSRID(srid);
+		}
+		checkGeometry(line);
+		if (LOG.isDebugEnabled()) {
+			LOG.debug(RESULT + line);
+		}
+		return line;
+	}
+
+	public static MultiLineString createMultiLineString(String wkt, int srid) {
+		return (MultiLineString) createGeometry(wkt, srid);
+	}
+
+	public static MultiLineString createMultiLineString(List<LineString> list) {
+		LineString[] geometries = getLineStringArrayFromList(list);
+		return createMultiLineString(geometries);
+	}
+
+	public static MultiLineString createMultiLineString(LineString[] geometries) {
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("Creating multi-line from lines "
+					+ Arrays.toString(geometries));
+		}
 		try {
-			Polygon polygon = (Polygon) new WKTReader().read(wktPolygon);
-			if (polygon != null) {
-				polygon.setSRID(srid);
+			MultiLineString geometry = new GeometryFactory()
+					.createMultiLineString(geometries);
+			checkSRIDs(geometries);
+			if (geometry != null) {
+				geometry.setSRID(geometries[0].getSRID());
 			}
-			checkGeometry(polygon);
+			checkGeometry(geometry);
 			if (LOG.isDebugEnabled()) {
-				LOG.debug(RESULT + polygon);
+				LOG.debug(RESULT + geometry);
 			}
-			return polygon;
+			return geometry;
 		} catch (Exception e) {
-			LOG.error(ERROR + e.getMessage());
-			throw new SpatialException(ERROR + e.getMessage());
+			String message = ERROR + e.getMessage();
+			LOG.error(message);
+			throw new SpatialException(message);
 		}
 	}
 
-	public static MultiPolygon createMultiPolygon(String wktMultiPolygon,
-			int srid) {
-		if (LOG.isDebugEnabled()) {
-			LOG.debug("Creating multipolygon from wkt " + wktMultiPolygon
-					+ " and SRID " + srid);
-		}
+	//
+	// POLYGON
+	//
 
+	public static Polygon createPolygon(String wkt, int srid) {
+		return (Polygon) createGeometry(wkt, srid);
+	}
+
+	//
+	// MULTI-POLYGON
+	//
+
+	public static MultiPolygon createMultiPolygon(String wkt, int srid) {
+		return (MultiPolygon) createGeometry(wkt, srid);
+	}
+
+	public static MultiPolygon createMultiPolygon(List<Polygon> list) {
+		Polygon[] geometries = getPolygonArrayFromList(list);
+		return createMultiPolygon(geometries);
+	}
+
+	public static MultiPolygon createMultiPolygon(Polygon[] geometries) {
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("Creating multi-polygon from polygons "
+					+ Arrays.toString(geometries));
+		}
 		try {
-			MultiPolygon multiPolygon = (MultiPolygon) new WKTReader()
-					.read(wktMultiPolygon);
-			if (multiPolygon != null) {
-				multiPolygon.setSRID(srid);
+			MultiPolygon geometry = new GeometryFactory()
+					.createMultiPolygon(geometries);
+			checkSRIDs(geometries);
+			if (geometry != null) {
+				geometry.setSRID(geometries[0].getSRID());
 			}
-			checkGeometry(multiPolygon);
+			checkGeometry(geometry);
 			if (LOG.isDebugEnabled()) {
-				LOG.debug(RESULT + multiPolygon);
+				LOG.debug(RESULT + geometry);
 			}
-			return multiPolygon;
+			return geometry;
 		} catch (Exception e) {
-			LOG.error(ERROR + e.getMessage());
-			throw new SpatialException(ERROR + e.getMessage());
+			String message = ERROR + e.getMessage();
+			LOG.error(message);
+			throw new SpatialException(message);
 		}
 	}
 
-	public static Geometry createGeometry(String wktGeometry, int srid) {
-		if (LOG.isDebugEnabled()) {
-			LOG.debug("Creating geometry from wkt " + wktGeometry
-					+ " and SRID " + srid);
-		}
+	//
+	// GEOMETRY COLLECTION
+	//
 
+	public static GeometryCollection createGeometryCollection(
+			List<Geometry> list) {
+		Geometry[] geometries = getArrayFromList(list);
+		return createGeometryCollection(geometries);
+	}
+
+	public static GeometryCollection createGeometryCollection(
+			Geometry[] geometries) {
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("Creating geometry collection from geometries "
+					+ Arrays.toString(geometries));
+		}
 		try {
-			Geometry geometry = (Geometry) new WKTReader().read(wktGeometry);
+			GeometryCollection geometry = new GeometryFactory()
+					.createGeometryCollection(geometries);
+			checkSRIDs(geometries);
+			if (geometry != null) {
+				geometry.setSRID(geometries[0].getSRID());
+			}
+			checkGeometry(geometry);
+			if (LOG.isDebugEnabled()) {
+				LOG.debug(RESULT + geometry);
+			}
+			return geometry;
+		} catch (Exception e) {
+			String message = ERROR + e.getMessage();
+			LOG.error(message);
+			throw new SpatialException(message);
+		}
+	}
+
+	//
+	// GEOMETRY
+	//
+
+	public static Geometry createGeometry(String wkt, int srid) {
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("Creating geometry from wkt " + wkt + " and SRID " + srid);
+		}
+		try {
+			Geometry geometry = (Geometry) new WKTReader().read(wkt);
 			if (geometry != null) {
 				geometry.setSRID(srid);
 			}
@@ -196,16 +286,20 @@ public class SpatialUtils {
 			}
 			return geometry;
 		} catch (Exception e) {
-			LOG.error(ERROR + e.getMessage());
-			throw new SpatialException(ERROR + e.getMessage());
+			String message = ERROR + e.getMessage();
+			LOG.error(message);
+			throw new SpatialException(message);
 		}
 	}
+
+	//
+	// OTHER METHODS
+	//
 
 	public static Geometry changeScale(Geometry geometry, double factor) {
 		if (LOG.isInfoEnabled()) {
 			LOG.info("Changing scale using factor " + factor);
 		}
-
 		Geometry newGeometry = (Geometry) geometry.clone();
 
 		for (int i = 0; i < newGeometry.getCoordinates().length; i++) {
@@ -227,7 +321,6 @@ public class SpatialUtils {
 		if (LOG.isInfoEnabled()) {
 			LOG.info("Changing scale centroid based using factor " + factor);
 		}
-
 		Geometry newGeometry = (Geometry) geometry.clone();
 
 		Point centroid = newGeometry.getCentroid();
@@ -265,7 +358,6 @@ public class SpatialUtils {
 			LOG.info("Rounding geometry " + geometry + " to "
 					+ maxFractionDigits + " fraction digits");
 		}
-
 		if (maxFractionDigits < 1) {
 			LOG.warn("It is recommended to use maxFractionDigits > 1");
 		}
@@ -291,10 +383,69 @@ public class SpatialUtils {
 		return newGeometry;
 	}
 
+	public static Coordinate createCoordinate(double x, double y) {
+		return new Coordinate(x, y);
+	}
+
 	private static void checkGeometry(Geometry geometry) {
 		if (geometry == null || geometry.isEmpty() || !geometry.isValid()) {
-			LOG.error(INVALID_GEOMETRY + geometry);
-			throw new SpatialException(INVALID_GEOMETRY + geometry);
+			String message = INVALID_GEOMETRY + geometry;
+			LOG.error(message);
+			throw new SpatialException(message);
+		}
+	}
+
+	private static Point[] getPointArrayFromList(List<Point> list) {
+		Point[] geometries = new Point[list.size()];
+		for (int i = 0; i < geometries.length; i++) {
+			geometries[i] = list.get(i);
+		}
+		return geometries;
+	}
+
+	private static LineString[] getLineStringArrayFromList(List<LineString> list) {
+		LineString[] geometries = new LineString[list.size()];
+		for (int i = 0; i < geometries.length; i++) {
+			geometries[i] = list.get(i);
+		}
+		return geometries;
+	}
+
+	private static Polygon[] getPolygonArrayFromList(List<Polygon> list) {
+		Polygon[] geometries = new Polygon[list.size()];
+		for (int i = 0; i < geometries.length; i++) {
+			geometries[i] = list.get(i);
+		}
+		return geometries;
+	}
+
+	private static Geometry[] getArrayFromList(List<Geometry> list) {
+		Geometry[] geometries = new Geometry[list.size()];
+		for (int i = 0; i < geometries.length; i++) {
+			geometries[i] = list.get(i);
+		}
+		return geometries;
+	}
+
+	private static void checkSRIDs(Geometry[] geometries) {
+		if (geometries == null || geometries.length == 0) {
+			String message = "No geometries passed";
+			LOG.error(message);
+			throw new SpatialException(message);
+		}
+		int srid = geometries[0].getSRID();
+		if (srid == 0) {
+			String message = "Missing SRID in geometry: " + geometries[0];
+			LOG.error(message);
+			throw new SpatialException(message);
+		}
+		for (int i = 1; i < geometries.length; i++) {
+			if (geometries[i].getSRID() != srid) {
+				String message = "Different SRID found in geometry: "
+						+ geometries[i].getSRID();
+				LOG.error(message);
+				throw new SpatialException(message);
+			}
 		}
 	}
 
