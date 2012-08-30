@@ -81,6 +81,17 @@ public class SpatialUtilsTest {
 		assertEquals(SRID, ls.getSRID());
 	}
 
+	@Test
+	public void createLineStringTest() {
+		Coordinate[] coordinates = new Coordinate[2];
+		coordinates[0] = SpatialUtils.createCoordinate(4, 6);
+		coordinates[1] = SpatialUtils.createCoordinate(7, 10);
+		LineString ls = SpatialUtils.createLineString(coordinates, SRID);
+		assertEquals(false, ls.isEmpty());
+		assertEquals(true, ls.isValid());
+		assertEquals(SRID, ls.getSRID());
+	}
+
 	@Test(expected = ClassCastException.class)
 	public void createLineStringFromWKTWrongTest() {
 		LineString ls = SpatialUtils.createLineString("POINT(5 10)", SRID);
