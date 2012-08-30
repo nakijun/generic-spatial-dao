@@ -1,7 +1,9 @@
 package org.genericspatialdao.util;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.genericspatialdao.exception.SpatialException;
@@ -9,6 +11,7 @@ import org.junit.Test;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryCollection;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Point;
@@ -78,7 +81,7 @@ public class SpatialUtilsTest {
 		assertEquals(SRID, ls.getSRID());
 	}
 
-	@Test(expected = SpatialException.class)
+	@Test(expected = ClassCastException.class)
 	public void createLineStringFromWKTWrongTest() {
 		LineString ls = SpatialUtils.createLineString("POINT(5 10)", SRID);
 		assertEquals(false, ls.isEmpty());
@@ -104,6 +107,28 @@ public class SpatialUtilsTest {
 	}
 
 	@Test
+	public void createMultiPolygonTest() {
+		SpatialUtils
+				.createMultiPolygon(
+						"MULTIPOLYGON (((40 40, 20 45, 45 30, 40 40)),((20 35, 45 20, 30 5, 10 10, 10 30, 20 35),(30 20, 20 25, 20 15, 30 20)))",
+						SRID);
+	}
+
+	@Test
+	public void createMultiPolygon2Test() {
+		List<Polygon> list = new ArrayList<Polygon>();
+		list.add(SpatialUtils
+				.createPolygon(
+						"POLYGON((0 0,4 0,4 4,0 4,0 0),(1 1, 2 1, 2 2, 1 2,1 1))",
+						SRID));
+		list.add(SpatialUtils
+				.createPolygon(
+						"POLYGON((10 10,14 10,14 14,10 14,10 10),(11 11, 12 11, 12 12, 11 12,11 11))",
+						SRID));
+		SpatialUtils.createMultiPolygon(list);
+	}
+
+	@Test
 	public void createGeometryFromWKTTest() {
 		Geometry g = SpatialUtils
 				.createGeometry(
@@ -114,7 +139,7 @@ public class SpatialUtilsTest {
 		assertEquals(SRID, g.getSRID());
 	}
 
-	@Test(expected = SpatialException.class)
+	@Test(expected = ClassCastException.class)
 	public void createPolygonFromWKTWrongTest() {
 		Polygon p = SpatialUtils.createPolygon("POINT(0 0)", SRID);
 		assertEquals(false, p.isEmpty());
@@ -196,5 +221,60 @@ public class SpatialUtilsTest {
 						"POLYGON ((-23.6001 -11.4477, -23.6001 -11.4433, -23.5931 -11.4433, -23.5931 -11.4477, -23.6001 -11.4477))",
 						SRID);
 		assertEquals(expected, SpatialUtils.roundGeometry(polygon, 4));
+	}
+
+	@Test
+	public void createMultiPointTest() {
+		SpatialUtils.createMultiPoint(
+				"MULTIPOINT ((10 40), (40 30), (20 20), (30 10))", SRID);
+		SpatialUtils.createMultiPoint(
+				"MULTIPOINT (10 40, 40 30, 20 20, 30 10)", SRID);
+	}
+
+	@Test
+	public void createMultiPoint2Test() {
+		List<Point> list = SpatialUtils.generateLongLatPoints(10, SRID);
+		SpatialUtils.createMultiPoint(list);
+	}
+
+	@Test
+	public void createMultiLineStringTest() {
+		SpatialUtils
+				.createMultiLineString(
+						"MULTILINESTRING ((10 10, 20 20, 10 40),(40 40, 30 30, 40 20, 30 10))",
+						SRID);
+	}
+
+	@Test
+	public void createMultiLineString2Test() {
+		LineString[] geometries = new LineString[2];
+		geometries[0] = SpatialUtils.createLineString(
+				"LINESTRING (30 10, 10 30, 40 40)", SRID);
+		geometries[1] = SpatialUtils.createLineString(
+				"LINESTRING (35 15, 15 35, 45 45)", SRID);
+
+		SpatialUtils.createMultiLineString(geometries);
+	}
+
+	@Test(expected = ClassCastException.class)
+	public void createMultiLineStringWrongTest() {
+		SpatialUtils.createMultiLineString(
+				"MULTIPOINT ((10 40), (40 30), (20 20), (30 10))", SRID);
+	}
+
+	@Test
+	public void createGeometryCollectionTest() {
+		List<Geometry> list = new ArrayList<Geometry>();
+		list.add(SpatialUtils.generateLongLatPoint(SRID));
+		list.add(SpatialUtils.generateLongLatPoint(SRID));
+		list.add(SpatialUtils
+				.createMultiLineString(
+						"MULTILINESTRING ((10 10, 20 20, 10 40),(40 40, 30 30, 40 20, 30 10))",
+						SRID));
+		list.add(SpatialUtils.generateLongLatPoint(SRID));
+
+		GeometryCollection gc = SpatialUtils.createGeometryCollection(list);
+		assertEquals(SRID, gc.getSRID());
+		assertFalse(gc.isEmpty());
 	}
 }
