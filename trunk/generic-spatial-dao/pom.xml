@@ -134,10 +134,10 @@
 			            <goals>
 			                <goal>execute</goal>
 			            </goals>
-			            <configuration>			                
+			            <configuration>			    
+			                <orderFile>descending</orderFile>            
 			                <fileset>
-	                            <basedir>${basedir}/src/test/resources/sql</basedir>
-	                            <orderFile>descending</orderFile>
+	                            <basedir>${basedir}/src/test/resources/sql</basedir>	                            
 	                            <includes>	                                
 	                                <include>dropDBs.sql</include>
 	                                <include>createDBs.sql</include>
