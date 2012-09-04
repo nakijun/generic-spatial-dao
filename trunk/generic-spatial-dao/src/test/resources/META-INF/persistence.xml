@@ -18,7 +18,7 @@
 			<property name="hibernate.id.new_generator_mappings" value="true" />
 			<property name="hibernate.connection.provider_class" value="org.hibernate.connection.C3P0ConnectionProvider" />
             <property name="hibernate.c3p0.max_size" value="100" />
-	</properties>
+	    </properties>
 	</persistence-unit>
 
 	<persistence-unit name="genericspatialdao2">
