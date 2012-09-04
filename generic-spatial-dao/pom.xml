@@ -146,8 +146,8 @@
 			            </configuration>
 			        </execution>      
 			        <execution>
-			            <id>drop-dbs-after-test</id>
-			            <phase>test</phase>
+			            <id>drop-dbs-after-all-tests</id>
+			            <phase>install</phase>
 			            <goals>
 			                <goal>execute</goal>
 			            </goals>
