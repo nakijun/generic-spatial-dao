@@ -43,7 +43,6 @@ public class GenericSpatialDAOIT {
 		executor.awaitTermination(8L, TimeUnit.SECONDS);
 		executor.shutdown();
 	}
-
 }
 
 abstract class MultiThreadTest implements Runnable {
