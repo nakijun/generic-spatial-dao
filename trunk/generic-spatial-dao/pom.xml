@@ -137,6 +137,7 @@
 			            <configuration>			                
 			                <fileset>
 	                            <basedir>${basedir}/src/test/resources/sql</basedir>
+	                            <orderFile>descending</orderFile>
 	                            <includes>	                                
 	                                <include>dropDBs.sql</include>
 	                                <include>createDBs.sql</include>
