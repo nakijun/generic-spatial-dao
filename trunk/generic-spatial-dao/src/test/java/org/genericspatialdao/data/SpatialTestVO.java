@@ -17,9 +17,6 @@ import com.vividsolutions.jts.geom.Polygon;
 @Entity
 public class SpatialTestVO implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -1791595461594359407L;
 
 	@Id
@@ -39,13 +36,13 @@ public class SpatialTestVO implements Serializable {
 	private Geometry geometry;
 
 	public SpatialTestVO() {
-		
+
 	}
-	
+
 	public SpatialTestVO(Point point) {
 		this.point = point;
 	}
-	
+
 	public long getId() {
 		return id;
 	}

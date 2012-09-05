@@ -7,13 +7,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-
-
 @Entity
 public class TestVO implements Serializable {
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 2244382590365908425L;
 
 	@Id

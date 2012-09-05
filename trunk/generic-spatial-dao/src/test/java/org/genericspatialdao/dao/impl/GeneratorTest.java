@@ -9,13 +9,15 @@ import org.genericspatialdao.dao.DAO;
 import org.genericspatialdao.dao.DAOFactory;
 import org.genericspatialdao.data.TestGeneratorVO;
 import org.genericspatialdao.util.TestUtils;
+import org.genericspatialdao.util.TestUtils.DB;
 import org.junit.Test;
 
 public class GeneratorTest {
 
 	@Test
 	public void test() {
-		DAO<TestGeneratorVO> testG = DAOFactory.getDAO(TestGeneratorVO.class);
+		DAO<TestGeneratorVO> testG = TestUtils.getDAOTest(
+				TestGeneratorVO.class, DB.DB_1);
 		List<TestGeneratorVO> list = new ArrayList<TestGeneratorVO>();
 		for (int i = 0; i < 5; i++) {
 			TestGeneratorVO tg = new TestGeneratorVO();

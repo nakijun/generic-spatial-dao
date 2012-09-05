@@ -28,16 +28,32 @@ public class EntityManagerFactoryService {
 	 */
 	public static EntityManagerFactory getEntityManagerFactory(
 			String persistenceUnit) {
-		LOG.info("Getting entity manager factory for persistence unit: "
-				+ persistenceUnit);
+		return getEntityManagerFactory(persistenceUnit, null);
+	}
+
+	/**
+	 * 
+	 * @param persistenceUnit
+	 * @param properties
+	 * @return an entity manager factory for a target persistence unit
+	 */
+	public static EntityManagerFactory getEntityManagerFactory(
+			String persistenceUnit, Map<String, String> properties) {
+		if (LOG.isInfoEnabled()) {
+			LOG.info("Getting entity manager factory for persistence unit "
+					+ persistenceUnit + " and properties " + properties);
+		}
+
 		if (factories.containsKey(persistenceUnit)) {
-			LOG.info("Entity manager factor unit cached. Returning it");
+			LOG.debug("Entity manager factor unit cached. Returning it");
 			return factories.get(persistenceUnit);
 		}
+
 		EntityManagerFactory emf;
 		try {
 			LOG.info("Creating a new entity manager factory");
-			emf = Persistence.createEntityManagerFactory(persistenceUnit);
+			emf = Persistence.createEntityManagerFactory(persistenceUnit,
+					properties);
 		} catch (Exception e) {
 			String message = FAILED_TO_LOAD_PERSISTENCE_UNIT + e.getMessage();
 			if (e.getCause() != null) {

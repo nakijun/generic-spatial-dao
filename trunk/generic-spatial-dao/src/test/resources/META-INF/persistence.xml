@@ -5,13 +5,13 @@
         http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
 	version="2.0">
 
-	<persistence-unit name="default">
+	<persistence-unit name="genericspatialdao1">
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
 		<properties>
 			<property name="hibernate.connection.driver_class" value="org.postgresql.Driver" />
 			<property name="hibernate.dialect" value="org.hibernatespatial.postgis.PostgisDialect" />
 			<property name="hibernate.connection.url"
-				value="jdbc:postgresql://baquara:5432/genericspatialdao1" />
+				value="jdbc:postgresql://localhost:5432/genericspatialdao1" />
 			<property name="hibernate.hbm2ddl.auto" value="create-drop" />
 			<property name="hibernate.connection.username" value="postgres" />
 			<property name="hibernate.connection.password" value="postgres" />
@@ -27,7 +27,7 @@
 			<property name="hibernate.connection.driver_class" value="org.postgresql.Driver" />
 			<property name="hibernate.dialect" value="org.hibernatespatial.postgis.PostgisDialect" />
 			<property name="hibernate.connection.url"
-				value="jdbc:postgresql://baquara:5432/genericspatialdao2" />
+				value="jdbc:postgresql://localhost:5432/genericspatialdao2" />
 			<property name="hibernate.hbm2ddl.auto" value="update" />
 			<property name="hibernate.connection.username" value="postgres" />
 			<property name="hibernate.connection.password" value="postgres" />
@@ -41,7 +41,7 @@
 			<property name="hibernate.connection.driver_class" value="org.postgresql.Driver" />
 			<property name="hibernate.dialect" value="org.hibernatespatial.postgis.PostgisDialect" />
 			<property name="hibernate.connection.url"
-				value="jdbc:postgresql://baquara:5432/genericspatialdao3" />
+				value="jdbc:postgresql://localhost:5432/genericspatialdao3" />
 			<property name="hibernate.hbm2ddl.auto" value="update" />
 			<property name="hibernate.connection.username" value="postgres" />
 			<property name="hibernate.connection.password" value="postgres" />
@@ -55,7 +55,7 @@
 			<property name="hibernate.connection.driver_class" value="org.postgresql.Driver" />
 			<property name="hibernate.dialect" value="org.hibernatespatial.postgis.PostgisDialect" />
 			<property name="hibernate.connection.url"
-				value="jdbc:postgresql://baquara:5432/genericspatialdao4" />
+				value="jdbc:postgresql://localhost:5432/genericspatialdao4" />
 			<property name="hibernate.hbm2ddl.auto" value="update" />
 			<property name="hibernate.connection.username" value="postgres" />
 			<property name="hibernate.connection.password" value="postgres" />
