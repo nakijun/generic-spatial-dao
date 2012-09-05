@@ -7,16 +7,15 @@ public class DAOConfiguration {
 
 	private String persistenceUnit;
 	private Map<String, String> properties;
-	private boolean autoTransaction = true;
+	private boolean autoTransaction;
 
 	public DAOConfiguration(String persistenceUnit) {
-		this.persistenceUnit = persistenceUnit;
+		this(persistenceUnit, null);
 	}
 
 	public DAOConfiguration(String persistenceUnit,
 			Map<String, String> properties) {
-		this.persistenceUnit = persistenceUnit;
-		this.properties = properties;
+		this(persistenceUnit, properties, true);
 	}
 
 	public DAOConfiguration(String persistenceUnit,
@@ -31,6 +30,13 @@ public class DAOConfiguration {
 			properties = new HashMap<String, String>();
 		}
 		properties.put(key, value);
+	}
+
+	public String getProperty(String key) {
+		if (properties == null) {
+			return null;
+		}
+		return properties.get(key);
 	}
 
 	public String getPersistenceUnit() {
