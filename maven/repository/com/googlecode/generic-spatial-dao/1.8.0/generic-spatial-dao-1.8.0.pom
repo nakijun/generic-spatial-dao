@@ -131,7 +131,7 @@
 				<executions>
 					<execution>
 						<id>drop-create-dbs</id>
-						<phase>test-resources</phase>
+						<phase>process-test-resources</phase>
 						<goals>
 							<goal>execute</goal>
 						</goals>
