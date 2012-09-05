@@ -1,5 +1,7 @@
 package org.genericspatialdao.dao;
 
+import java.util.Map;
+
 import org.apache.log4j.Logger;
 import org.genericspatialdao.dao.impl.GenericSpatialDAO;
 import org.genericspatialdao.service.EntityManagerFactoryService;
@@ -32,29 +34,45 @@ public class DAOFactory {
 	/**
 	 * 
 	 * @param entityClass
-	 * @param persistenceUnitName
+	 * @param persistenceUnit
+	 * @return a DAO implementation
+	 */
+	public static <T> DAO<T> getDAO(Class<T> entityClass, String persistenceUnit) {
+		return getDAO(entityClass, persistenceUnit, null);
+	}
+
+	/**
+	 * 
+	 * @param entityClass
+	 * @param persistenceUnit
+	 * @param properties
 	 * @return a DAO implementation
 	 */
 	public static <T> DAO<T> getDAO(Class<T> entityClass,
-			String persistenceUnitName) {
-		return getDAO(entityClass, persistenceUnitName,
+			String persistenceUnit, Map<String, String> properties) {
+		return getDAO(entityClass, persistenceUnit, properties,
 				ConstantUtils.DEFAULT_AUTO_TRANSACTION);
 	}
 
 	/**
 	 * 
 	 * @param entityClass
-	 * @param persistenceUnitName
+	 * @param persistenceUnit
 	 * @param autoTransaction
 	 * @return a DAO implementation
 	 */
 	public static <T> DAO<T> getDAO(Class<T> entityClass,
-			String persistenceUnitName, boolean autoTransaction) {
-		LOG.info(CREATING_DAO_FOR_CLASS + entityClass.getName()
-				+ ". Persistence unit: " + persistenceUnitName
-				+ ". Auto transaction: " + autoTransaction);
-		return new GenericSpatialDAO<T>(entityClass, persistenceUnitName,
-				autoTransaction);
+			String persistenceUnit, Map<String, String> properties,
+			boolean autoTransaction) {
+		if (LOG.isInfoEnabled()) {
+			LOG.info(CREATING_DAO_FOR_CLASS + entityClass.getName()
+					+ ". Persistence unit: " + persistenceUnit
+					+ ". Properties: " + properties + ". Auto transaction: "
+					+ autoTransaction);
+		}
+
+		return new GenericSpatialDAO<T>(entityClass, persistenceUnit,
+				properties, autoTransaction);
 	}
 
 	/**

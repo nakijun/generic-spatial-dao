@@ -3,7 +3,6 @@ package org.genericspatialdao.example.vo;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 
-
 @Entity
 public class Job {
 

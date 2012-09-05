@@ -2,16 +2,16 @@ package org.genericspatialdao.service;
 
 import static org.junit.Assert.assertNotNull;
 
-import org.genericspatialdao.service.EntityManagerService;
-import org.genericspatialdao.util.ConstantUtils;
+import org.genericspatialdao.util.TestUtils;
+import org.genericspatialdao.util.TestUtils.DB;
 import org.junit.Test;
 
 public class EntityManagerServiceTest {
 
 	@Test
 	public void getEntityManagerTest() {
-		assertNotNull(EntityManagerService
-				.getEntityManager(ConstantUtils.DEFAULT_PERSISTENCE_UNIT));
+		assertNotNull(EntityManagerService.getEntityManager(DB.DB_1.toString(),
+				TestUtils.buildPropertiesMap(DB.DB_1)));
 	}
 
 	@Test

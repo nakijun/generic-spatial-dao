@@ -27,7 +27,8 @@ import org.hibernate.criterion.Projections;
 public class GenericSpatialDAO<T> implements DAO<T> {
 
 	protected final Class<T> entityClass;
-	protected final String persistenceUnitName;
+	protected final String persistenceUnit;
+	protected final Map<String, String> properties;
 	protected final boolean autoTransaction;
 
 	private static final String FAILED_TO_REMOVE_ALL = "Failed to remove all: ";
@@ -64,10 +65,21 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 	/**
 	 * 
 	 * @param entityClass
-	 * @param persistenceUnitName
+	 * @param persistenceUnit
 	 */
-	public GenericSpatialDAO(Class<T> entityClass, String persistenceUnitName) {
-		this(entityClass, persistenceUnitName,
+	public GenericSpatialDAO(Class<T> entityClass, String persistenceUnit) {
+		this(entityClass, persistenceUnit, null);
+	}
+
+	/**
+	 * 
+	 * @param entityClass
+	 * @param persistenceUnit
+	 * @param properties
+	 */
+	public GenericSpatialDAO(Class<T> entityClass, String persistenceUnit,
+			Map<String, String> properties) {
+		this(entityClass, persistenceUnit, properties,
 				ConstantUtils.DEFAULT_AUTO_TRANSACTION);
 	}
 
@@ -75,12 +87,14 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 	 * 
 	 * @param entityClass
 	 * @param persistenceUnitName
+	 * @param properties
 	 * @param autoTransaction
 	 */
 	public GenericSpatialDAO(Class<T> entityClass, String persistenceUnitName,
-			boolean autoTransaction) {
+			Map<String, String> properties, boolean autoTransaction) {
 		this.entityClass = entityClass;
-		this.persistenceUnitName = persistenceUnitName;
+		this.persistenceUnit = persistenceUnitName;
+		this.properties = properties;
 		this.autoTransaction = autoTransaction;
 	}
 
@@ -535,27 +549,28 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 
 	@Override
 	public EntityManager getEntityManager() {
-		return EntityManagerService.getEntityManager(persistenceUnitName);
+		return EntityManagerService.getEntityManager(persistenceUnit,
+				properties);
 	}
 
 	@Override
 	public void beginTransaction() {
-		EntityManagerService.beginTransaction(persistenceUnitName);
+		EntityManagerService.beginTransaction(persistenceUnit, properties);
 	}
 
 	@Override
 	public void commit() {
-		EntityManagerService.commit(persistenceUnitName);
+		EntityManagerService.commit(persistenceUnit, properties);
 	}
 
 	@Override
 	public void rollback() {
-		EntityManagerService.rollback(persistenceUnitName);
+		EntityManagerService.rollback(persistenceUnit, properties);
 	}
 
 	@Override
 	public void close() {
-		EntityManagerService.close(persistenceUnitName);
+		EntityManagerService.close(persistenceUnit);
 	}
 
 	@Override

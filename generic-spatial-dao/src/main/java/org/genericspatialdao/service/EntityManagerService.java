@@ -26,12 +26,13 @@ public class EntityManagerService {
 	private static Map<String, ThreadLocal<EntityManager>> sessions = new HashMap<String, ThreadLocal<EntityManager>>();
 
 	/**
-	 * Get or create an entity manager
 	 * 
+	 * @param persistenceUnit
+	 * @param properties
 	 * @return an entity manager for a target persistence unit
 	 */
 	public static synchronized EntityManager getEntityManager(
-			String persistenceUnit) {
+			String persistenceUnit, Map<String, String> properties) {
 		ThreadLocal<EntityManager> session = sessions.get(persistenceUnit);
 		if (session == null) {
 			session = new ThreadLocal<EntityManager>();
@@ -40,9 +41,9 @@ public class EntityManagerService {
 		EntityManager em = session.get();
 		if (em == null) {
 			EntityManagerFactory emf = EntityManagerFactoryService
-					.getEntityManagerFactory(persistenceUnit);
-			LOG.info("Creating entity manager");
-			em = emf.createEntityManager();
+					.getEntityManagerFactory(persistenceUnit, properties);
+			LOG.debug("Creating entity manager");
+			em = emf.createEntityManager(properties);
 			session.set(em);
 		}
 		return em;
@@ -88,8 +89,9 @@ public class EntityManagerService {
 	/**
 	 * Begin a transaction if it is not active
 	 */
-	public static void beginTransaction(String persistenceUnit) {
-		EntityManager em = getEntityManager(persistenceUnit);
+	public static void beginTransaction(String persistenceUnit,
+			Map<String, String> properties) {
+		EntityManager em = getEntityManager(persistenceUnit, properties);
 		EntityTransaction transaction = em.getTransaction();
 		if (!transaction.isActive()) {
 			LOG.debug("Beginning transaction");
@@ -100,8 +102,9 @@ public class EntityManagerService {
 	/**
 	 * Commit if transaction is active
 	 */
-	public static void commit(String persistenceUnit) {
-		EntityManager em = getEntityManager(persistenceUnit);
+	public static void commit(String persistenceUnit,
+			Map<String, String> properties) {
+		EntityManager em = getEntityManager(persistenceUnit, properties);
 		EntityTransaction transaction = em.getTransaction();
 		if (transaction.isActive()) {
 			LOG.info("Commiting");
@@ -114,8 +117,9 @@ public class EntityManagerService {
 	/**
 	 * Rollback if transaction is active
 	 */
-	public static void rollback(String persistenceUnit) {
-		EntityManager em = getEntityManager(persistenceUnit);
+	public static void rollback(String persistenceUnit,
+			Map<String, String> properties) {
+		EntityManager em = getEntityManager(persistenceUnit, properties);
 		EntityTransaction transaction = em.getTransaction();
 		if (transaction.isActive()) {
 			LOG.info("Rollbacking");
