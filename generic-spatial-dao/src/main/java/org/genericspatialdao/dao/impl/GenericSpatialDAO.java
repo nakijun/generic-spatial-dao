@@ -8,10 +8,10 @@ import java.util.Map;
 import javax.persistence.EntityManager;
 
 import org.apache.log4j.Logger;
+import org.genericspatialdao.configuration.DAOConfiguration;
 import org.genericspatialdao.dao.DAO;
 import org.genericspatialdao.exception.DAOException;
 import org.genericspatialdao.service.EntityManagerService;
-import org.genericspatialdao.util.ConstantUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -27,9 +27,7 @@ import org.hibernate.criterion.Projections;
 public class GenericSpatialDAO<T> implements DAO<T> {
 
 	protected final Class<T> entityClass;
-	protected final String persistenceUnit;
-	protected final Map<String, String> properties;
-	protected final boolean autoTransaction;
+	protected final DAOConfiguration configuration;
 
 	private static final String FAILED_TO_REMOVE_ALL = "Failed to remove all: ";
 	private static final String FINDING_UNIQUE_BY_CRITERIA = "Finding unique by criteria";
@@ -54,48 +52,9 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 
 	private static final Logger LOG = Logger.getLogger(GenericSpatialDAO.class);
 
-	/**
-	 * 
-	 * @param entityClass
-	 */
-	public GenericSpatialDAO(Class<T> entityClass) {
-		this(entityClass, ConstantUtils.DEFAULT_PERSISTENCE_UNIT);
-	}
-
-	/**
-	 * 
-	 * @param entityClass
-	 * @param persistenceUnit
-	 */
-	public GenericSpatialDAO(Class<T> entityClass, String persistenceUnit) {
-		this(entityClass, persistenceUnit, null);
-	}
-
-	/**
-	 * 
-	 * @param entityClass
-	 * @param persistenceUnit
-	 * @param properties
-	 */
-	public GenericSpatialDAO(Class<T> entityClass, String persistenceUnit,
-			Map<String, String> properties) {
-		this(entityClass, persistenceUnit, properties,
-				ConstantUtils.DEFAULT_AUTO_TRANSACTION);
-	}
-
-	/**
-	 * 
-	 * @param entityClass
-	 * @param persistenceUnitName
-	 * @param properties
-	 * @param autoTransaction
-	 */
-	public GenericSpatialDAO(Class<T> entityClass, String persistenceUnitName,
-			Map<String, String> properties, boolean autoTransaction) {
+	public GenericSpatialDAO(Class<T> entityClass, DAOConfiguration configuration) {
 		this.entityClass = entityClass;
-		this.persistenceUnit = persistenceUnitName;
-		this.properties = properties;
-		this.autoTransaction = autoTransaction;
+		this.configuration = configuration;
 	}
 
 	@Override
@@ -549,28 +508,27 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 
 	@Override
 	public EntityManager getEntityManager() {
-		return EntityManagerService.getEntityManager(persistenceUnit,
-				properties);
+		return EntityManagerService.getEntityManager(configuration);
 	}
 
 	@Override
 	public void beginTransaction() {
-		EntityManagerService.beginTransaction(persistenceUnit, properties);
+		EntityManagerService.beginTransaction(configuration);
 	}
 
 	@Override
 	public void commit() {
-		EntityManagerService.commit(persistenceUnit, properties);
+		EntityManagerService.commit(configuration);
 	}
 
 	@Override
 	public void rollback() {
-		EntityManagerService.rollback(persistenceUnit, properties);
+		EntityManagerService.rollback(configuration);
 	}
 
 	@Override
 	public void close() {
-		EntityManagerService.close(persistenceUnit);
+		EntityManagerService.close(configuration);
 	}
 
 	@Override
@@ -579,19 +537,19 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 	}
 
 	protected void autoBeginTransaction() {
-		if (autoTransaction) {
+		if (configuration.isAutoTransaction()) {
 			beginTransaction();
 		}
 	}
 
 	protected void autoRollback() {
-		if (autoTransaction) {
+		if (configuration.isAutoTransaction()) {
 			rollback();
 		}
 	}
 
 	protected void autoCommit() {
-		if (autoTransaction) {
+		if (configuration.isAutoTransaction()) {
 			commit();
 		}
 	}

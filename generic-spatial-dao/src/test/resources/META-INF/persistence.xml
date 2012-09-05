@@ -10,11 +10,7 @@
 		<properties>
 			<property name="hibernate.connection.driver_class" value="org.postgresql.Driver" />
 			<property name="hibernate.dialect" value="org.hibernatespatial.postgis.PostgisDialect" />
-			<property name="hibernate.connection.url"
-				value="jdbc:postgresql://localhost:5432/genericspatialdao1" />
 			<property name="hibernate.hbm2ddl.auto" value="create-drop" />
-			<property name="hibernate.connection.username" value="postgres" />
-			<property name="hibernate.connection.password" value="postgres" />
 			<property name="hibernate.id.new_generator_mappings" value="true" />
 			<property name="hibernate.connection.provider_class" value="org.hibernate.connection.C3P0ConnectionProvider" />
             <property name="hibernate.c3p0.max_size" value="100" />
@@ -26,12 +22,7 @@
 		<properties>
 			<property name="hibernate.connection.driver_class" value="org.postgresql.Driver" />
 			<property name="hibernate.dialect" value="org.hibernatespatial.postgis.PostgisDialect" />
-			<property name="hibernate.connection.url"
-				value="jdbc:postgresql://localhost:5432/genericspatialdao2" />
 			<property name="hibernate.hbm2ddl.auto" value="update" />
-			<property name="hibernate.connection.username" value="postgres" />
-			<property name="hibernate.connection.password" value="postgres" />
-			<property name="hibernate.id.new_generator_mappings" value="true" />
 		</properties>
 	</persistence-unit>
 
@@ -40,12 +31,7 @@
 		<properties>
 			<property name="hibernate.connection.driver_class" value="org.postgresql.Driver" />
 			<property name="hibernate.dialect" value="org.hibernatespatial.postgis.PostgisDialect" />
-			<property name="hibernate.connection.url"
-				value="jdbc:postgresql://localhost:5432/genericspatialdao3" />
 			<property name="hibernate.hbm2ddl.auto" value="update" />
-			<property name="hibernate.connection.username" value="postgres" />
-			<property name="hibernate.connection.password" value="postgres" />
-			<property name="hibernate.id.new_generator_mappings" value="true" />
 		</properties>
 	</persistence-unit>
 
@@ -54,12 +40,7 @@
 		<properties>
 			<property name="hibernate.connection.driver_class" value="org.postgresql.Driver" />
 			<property name="hibernate.dialect" value="org.hibernatespatial.postgis.PostgisDialect" />
-			<property name="hibernate.connection.url"
-				value="jdbc:postgresql://localhost:5432/genericspatialdao4" />
 			<property name="hibernate.hbm2ddl.auto" value="update" />
-			<property name="hibernate.connection.username" value="postgres" />
-			<property name="hibernate.connection.password" value="postgres" />
-			<property name="hibernate.id.new_generator_mappings" value="true" />
 		</properties>
 	</persistence-unit>
 </persistence>

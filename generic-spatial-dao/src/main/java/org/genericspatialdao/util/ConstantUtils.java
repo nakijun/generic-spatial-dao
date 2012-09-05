@@ -22,7 +22,4 @@ public class ConstantUtils {
 	public static final String LEFT_PARENTHESES = "(";
 	public static final String RIGHT_PARENTHESES = ")";
 	public static final String NEW_LINE = "\n";
-
-	public static final String DEFAULT_PERSISTENCE_UNIT = "default";
-	public static final boolean DEFAULT_AUTO_TRANSACTION = true;
 }

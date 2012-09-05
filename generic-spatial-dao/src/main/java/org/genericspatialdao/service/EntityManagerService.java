@@ -8,6 +8,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 
 import org.apache.log4j.Logger;
+import org.genericspatialdao.configuration.DAOConfiguration;
 import org.genericspatialdao.exception.DAOException;
 
 /**
@@ -23,27 +24,27 @@ public class EntityManagerService {
 			.getLogger(EntityManagerService.class);
 
 	// there is a session for each persistence unit
-	private static Map<String, ThreadLocal<EntityManager>> sessions = new HashMap<String, ThreadLocal<EntityManager>>();
+	private static Map<DAOConfiguration, ThreadLocal<EntityManager>> sessions = new HashMap<DAOConfiguration, ThreadLocal<EntityManager>>();
 
 	/**
 	 * 
 	 * @param persistenceUnit
 	 * @param properties
-	 * @return an entity manager for a target persistence unit
+	 * @return an entity manager using a DAOConfiguration object
 	 */
 	public static synchronized EntityManager getEntityManager(
-			String persistenceUnit, Map<String, String> properties) {
-		ThreadLocal<EntityManager> session = sessions.get(persistenceUnit);
+			DAOConfiguration configuration) {
+		ThreadLocal<EntityManager> session = sessions.get(configuration);
 		if (session == null) {
 			session = new ThreadLocal<EntityManager>();
-			sessions.put(persistenceUnit, session);
+			sessions.put(configuration, session);
 		}
 		EntityManager em = session.get();
 		if (em == null) {
 			EntityManagerFactory emf = EntityManagerFactoryService
-					.getEntityManagerFactory(persistenceUnit, properties);
+					.getEntityManagerFactory(configuration);
 			LOG.debug("Creating entity manager");
-			em = emf.createEntityManager(properties);
+			em = emf.createEntityManager(configuration.getProperties());
 			session.set(em);
 		}
 		return em;
@@ -53,8 +54,8 @@ public class EntityManagerService {
 	 * Closes entity manager and remove it from session of a target persistence
 	 * unit
 	 */
-	public static synchronized void close(String persistenceUnit) {
-		ThreadLocal<EntityManager> session = sessions.get(persistenceUnit);
+	public static synchronized void close(DAOConfiguration configuration) {
+		ThreadLocal<EntityManager> session = sessions.get(configuration);
 		checkSession(session);
 		EntityManager entityManager = session.get();
 		if (entityManager != null) {
@@ -69,17 +70,17 @@ public class EntityManagerService {
 
 	public static void closeAll() {
 		LOG.info("Closing all entity managers");
-		for (String persistenceUnit : sessions.keySet()) {
-			close(persistenceUnit);
+		for (DAOConfiguration configuration : sessions.keySet()) {
+			close(configuration);
 		}
 	}
 
 	/**
 	 * Closes quietly entity manager and session of a target persistence unit
 	 */
-	public static synchronized void closeQuietly(String persistenceUnit) {
+	public static synchronized void closeQuietly(DAOConfiguration configuration) {
 		try {
-			close(persistenceUnit);
+			close(configuration);
 		} catch (DAOException e) {
 			LOG.warn("Exception caught in closeQuietly method: "
 					+ e.getMessage());
@@ -89,9 +90,8 @@ public class EntityManagerService {
 	/**
 	 * Begin a transaction if it is not active
 	 */
-	public static void beginTransaction(String persistenceUnit,
-			Map<String, String> properties) {
-		EntityManager em = getEntityManager(persistenceUnit, properties);
+	public static void beginTransaction(DAOConfiguration configuration) {
+		EntityManager em = getEntityManager(configuration);
 		EntityTransaction transaction = em.getTransaction();
 		if (!transaction.isActive()) {
 			LOG.debug("Beginning transaction");
@@ -102,9 +102,8 @@ public class EntityManagerService {
 	/**
 	 * Commit if transaction is active
 	 */
-	public static void commit(String persistenceUnit,
-			Map<String, String> properties) {
-		EntityManager em = getEntityManager(persistenceUnit, properties);
+	public static void commit(DAOConfiguration configuration) {
+		EntityManager em = getEntityManager(configuration);
 		EntityTransaction transaction = em.getTransaction();
 		if (transaction.isActive()) {
 			LOG.info("Commiting");
@@ -117,9 +116,8 @@ public class EntityManagerService {
 	/**
 	 * Rollback if transaction is active
 	 */
-	public static void rollback(String persistenceUnit,
-			Map<String, String> properties) {
-		EntityManager em = getEntityManager(persistenceUnit, properties);
+	public static void rollback(DAOConfiguration configuration) {
+		EntityManager em = getEntityManager(configuration);
 		EntityTransaction transaction = em.getTransaction();
 		if (transaction.isActive()) {
 			LOG.info("Rollbacking");

@@ -7,6 +7,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 import org.apache.log4j.Logger;
+import org.genericspatialdao.configuration.DAOConfiguration;
 import org.genericspatialdao.exception.DAOException;
 
 /**
@@ -19,17 +20,7 @@ public class EntityManagerFactoryService {
 	private static final String FAILED_TO_LOAD_PERSISTENCE_UNIT = "Failed to load default persistence unit: ";
 	private static final Logger LOG = Logger
 			.getLogger(EntityManagerFactoryService.class);
-	private static Map<String, EntityManagerFactory> factories = new HashMap<String, EntityManagerFactory>();
-
-	/**
-	 * 
-	 * @param persistenceUnit
-	 * @return an entity manager factory for a target persistence unit
-	 */
-	public static EntityManagerFactory getEntityManagerFactory(
-			String persistenceUnit) {
-		return getEntityManagerFactory(persistenceUnit, null);
-	}
+	private static Map<DAOConfiguration, EntityManagerFactory> factories = new HashMap<DAOConfiguration, EntityManagerFactory>();
 
 	/**
 	 * 
@@ -38,22 +29,22 @@ public class EntityManagerFactoryService {
 	 * @return an entity manager factory for a target persistence unit
 	 */
 	public static EntityManagerFactory getEntityManagerFactory(
-			String persistenceUnit, Map<String, String> properties) {
+			DAOConfiguration configuration) {
 		if (LOG.isInfoEnabled()) {
-			LOG.info("Getting entity manager factory for persistence unit "
-					+ persistenceUnit + " and properties " + properties);
+			LOG.info("Getting entity manager factory using configuration: "
+					+ configuration);
+		}
+		if (factories.containsKey(configuration)) {
+			LOG.debug("Entity manager factory cached. Returning it");
+			return factories.get(configuration);
 		}
 
-		if (factories.containsKey(persistenceUnit)) {
-			LOG.debug("Entity manager factor unit cached. Returning it");
-			return factories.get(persistenceUnit);
-		}
-
+		LOG.debug("Creating a new entity manager factory");
 		EntityManagerFactory emf;
 		try {
-			LOG.info("Creating a new entity manager factory");
-			emf = Persistence.createEntityManagerFactory(persistenceUnit,
-					properties);
+			emf = Persistence.createEntityManagerFactory(
+					configuration.getPersistenceUnit(),
+					configuration.getProperties());
 		} catch (Exception e) {
 			String message = FAILED_TO_LOAD_PERSISTENCE_UNIT + e.getMessage();
 			if (e.getCause() != null) {
@@ -63,7 +54,7 @@ public class EntityManagerFactoryService {
 			throw new DAOException(message);
 		}
 
-		factories.put(persistenceUnit, emf);
+		factories.put(configuration, emf);
 		return emf;
 	}
 
@@ -71,8 +62,8 @@ public class EntityManagerFactoryService {
 	 * Close entity manager factories
 	 */
 	public static void closeFactories() {
-		LOG.info("Closing entity manager factories");
-		for (Map.Entry<String, EntityManagerFactory> entry : factories
+		LOG.debug("Closing entity manager factories");
+		for (Map.Entry<DAOConfiguration, EntityManagerFactory> entry : factories
 				.entrySet()) {
 			entry.getValue().close();
 		}
