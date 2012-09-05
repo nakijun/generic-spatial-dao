@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import org.genericspatialdao.configuration.DAOConfiguration;
 import org.genericspatialdao.dao.DAO;
 import org.genericspatialdao.dao.impl.GenericSpatialDAO;
 
@@ -37,8 +38,8 @@ public class TestUtils {
 
 	public static <T> DAO<T> getDAOTest(Class<T> entityClass, DB db) {
 		String persistenceUnit = db.toString();
-		return new GenericSpatialDAO<T>(entityClass, persistenceUnit,
-				buildPropertiesMap(db));
+		return new GenericSpatialDAO<T>(entityClass, new DAOConfiguration(
+				persistenceUnit, buildPropertiesMap(db)));
 	}
 
 	public static Map<String, String> buildPropertiesMap(DB db) {

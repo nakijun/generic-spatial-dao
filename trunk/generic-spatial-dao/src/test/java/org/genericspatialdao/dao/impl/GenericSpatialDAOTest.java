@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.genericspatialdao.dao.DAO;
-import org.genericspatialdao.dao.DAOFactory;
 import org.genericspatialdao.data.SpatialTestVO;
 import org.genericspatialdao.data.TestVO;
 import org.genericspatialdao.exception.DAOException;
@@ -356,7 +355,8 @@ public class GenericSpatialDAOTest {
 	@Test
 	public void findAddMergeRemoveAndRefreshEmptyTest() {
 		System.out.println("findAddMergeRemoveAndRefreshEmptyTest");
-		DAO<SpatialTestVO> testDAO = DAOFactory.getDAO(SpatialTestVO.class);
+		DAO<SpatialTestVO> testDAO = TestUtils.getDAOTest(SpatialTestVO.class,
+				DB.DB_1);
 		assertNull(testDAO.find());
 		testDAO.persist(new ArrayList<SpatialTestVO>());
 		testDAO.merge(new ArrayList<SpatialTestVO>());
