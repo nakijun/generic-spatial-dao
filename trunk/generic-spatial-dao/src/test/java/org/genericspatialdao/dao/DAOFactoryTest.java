@@ -3,6 +3,7 @@ package org.genericspatialdao.dao;
 import static org.junit.Assert.assertEquals;
 
 import org.genericspatialdao.configuration.DAOConfiguration;
+import org.genericspatialdao.dao.impl.DAOFactory;
 import org.genericspatialdao.data.SpatialTestVO;
 import org.genericspatialdao.data.TestVO;
 import org.genericspatialdao.util.TestUtils;

@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.genericspatialdao.dao.DAO;
-import org.genericspatialdao.dao.DAOFactory;
 import org.genericspatialdao.data.TestGeneratorVO;
 import org.genericspatialdao.util.TestUtils;
 import org.genericspatialdao.util.TestUtils.DB;

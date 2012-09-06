@@ -25,13 +25,21 @@ import com.vividsolutions.jts.io.WKTReader;
  * @author Joao Savio C. Longo - joaosavio@gmail.com
  * 
  */
-public class SpatialUtils {
+public final class SpatialUtils {
 
+	private static final int MAX_LATITUDE = 90;
+	private static final int MIN_LATITUDE = -90;
+	private static final int MAX_LONGITUDE = 180;
+	private static final int MIN_LONGITUDE = -180;
 	private static final String INVALID_GEOMETRY = "Invalid geometry: ";
 	private static final String ERROR = "Error: ";
 	private static final String RESULT = "Result: ";
 
 	private static final Logger LOG = Logger.getLogger(SpatialUtils.class);
+
+	private SpatialUtils() {
+
+	}
 
 	//
 	// POINT
@@ -65,8 +73,8 @@ public class SpatialUtils {
 		if (LOG.isDebugEnabled()) {
 			LOG.debug("Generating long/lat point with SRID " + srid);
 		}
-		Coordinate coordinate = new Coordinate(randomDouble(-180, 180),
-				randomDouble(-90, 90));
+		Coordinate coordinate = new Coordinate(randomDouble(MIN_LONGITUDE,
+				MAX_LONGITUDE), randomDouble(MIN_LATITUDE, MAX_LATITUDE));
 		Point generatedPoint = createPoint(coordinate, srid);
 		if (LOG.isDebugEnabled()) {
 			LOG.debug(generatedPoint);
@@ -82,8 +90,8 @@ public class SpatialUtils {
 		List<Point> list = new ArrayList<Point>();
 		Coordinate[] coordinates = new Coordinate[number];
 		for (int i = 0; i < number; i++) {
-			coordinates[i] = new Coordinate(randomDouble(-180, 180),
-					randomDouble(-90, 90));
+			coordinates[i] = new Coordinate(randomDouble(MIN_LONGITUDE,
+					MAX_LONGITUDE), randomDouble(MIN_LATITUDE, MAX_LATITUDE));
 			Point point = createPoint(coordinates[i], srid);
 			list.add(point);
 		}
@@ -126,7 +134,7 @@ public class SpatialUtils {
 		} catch (Exception e) {
 			String message = ERROR + e.getMessage();
 			LOG.error(message);
-			throw new SpatialException(message);
+			throw new SpatialException(message, e);
 		}
 	}
 
@@ -183,7 +191,7 @@ public class SpatialUtils {
 		} catch (Exception e) {
 			String message = ERROR + e.getMessage();
 			LOG.error(message);
-			throw new SpatialException(message);
+			throw new SpatialException(message, e);
 		}
 	}
 
@@ -228,7 +236,7 @@ public class SpatialUtils {
 		} catch (Exception e) {
 			String message = ERROR + e.getMessage();
 			LOG.error(message);
-			throw new SpatialException(message);
+			throw new SpatialException(message, e);
 		}
 	}
 
@@ -263,7 +271,7 @@ public class SpatialUtils {
 		} catch (Exception e) {
 			String message = ERROR + e.getMessage();
 			LOG.error(message);
-			throw new SpatialException(message);
+			throw new SpatialException(message, e);
 		}
 	}
 
@@ -288,7 +296,7 @@ public class SpatialUtils {
 		} catch (Exception e) {
 			String message = ERROR + e.getMessage();
 			LOG.error(message);
-			throw new SpatialException(message);
+			throw new SpatialException(message, e);
 		}
 	}
 

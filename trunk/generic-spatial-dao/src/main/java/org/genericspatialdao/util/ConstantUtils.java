@@ -5,7 +5,7 @@ package org.genericspatialdao.util;
  * @author Joao Savio C. Longo - joaosavio@gmail.com
  * 
  */
-public class ConstantUtils {
+public final class ConstantUtils {
 
 	public static final String SPACE = " ";
 	public static final String DOT = ".";
@@ -22,4 +22,8 @@ public class ConstantUtils {
 	public static final String LEFT_PARENTHESES = "(";
 	public static final String RIGHT_PARENTHESES = ")";
 	public static final String NEW_LINE = "\n";
+
+	private ConstantUtils() {
+
+	}
 }
