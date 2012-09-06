@@ -16,7 +16,7 @@ import org.genericspatialdao.exception.DAOException;
  * @author Joao Savio C. Longo - joaosavio@gmail.com
  * 
  */
-public class EntityManagerService {
+public final class EntityManagerService {
 
 	private static final String THERE_IS_NO_SESSION = "There is no session";
 
@@ -25,6 +25,10 @@ public class EntityManagerService {
 
 	// there is a session for each persistence unit
 	private static Map<DAOConfiguration, ThreadLocal<EntityManager>> sessions = new HashMap<DAOConfiguration, ThreadLocal<EntityManager>>();
+
+	private EntityManagerService() {
+
+	}
 
 	/**
 	 * 

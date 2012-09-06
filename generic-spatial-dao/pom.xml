@@ -9,7 +9,7 @@
 	</parent>
 
 	<artifactId>generic-spatial-dao</artifactId>
-	<version>1.8.0</version>
+	<version>1.9.0</version>
 	<packaging>jar</packaging>
 
 	<name>generic-spatial-dao</name>
@@ -163,6 +163,14 @@
 					</execution>
 				</executions>
 			</plugin>
+			<plugin>
+	            <groupId>org.codehaus.mojo</groupId>
+	            <artifactId>sonar-maven-plugin</artifactId>
+	            <version>2.0</version>
+	            <configuration>
+	                <sonarHostURL>${sonar.url}</sonarHostURL>
+	            </configuration>
+	        </plugin>
 		</plugins>
 	</build>
 

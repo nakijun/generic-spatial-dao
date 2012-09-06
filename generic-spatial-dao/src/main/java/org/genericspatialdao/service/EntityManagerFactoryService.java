@@ -15,12 +15,16 @@ import org.genericspatialdao.exception.DAOException;
  * @author Joao Savio C. Longo - joaosavio@gmail.com
  * 
  */
-public class EntityManagerFactoryService {
+public final class EntityManagerFactoryService {
 
 	private static final String FAILED_TO_LOAD_PERSISTENCE_UNIT = "Failed to load default persistence unit: ";
 	private static final Logger LOG = Logger
 			.getLogger(EntityManagerFactoryService.class);
 	private static Map<DAOConfiguration, EntityManagerFactory> factories = new HashMap<DAOConfiguration, EntityManagerFactory>();
+
+	private EntityManagerFactoryService() {
+
+	}
 
 	/**
 	 * 
@@ -51,7 +55,7 @@ public class EntityManagerFactoryService {
 				message = message + ". Cause: " + e.getCause().getMessage();
 			}
 			LOG.error(message);
-			throw new DAOException(message);
+			throw new DAOException(message, e);
 		}
 
 		factories.put(configuration, emf);

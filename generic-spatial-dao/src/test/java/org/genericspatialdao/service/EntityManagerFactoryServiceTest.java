@@ -1,7 +1,7 @@
 package org.genericspatialdao.service;
 
 import org.genericspatialdao.configuration.DAOConfiguration;
-import org.genericspatialdao.dao.DAOFactory;
+import org.genericspatialdao.dao.impl.DAOFactory;
 import org.genericspatialdao.exception.DAOException;
 import org.genericspatialdao.service.EntityManagerFactoryService;
 import org.genericspatialdao.util.TestUtils;

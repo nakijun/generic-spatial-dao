@@ -4,7 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.genericspatialdao.dao.DAO;
-import org.genericspatialdao.dao.DAOFactory;
+import org.genericspatialdao.dao.impl.DAOFactory;
 import org.genericspatialdao.example.vo.Department;
 import org.genericspatialdao.example.vo.Employee;
 import org.genericspatialdao.util.DataCreator;

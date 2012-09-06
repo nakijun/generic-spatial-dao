@@ -3,7 +3,7 @@ package org.genericspatialdao.exception;
 /**
  * 
  * @author Joao Savio C. Longo - joaosavio@gmail.com
- *
+ * 
  */
 public class DAOException extends RuntimeException {
 
@@ -14,11 +14,10 @@ public class DAOException extends RuntimeException {
 	}
 
 	public DAOException(Exception e) {
-		this(e.getMessage(), e);
+		super(e);
 	}
 
 	public DAOException(String message, Exception e) {
 		super(message, e);
 	}
-
 }

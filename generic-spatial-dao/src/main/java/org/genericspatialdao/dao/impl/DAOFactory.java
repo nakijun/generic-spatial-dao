@@ -1,8 +1,8 @@
-package org.genericspatialdao.dao;
+package org.genericspatialdao.dao.impl;
 
 import org.apache.log4j.Logger;
 import org.genericspatialdao.configuration.DAOConfiguration;
-import org.genericspatialdao.dao.impl.GenericSpatialDAO;
+import org.genericspatialdao.dao.DAO;
 import org.genericspatialdao.service.EntityManagerFactoryService;
 import org.genericspatialdao.service.EntityManagerService;
 
@@ -11,7 +11,7 @@ import org.genericspatialdao.service.EntityManagerService;
  * @author Joao Savio C. Longo - joaosavio@gmail.com
  * 
  */
-public class DAOFactory {
+public final class DAOFactory {
 
 	private static final String CREATING_DAO_FOR_CLASS = "Creating DAO for class ";
 	private static final Logger LOG = Logger.getLogger(DAOFactory.class);
