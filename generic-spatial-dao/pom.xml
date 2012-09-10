@@ -19,12 +19,12 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<hibernate.version>3.6.10.Final</hibernate.version>
-		<slf4j.version>1.6.2</slf4j.version>
+		<slf4j.version>1.6.2</slf4j.version>		
 		<sonar.host.url>http://${sonar.host}:${sonar.port}</sonar.host.url>
 		<sonar.jdbc.url>jdbc:h2:tcp://${sonar.host}:9092/sonar</sonar.jdbc.url>
 		<sonar.jdbc.username>sonar</sonar.jdbc.username>
 		<sonar.jdbc.password>sonar</sonar.jdbc.password>
-		<sonar.jdbc.driver>org.h2.Driver</sonar.jdbc.driver>
+		<sonar.jdbc.driver>org.h2.Driver</sonar.jdbc.driver>		
 	</properties>
 
 	<distributionManagement>
@@ -145,6 +145,7 @@
 							<fileset>
 								<basedir>${basedir}/src/test/resources/sql</basedir>
 								<includes>
+									<include>dropDBs.sql</include>
 									<include>createDBs.sql</include>
 								</includes>
 							</fileset>
@@ -153,10 +154,10 @@
 				</executions>
 			</plugin>
 			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>sonar-maven-plugin</artifactId>
-				<version>2.0</version>
-			</plugin>
+	            <groupId>org.codehaus.mojo</groupId>
+	            <artifactId>sonar-maven-plugin</artifactId>
+	            <version>2.0</version>
+	        </plugin>
 		</plugins>
 	</build>
 
