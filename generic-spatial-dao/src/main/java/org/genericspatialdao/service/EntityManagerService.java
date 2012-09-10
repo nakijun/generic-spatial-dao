@@ -32,8 +32,7 @@ public final class EntityManagerService {
 
 	/**
 	 * 
-	 * @param persistenceUnit
-	 * @param properties
+	 * @param configuration
 	 * @return an entity manager using a DAOConfiguration object
 	 */
 	public static synchronized EntityManager getEntityManager(
@@ -55,8 +54,10 @@ public final class EntityManagerService {
 	}
 
 	/**
-	 * Closes entity manager and remove it from session of a target persistence
-	 * unit
+	 * It closes entity manager and remove it from session of a target
+	 * persistence unit
+	 * 
+	 * @param configuration
 	 */
 	public static synchronized void close(DAOConfiguration configuration) {
 		ThreadLocal<EntityManager> session = sessions.get(configuration);
@@ -80,7 +81,7 @@ public final class EntityManagerService {
 	}
 
 	/**
-	 * Closes quietly entity manager and session of a target persistence unit
+	 * It closes quietly entity manager and session of a target persistence unit
 	 */
 	public static synchronized void closeQuietly(DAOConfiguration configuration) {
 		try {
@@ -92,7 +93,7 @@ public final class EntityManagerService {
 	}
 
 	/**
-	 * Begin a transaction if it is not active
+	 * It begins a transaction if it is not active
 	 */
 	public static void beginTransaction(DAOConfiguration configuration) {
 		EntityManager em = getEntityManager(configuration);
@@ -104,7 +105,7 @@ public final class EntityManagerService {
 	}
 
 	/**
-	 * Commit if transaction is active
+	 * It commits if transaction is active
 	 */
 	public static void commit(DAOConfiguration configuration) {
 		EntityManager em = getEntityManager(configuration);
@@ -118,7 +119,7 @@ public final class EntityManagerService {
 	}
 
 	/**
-	 * Rollback if transaction is active
+	 * It rollbacks if transaction is active
 	 */
 	public static void rollback(DAOConfiguration configuration) {
 		EntityManager em = getEntityManager(configuration);
