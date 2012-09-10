@@ -28,8 +28,7 @@ public final class EntityManagerFactoryService {
 
 	/**
 	 * 
-	 * @param persistenceUnit
-	 * @param properties
+	 * @param configuration
 	 * @return an entity manager factory for a target persistence unit
 	 */
 	public static EntityManagerFactory getEntityManagerFactory(
@@ -63,7 +62,7 @@ public final class EntityManagerFactoryService {
 	}
 
 	/**
-	 * Close entity manager factories
+	 * It closes entity manager factories
 	 */
 	public static void closeFactories() {
 		LOG.debug("Closing entity manager factories");
