@@ -7,6 +7,8 @@ import java.util.Map;
 
 import javax.persistence.EntityManager;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.apache.log4j.Logger;
 import org.genericspatialdao.configuration.DAOConfiguration;
 import org.genericspatialdao.dao.DAO;
@@ -544,7 +546,9 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 
 	@Override
 	public String toString() {
-		return "DAO of " + entityClass;
+		return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+				.append("entityClass", entityClass)
+				.append("DAOConfiguration", configuration).toString();
 	}
 
 	protected void autoBeginTransaction() {
