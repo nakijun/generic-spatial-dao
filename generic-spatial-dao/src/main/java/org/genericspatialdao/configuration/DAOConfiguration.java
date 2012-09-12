@@ -3,6 +3,11 @@ package org.genericspatialdao.configuration;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 public class DAOConfiguration {
 
 	private String persistenceUnit;
@@ -65,50 +70,29 @@ public class DAOConfiguration {
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + (autoTransaction ? 1231 : 1237);
-		result = prime * result
-				+ ((persistenceUnit == null) ? 0 : persistenceUnit.hashCode());
-		result = prime * result
-				+ ((properties == null) ? 0 : properties.hashCode());
-		return result;
+		return new HashCodeBuilder().append(persistenceUnit).append(properties)
+				.append(autoTransaction).toHashCode();
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (!(obj instanceof DAOConfiguration)) {
 			return false;
-		if (getClass() != obj.getClass())
-			return false;
+		}
 		DAOConfiguration other = (DAOConfiguration) obj;
-		if (autoTransaction != other.autoTransaction)
-			return false;
-		if (persistenceUnit == null) {
-			if (other.persistenceUnit != null)
-				return false;
-		} else if (!persistenceUnit.equals(other.persistenceUnit))
-			return false;
-		if (properties == null) {
-			if (other.properties != null)
-				return false;
-		} else if (!properties.equals(other.properties))
-			return false;
-		return true;
+		return new EqualsBuilder()
+				.append(persistenceUnit, other.getPersistenceUnit())
+				.append(properties, other.getProperties()).isEquals();
 	}
 
 	@Override
 	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("DAOConfiguration [persistenceUnit=");
-		builder.append(persistenceUnit);
-		builder.append(", properties=");
-		builder.append(properties);
-		builder.append(", autoTransaction=");
-		builder.append(autoTransaction);
-		builder.append("]");
-		return builder.toString();
+		return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+				.append("persistenceUnit", persistenceUnit)
+				.append("properties", properties)
+				.append("autoTransaction", autoTransaction).toString();
 	}
 }
