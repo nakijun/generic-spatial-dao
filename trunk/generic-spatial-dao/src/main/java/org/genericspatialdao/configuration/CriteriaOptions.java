@@ -1,5 +1,7 @@
 package org.genericspatialdao.configuration;
 
+import java.util.Arrays;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -10,28 +12,28 @@ import org.hibernate.transform.ResultTransformer;
 public class CriteriaOptions {
 
 	private ResultTransformer resultTransformer;
-	private Order order;
+	private Order[] orders;
 	private Integer firstResult;
 	private Integer maxResults;
 
 	public CriteriaOptions(ResultTransformer resultTransformer) {
-		this(resultTransformer, null, null, null);
+		this(null, null, resultTransformer, (Order[]) null);
 	}
 
-	public CriteriaOptions(Order order) {
-		this(null, order, null, null);
+	public CriteriaOptions(Order... orders) {
+		this(null, null, null, orders);
 	}
 
 	public CriteriaOptions(Integer firstResult, Integer maxResults) {
-		this(null, null, firstResult, maxResults);
+		this(firstResult, maxResults, null, (Order[]) null);
 	}
 
-	public CriteriaOptions(ResultTransformer resultTransformer, Order order,
-			Integer firstResult, Integer maxResults) {
-		this.resultTransformer = resultTransformer;
-		this.order = order;
+	public CriteriaOptions(Integer firstResult, Integer maxResults,
+			ResultTransformer resultTransformer, Order... orders) {
 		this.firstResult = firstResult;
 		this.maxResults = maxResults;
+		this.resultTransformer = resultTransformer;
+		this.orders = orders;
 	}
 
 	public ResultTransformer getResultTransformer() {
@@ -42,12 +44,12 @@ public class CriteriaOptions {
 		this.resultTransformer = resultTransformer;
 	}
 
-	public Order getOrder() {
-		return order;
+	public Order[] getOrders() {
+		return orders;
 	}
 
-	public void setOrder(Order order) {
-		this.order = order;
+	public void setOrders(Order[] orders) {
+		this.orders = orders;
 	}
 
 	public Integer getFirstResult() {
@@ -68,7 +70,7 @@ public class CriteriaOptions {
 
 	@Override
 	public int hashCode() {
-		return new HashCodeBuilder().append(resultTransformer).append(order)
+		return new HashCodeBuilder().append(resultTransformer).append(orders)
 				.append(firstResult).append(maxResults).toHashCode();
 	}
 
@@ -83,7 +85,7 @@ public class CriteriaOptions {
 		CriteriaOptions other = (CriteriaOptions) obj;
 		return new EqualsBuilder()
 				.append(resultTransformer, other.getResultTransformer())
-				.append(order, other.getOrder())
+				.append(orders, other.getOrders())
 				.append(firstResult, other.getFirstResult())
 				.append(maxResults, other.getMaxResults()).isEquals();
 	}
@@ -92,7 +94,8 @@ public class CriteriaOptions {
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
 				.append("resultTransformer", resultTransformer)
-				.append("order", order).append("firstResult", firstResult)
+				.append("orders", Arrays.toString(orders))
+				.append("firstResult", firstResult)
 				.append("maxResults", maxResults).toString();
 	}
 }
