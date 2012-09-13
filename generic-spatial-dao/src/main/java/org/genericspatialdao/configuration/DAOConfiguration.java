@@ -1,5 +1,6 @@
 package org.genericspatialdao.configuration;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -8,7 +9,9 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-public class DAOConfiguration {
+public class DAOConfiguration implements Serializable {
+
+	private static final long serialVersionUID = 689563783546032476L;
 
 	private String persistenceUnit;
 	private Map<String, String> properties;
