@@ -61,6 +61,8 @@ public interface DAO<T> {
 
 	List<T> findByCriteria(List<Criterion> list);
 
+	List<T> findByCriteria(List<Criterion> list, CriteriaOptions criteriaOptions);
+
 	List<?> findByCriteria(List<Criterion> list, Projection projection);
 
 	List<?> findByCriteria(List<Criterion> list, Projection projection,
