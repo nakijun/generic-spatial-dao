@@ -309,14 +309,14 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	public List<T> findByCriteria(List<Criterion> conditions,
-			Projection projection, CriteriaOptions criteriaOptions) {
+	public List<T> findByCriteria(List<Criterion> list, Projection projection,
+			CriteriaOptions criteriaOptions) {
 		LOG.info("Finding by criteria. Options: " + criteriaOptions);
 		try {
 			Criteria criteria = getSession().createCriteria(entityClass);
-			if (conditions != null) {
-				for (int i = 0; i < conditions.size(); i++) {
-					criteria.add(conditions.get(i));
+			if (list != null) {
+				for (int i = 0; i < list.size(); i++) {
+					criteria.add(list.get(i));
 				}
 			}
 			if (projection != null) {
