@@ -19,6 +19,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projection;
 import org.hibernate.criterion.Projections;
 
@@ -312,8 +313,8 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 		try {
 			Criteria criteria = getSession().createCriteria(entityClass);
 			if (list != null) {
-				for (int i = 0; i < list.size(); i++) {
-					criteria.add(list.get(i));
+				for (Criterion criterion : list) {
+					criteria.add(criterion);
 				}
 			}
 			if (projection != null) {
@@ -324,8 +325,10 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 					criteria.setResultTransformer(criteriaOptions
 							.getResultTransformer());
 				}
-				if (criteriaOptions.getOrder() != null) {
-					criteria.addOrder(criteriaOptions.getOrder());
+				if (criteriaOptions.getOrders() != null) {
+					for (Order order : criteriaOptions.getOrders()) {
+						criteria.addOrder(order);
+					}
 				}
 				if (criteriaOptions.getFirstResult() != null) {
 					criteria.setFirstResult(criteriaOptions.getFirstResult());
