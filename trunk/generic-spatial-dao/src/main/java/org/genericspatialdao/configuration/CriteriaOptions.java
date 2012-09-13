@@ -1,5 +1,6 @@
 package org.genericspatialdao.configuration;
 
+import java.io.Serializable;
 import java.util.Arrays;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -9,7 +10,9 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import org.hibernate.criterion.Order;
 import org.hibernate.transform.ResultTransformer;
 
-public class CriteriaOptions {
+public class CriteriaOptions implements Serializable {
+
+	private static final long serialVersionUID = 1050408961262485169L;
 
 	private ResultTransformer resultTransformer;
 	private Order[] orders;
