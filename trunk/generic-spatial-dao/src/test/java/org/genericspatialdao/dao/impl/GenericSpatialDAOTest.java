@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.genericspatialdao.configuration.CriteriaOptions;
 import org.genericspatialdao.dao.DAO;
 import org.genericspatialdao.data.SpatialTestVO;
 import org.genericspatialdao.data.TestVO;
@@ -344,10 +345,10 @@ public class GenericSpatialDAOTest {
 		conditions.add(c1);
 
 		assertEquals(NUM, testDAO.findByCriteria(conditions).size());
-		assertEquals(NUM,
-				testDAO.findByCriteria(conditions, Order.asc("id"), 0, 100)
-						.size());
-
+		assertEquals(
+				NUM,
+				testDAO.findByCriteria(conditions, null,
+						new CriteriaOptions(Order.asc("id"), 0, 100)).size());
 		testDAO.remove(list);
 		testDAO.close();
 	}
