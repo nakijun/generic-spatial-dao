@@ -313,6 +313,10 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 				criteria.setProjection(projection);
 			}
 			if (criteriaOptions != null) {
+				if (criteriaOptions.getResultTransformer() != null) {
+					criteria.setResultTransformer(criteriaOptions
+							.getResultTransformer());
+				}
 				if (criteriaOptions.getOrder() != null) {
 					criteria.addOrder(criteriaOptions.getOrder());
 				}
