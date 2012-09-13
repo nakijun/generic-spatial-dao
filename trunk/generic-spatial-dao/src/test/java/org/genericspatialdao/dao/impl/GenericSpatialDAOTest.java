@@ -258,7 +258,7 @@ public class GenericSpatialDAOTest {
 		System.out.println("findAllTest");
 		DAO<TestVO> testDAO = TestUtils.getDAOTest(TestVO.class, DB.DB_1);
 		assertEquals(0, testDAO.findAll().size());
-		assertEquals(0, testDAO.findAll(1, 100).size());
+		assertEquals(0, testDAO.findAll(new CriteriaOptions(1, 100)).size());
 		testDAO.close();
 	}
 

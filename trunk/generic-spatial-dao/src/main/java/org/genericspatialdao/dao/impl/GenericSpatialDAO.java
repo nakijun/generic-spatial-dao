@@ -110,25 +110,13 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 
 	@Override
 	public List<T> findAll() {
-		return findAll(null, null);
+		return findAll(null);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<T> findAll(Integer firstResult, Integer maxResults) {
-		if (LOG.isInfoEnabled()) {
-			LOG.info("Finding all " + entityClass.getSimpleName() + " objects");
-		}
-
-		Criteria criteria = getSession().createCriteria(entityClass);
-		if (firstResult != null) {
-			criteria.setFirstResult(firstResult);
-		}
-		if (maxResults != null) {
-			criteria.setMaxResults(maxResults);
-		}
-
-		List<T> result = (List<T>) criteria.list();
+	public List<T> findAll(CriteriaOptions criteriaOptions) {
+		List<T> result = (List<T>) findByCriteria(null, null, criteriaOptions);
 		if (LOG.isDebugEnabled()) {
 			LOG.debug(RESULT + result);
 		}
@@ -296,19 +284,19 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 		getEntityManager().flush();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<T> findByCriteria(List<Criterion> list) {
-		return findByCriteria(list, null);
+		return (List<T>) findByCriteria(list, null);
 	}
 
 	@Override
-	public List<T> findByCriteria(List<Criterion> list, Projection projection) {
+	public List<?> findByCriteria(List<Criterion> list, Projection projection) {
 		return findByCriteria(list, projection, null);
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	public List<T> findByCriteria(List<Criterion> list, Projection projection,
+	public List<?> findByCriteria(List<Criterion> list, Projection projection,
 			CriteriaOptions criteriaOptions) {
 		if (LOG.isInfoEnabled()) {
 			LOG.info("Finding by criteria. Conditions: " + list
@@ -336,7 +324,7 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 				}
 			}
 
-			List result = criteria.list();
+			List<?> result = criteria.list();
 
 			if (LOG.isDebugEnabled()) {
 				LOG.debug(RESULT + result);
