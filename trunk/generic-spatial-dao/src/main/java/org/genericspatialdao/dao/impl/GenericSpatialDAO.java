@@ -33,7 +33,6 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 	protected final DAOConfiguration configuration;
 
 	private static final String FAILED_TO_REMOVE_ALL = "Failed to remove all: ";
-	private static final String FINDING_UNIQUE_BY_CRITERIA = "Finding unique by criteria";
 	private static final String CAUSE = ". Cause: ";
 	private static final String PERSISTING_OBJECT = "Persisting object: ";
 	private static final String REMOVING_OBJECT = "Removing object: ";
@@ -311,7 +310,10 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 	@Override
 	public List<T> findByCriteria(List<Criterion> list, Projection projection,
 			CriteriaOptions criteriaOptions) {
-		LOG.info("Finding by criteria. Options: " + criteriaOptions);
+		if (LOG.isInfoEnabled()) {
+			LOG.info("Finding by criteria. Conditions: " + list
+					+ ". Projection: " + ". Options: " + criteriaOptions);
+		}
 		try {
 			Criteria criteria = getSession().createCriteria(entityClass);
 			if (list != null) {
@@ -350,7 +352,9 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 	@SuppressWarnings("unchecked")
 	@Override
 	public T findUniqueByCriteria(List<Criterion> list) {
-		LOG.info(FINDING_UNIQUE_BY_CRITERIA);
+		if (LOG.isInfoEnabled()) {
+			LOG.info("Finding unique by criteria. Conditions: " + list);
+		}
 		try {
 			Criteria criteria = getSession().createCriteria(entityClass);
 			for (int i = 0; i < list.size(); i++) {
