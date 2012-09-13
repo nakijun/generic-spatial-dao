@@ -57,13 +57,13 @@ public interface DAO<T> {
 
 	List<T> findAll();
 
-	List<T> findAll(Integer firstResult, Integer maxResults);
+	List<T> findAll(CriteriaOptions criteriaOptions);
 
 	List<T> findByCriteria(List<Criterion> list);
 
-	List<T> findByCriteria(List<Criterion> list, Projection projection);
+	List<?> findByCriteria(List<Criterion> list, Projection projection);
 
-	List<T> findByCriteria(List<Criterion> list, Projection projection,
+	List<?> findByCriteria(List<Criterion> list, Projection projection,
 			CriteriaOptions criteriaOptions);
 
 	T findUniqueByCriteria(List<Criterion> list);

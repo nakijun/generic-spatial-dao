@@ -16,6 +16,10 @@ public class CriteriaOptions {
 		this(order, null, null);
 	}
 
+	public CriteriaOptions(Integer firstResult, Integer maxResults) {
+		this(null, firstResult, maxResults);
+	}
+
 	public CriteriaOptions(Order order, Integer firstResult, Integer maxResults) {
 		this.order = order;
 		this.firstResult = firstResult;
