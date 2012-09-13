@@ -33,7 +33,9 @@ public class CriteriaOptions {
 		this.firstResult = firstResult;
 		this.maxResults = maxResults;
 		this.resultTransformer = resultTransformer;
-		this.orders = orders;
+		if (orders != null) {
+			this.orders = orders.clone();
+		}
 	}
 
 	public ResultTransformer getResultTransformer() {
@@ -45,11 +47,16 @@ public class CriteriaOptions {
 	}
 
 	public Order[] getOrders() {
-		return orders;
+		if (orders == null) {
+			return null;
+		}
+		return orders.clone();
 	}
 
 	public void setOrders(Order[] orders) {
-		this.orders = orders;
+		if (orders != null) {
+			this.orders = orders.clone();
+		}
 	}
 
 	public Integer getFirstResult() {
