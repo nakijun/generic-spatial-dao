@@ -287,7 +287,14 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<T> findByCriteria(List<Criterion> list) {
-		return (List<T>) findByCriteria(list, null);
+		return (List<T>) findByCriteria(list, null, null);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<T> findByCriteria(List<Criterion> list,
+			CriteriaOptions criteriaOptions) {
+		return (List<T>) findByCriteria(list, null, criteriaOptions);
 	}
 
 	@Override
