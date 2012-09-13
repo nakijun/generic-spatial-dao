@@ -5,9 +5,10 @@ import java.util.Map;
 
 import javax.persistence.EntityManager;
 
+import org.genericspatialdao.configuration.CriteriaOptions;
 import org.hibernate.Session;
 import org.hibernate.criterion.Criterion;
-import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projection;
 
 /**
  * 
@@ -60,10 +61,10 @@ public interface DAO<T> {
 
 	List<T> findByCriteria(List<Criterion> list);
 
-	List<T> findByCriteria(List<Criterion> list, Order order);
+	List<T> findByCriteria(List<Criterion> list, Projection projection);
 
-	List<T> findByCriteria(List<Criterion> list, Order order,
-			Integer firstResult, Integer maxResults);
+	List<T> findByCriteria(List<Criterion> list, Projection projection,
+			CriteriaOptions criteriaOptions);
 
 	T findUniqueByCriteria(List<Criterion> list);
 

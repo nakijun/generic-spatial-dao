@@ -99,7 +99,7 @@ public final class EntityManagerService {
 		EntityManager em = getEntityManager(configuration);
 		EntityTransaction transaction = em.getTransaction();
 		if (!transaction.isActive()) {
-			LOG.debug("Beginning transaction");
+			LOG.info("Beginning transaction");
 			transaction.begin();
 		}
 	}

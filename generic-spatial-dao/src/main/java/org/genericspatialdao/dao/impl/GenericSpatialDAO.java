@@ -10,6 +10,7 @@ import javax.persistence.EntityManager;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.apache.log4j.Logger;
+import org.genericspatialdao.configuration.CriteriaOptions;
 import org.genericspatialdao.configuration.DAOConfiguration;
 import org.genericspatialdao.dao.DAO;
 import org.genericspatialdao.exception.DAOException;
@@ -18,7 +19,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Criterion;
-import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projection;
 import org.hibernate.criterion.Projections;
 
 /**
@@ -33,7 +34,6 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 
 	private static final String FAILED_TO_REMOVE_ALL = "Failed to remove all: ";
 	private static final String FINDING_UNIQUE_BY_CRITERIA = "Finding unique by criteria";
-	private static final String FINDING_BY_CRITERIA = "Finding by criteria";
 	private static final String CAUSE = ". Cause: ";
 	private static final String PERSISTING_OBJECT = "Persisting object: ";
 	private static final String REMOVING_OBJECT = "Removing object: ";
@@ -299,32 +299,39 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 
 	@Override
 	public List<T> findByCriteria(List<Criterion> list) {
-		return findByCriteria(list, null, null, null);
+		return findByCriteria(list, null);
 	}
 
 	@Override
-	public List<T> findByCriteria(List<Criterion> list, Order order) {
-		return findByCriteria(list, order, null, null);
+	public List<T> findByCriteria(List<Criterion> list, Projection projection) {
+		return findByCriteria(list, projection, null);
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	public List<T> findByCriteria(List<Criterion> list, Order order,
-			Integer firstResult, Integer maxResults) {
-		LOG.info(FINDING_BY_CRITERIA);
+	public List<T> findByCriteria(List<Criterion> conditions,
+			Projection projection, CriteriaOptions criteriaOptions) {
+		LOG.info("Finding by criteria. Options: " + criteriaOptions);
 		try {
 			Criteria criteria = getSession().createCriteria(entityClass);
-			for (int i = 0; i < list.size(); i++) {
-				criteria.add(list.get(i));
+			if (conditions != null) {
+				for (int i = 0; i < conditions.size(); i++) {
+					criteria.add(conditions.get(i));
+				}
 			}
-			if (order != null) {
-				criteria.addOrder(order);
+			if (projection != null) {
+				criteria.setProjection(projection);
 			}
-			if (firstResult != null) {
-				criteria.setFirstResult(firstResult);
-			}
-			if (maxResults != null) {
-				criteria.setMaxResults(maxResults);
+			if (criteriaOptions != null) {
+				if (criteriaOptions.getOrder() != null) {
+					criteria.addOrder(criteriaOptions.getOrder());
+				}
+				if (criteriaOptions.getFirstResult() != null) {
+					criteria.setFirstResult(criteriaOptions.getFirstResult());
+				}
+				if (criteriaOptions.getMaxResults() != null) {
+					criteria.setMaxResults(criteriaOptions.getMaxResults());
+				}
 			}
 
 			List result = criteria.list();
