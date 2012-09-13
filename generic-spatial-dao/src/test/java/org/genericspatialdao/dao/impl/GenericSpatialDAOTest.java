@@ -348,7 +348,8 @@ public class GenericSpatialDAOTest {
 		assertEquals(
 				NUM,
 				testDAO.findByCriteria(conditions, null,
-						new CriteriaOptions(Order.asc("id"), 0, 100)).size());
+						new CriteriaOptions(null, Order.asc("id"), 0, 100))
+						.size());
 		testDAO.remove(list);
 		testDAO.close();
 	}
