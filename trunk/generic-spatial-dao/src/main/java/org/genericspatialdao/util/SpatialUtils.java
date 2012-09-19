@@ -308,6 +308,11 @@ public final class SpatialUtils {
 		if (LOG.isInfoEnabled()) {
 			LOG.info("Changing scale using factor " + factor);
 		}
+
+		if (factor == 1.0) {
+			return geometry;
+		}
+
 		Geometry newGeometry = (Geometry) geometry.clone();
 
 		for (int i = 0; i < newGeometry.getCoordinates().length; i++) {
@@ -329,6 +334,11 @@ public final class SpatialUtils {
 		if (LOG.isInfoEnabled()) {
 			LOG.info("Changing scale centroid based using factor " + factor);
 		}
+
+		if (factor == 1.0) {
+			return geometry;
+		}
+
 		Geometry newGeometry = (Geometry) geometry.clone();
 
 		Point centroid = newGeometry.getCentroid();
