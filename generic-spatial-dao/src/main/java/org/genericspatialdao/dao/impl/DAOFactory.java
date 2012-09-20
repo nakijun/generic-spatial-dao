@@ -51,7 +51,7 @@ public final class DAOFactory {
 	}
 
 	/**
-	 * Close entity manager and all factories
+	 * Close entity managers and all factories
 	 */
 	public static void closeAll() {
 		LOG.info("Closing all");
