@@ -54,8 +54,8 @@ public final class EntityManagerService {
 	}
 
 	/**
-	 * It closes entity manager and remove it from session of a target
-	 * persistence unit
+	 * Close entity manager and remove it from session of a target persistence
+	 * unit
 	 * 
 	 * @param configuration
 	 */
@@ -73,6 +73,9 @@ public final class EntityManagerService {
 		}
 	}
 
+	/**
+	 * Close all entity managers from all configurations
+	 */
 	public static void closeAll() {
 		LOG.info("Closing all entity managers");
 		for (DAOConfiguration configuration : sessions.keySet()) {
@@ -81,7 +84,7 @@ public final class EntityManagerService {
 	}
 
 	/**
-	 * It closes quietly entity manager and session of a target persistence unit
+	 * Close quietly entity manager and session of a target persistence unit
 	 */
 	public static synchronized void closeQuietly(DAOConfiguration configuration) {
 		try {
@@ -93,7 +96,7 @@ public final class EntityManagerService {
 	}
 
 	/**
-	 * It begins a transaction if it is not active
+	 * Begin a transaction if it is not active
 	 */
 	public static void beginTransaction(DAOConfiguration configuration) {
 		EntityManager em = getEntityManager(configuration);
@@ -105,7 +108,7 @@ public final class EntityManagerService {
 	}
 
 	/**
-	 * It commits if transaction is active
+	 * Commit if transaction is active
 	 */
 	public static void commit(DAOConfiguration configuration) {
 		EntityManager em = getEntityManager(configuration);
@@ -119,7 +122,7 @@ public final class EntityManagerService {
 	}
 
 	/**
-	 * It rollbacks if transaction is active
+	 * Rollback if transaction is active
 	 */
 	public static void rollback(DAOConfiguration configuration) {
 		EntityManager em = getEntityManager(configuration);
@@ -132,6 +135,11 @@ public final class EntityManagerService {
 		}
 	}
 
+	/**
+	 * Check if session is null
+	 * 
+	 * @param session
+	 */
 	private static void checkSession(ThreadLocal<EntityManager> session) {
 		if (session == null) {
 			LOG.error(THERE_IS_NO_SESSION);

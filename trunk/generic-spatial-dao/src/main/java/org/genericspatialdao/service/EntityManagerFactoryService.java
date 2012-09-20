@@ -62,7 +62,7 @@ public final class EntityManagerFactoryService {
 	}
 
 	/**
-	 * It closes entity manager factories
+	 * Close entity manager factories
 	 */
 	public static void closeFactories() {
 		LOG.debug("Closing entity manager factories");
