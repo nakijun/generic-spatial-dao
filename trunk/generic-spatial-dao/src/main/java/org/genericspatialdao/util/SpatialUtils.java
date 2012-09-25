@@ -304,7 +304,8 @@ public final class SpatialUtils {
 	// OTHER METHODS
 	//
 
-	public static Geometry changeScale(Geometry geometry, double factor) {
+	public static Geometry getChangedScaleGeometry(Geometry geometry,
+			double factor) {
 		if (LOG.isInfoEnabled()) {
 			LOG.info("Changing scale using factor " + factor);
 		}
@@ -329,8 +330,8 @@ public final class SpatialUtils {
 		return newGeometry;
 	}
 
-	public static Geometry changeScaleCentroidBased(Geometry geometry,
-			double factor) {
+	public static Geometry getCentroidBasedChangedScaleGeometry(
+			Geometry geometry, double factor) {
 		if (LOG.isInfoEnabled()) {
 			LOG.info("Changing scale centroid based using factor " + factor);
 		}
@@ -370,7 +371,7 @@ public final class SpatialUtils {
 	 * @param maxFractionDigits
 	 * @return
 	 */
-	public static Geometry roundGeometry(Geometry geometry,
+	public static Geometry getRoundedGeometry(Geometry geometry,
 			int maxFractionDigits) {
 		if (LOG.isInfoEnabled()) {
 			LOG.info("Rounding geometry " + geometry + " to "
