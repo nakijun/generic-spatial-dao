@@ -312,31 +312,7 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 		}
 		try {
 			Criteria criteria = getSession().createCriteria(entityClass);
-			if (list != null) {
-				for (Criterion criterion : list) {
-					criteria.add(criterion);
-				}
-			}
-			if (projection != null) {
-				criteria.setProjection(projection);
-			}
-			if (criteriaOptions != null) {
-				if (criteriaOptions.getResultTransformer() != null) {
-					criteria.setResultTransformer(criteriaOptions
-							.getResultTransformer());
-				}
-				if (criteriaOptions.getOrders() != null) {
-					for (Order order : criteriaOptions.getOrders()) {
-						criteria.addOrder(order);
-					}
-				}
-				if (criteriaOptions.getFirstResult() != null) {
-					criteria.setFirstResult(criteriaOptions.getFirstResult());
-				}
-				if (criteriaOptions.getMaxResults() != null) {
-					criteria.setMaxResults(criteriaOptions.getMaxResults());
-				}
-			}
+			fillCriteria(criteria, list, projection, criteriaOptions);
 
 			List<?> result = criteria.list();
 
@@ -348,6 +324,35 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 			String message = ERROR + e.getMessage() + CAUSE + e.getCause();
 			LOG.error(message);
 			throw new DAOException(message, e);
+		}
+	}
+
+	private void fillCriteria(Criteria criteria, List<Criterion> list,
+			Projection projection, CriteriaOptions criteriaOptions) {
+		if (list != null) {
+			for (Criterion criterion : list) {
+				criteria.add(criterion);
+			}
+		}
+		if (projection != null) {
+			criteria.setProjection(projection);
+		}
+		if (criteriaOptions != null) {
+			if (criteriaOptions.getResultTransformer() != null) {
+				criteria.setResultTransformer(criteriaOptions
+						.getResultTransformer());
+			}
+			if (criteriaOptions.getOrders() != null) {
+				for (Order order : criteriaOptions.getOrders()) {
+					criteria.addOrder(order);
+				}
+			}
+			if (criteriaOptions.getFirstResult() != null) {
+				criteria.setFirstResult(criteriaOptions.getFirstResult());
+			}
+			if (criteriaOptions.getMaxResults() != null) {
+				criteria.setMaxResults(criteriaOptions.getMaxResults());
+			}
 		}
 	}
 

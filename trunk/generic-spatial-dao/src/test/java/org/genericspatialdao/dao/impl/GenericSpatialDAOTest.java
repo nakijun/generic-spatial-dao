@@ -389,4 +389,11 @@ public class GenericSpatialDAOTest {
 		testDAO.removeAll();
 		testDAO.close();
 	}
+
+	@Test
+	public void toStringTest() {
+		System.out.println("toStringTest");
+		DAO<TestVO> testDAO = TestUtils.getDAOTest(TestVO.class, DB.DB_1);
+		testDAO.toString();
+	}
 }
