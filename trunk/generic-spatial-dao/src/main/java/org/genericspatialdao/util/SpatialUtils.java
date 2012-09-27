@@ -18,6 +18,7 @@ import com.vividsolutions.jts.geom.MultiPoint;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
+import com.vividsolutions.jts.geom.PrecisionModel;
 import com.vividsolutions.jts.io.WKTReader;
 
 /**
@@ -37,6 +38,8 @@ public final class SpatialUtils {
 
 	private static final Logger LOG = Logger.getLogger(SpatialUtils.class);
 
+	private static PrecisionModel PRECISION_MODEL = new PrecisionModel();
+
 	private SpatialUtils() {
 
 	}
@@ -54,10 +57,8 @@ public final class SpatialUtils {
 			LOG.debug("Creating point from coordinate " + coordinate
 					+ " and SRID " + srid);
 		}
-		Point point = new GeometryFactory().createPoint(coordinate);
-		if (point != null) {
-			point.setSRID(srid);
-		}
+		Point point = new GeometryFactory(PRECISION_MODEL, srid)
+				.createPoint(coordinate);
 		checkGeometry(point);
 		if (LOG.isDebugEnabled()) {
 			LOG.debug(RESULT + point);
@@ -119,23 +120,21 @@ public final class SpatialUtils {
 			LOG.debug("Creating multi-point from points "
 					+ Arrays.toString(geometries));
 		}
+		checkSRIDs(geometries);
+		MultiPoint multiPoint;
 		try {
-			MultiPoint multiPoint = new GeometryFactory()
-					.createMultiPoint(geometries);
-			checkSRIDs(geometries);
-			if (multiPoint != null) {
-				multiPoint.setSRID(geometries[0].getSRID());
-			}
-			checkGeometry(multiPoint);
-			if (LOG.isDebugEnabled()) {
-				LOG.debug(RESULT + multiPoint);
-			}
-			return multiPoint;
+			multiPoint = new GeometryFactory(PRECISION_MODEL,
+					geometries[0].getSRID()).createMultiPoint(geometries);
 		} catch (Exception e) {
 			String message = ERROR + e.getMessage();
 			LOG.error(message);
 			throw new SpatialException(message, e);
 		}
+		checkGeometry(multiPoint);
+		if (LOG.isDebugEnabled()) {
+			LOG.debug(RESULT + multiPoint);
+		}
+		return multiPoint;
 	}
 
 	//
@@ -151,9 +150,14 @@ public final class SpatialUtils {
 			LOG.debug("Creating line from coordinates "
 					+ Arrays.toString(coordinates) + " and SRID " + srid);
 		}
-		LineString line = new GeometryFactory().createLineString(coordinates);
-		if (line != null) {
-			line.setSRID(srid);
+		LineString line;
+		try {
+			line = new GeometryFactory(PRECISION_MODEL, srid)
+					.createLineString(coordinates);
+		} catch (Exception e) {
+			String message = ERROR + e.getMessage();
+			LOG.error(message);
+			throw new SpatialException(message, e);
 		}
 		checkGeometry(line);
 		if (LOG.isDebugEnabled()) {
@@ -176,23 +180,21 @@ public final class SpatialUtils {
 			LOG.debug("Creating multi-line from lines "
 					+ Arrays.toString(geometries));
 		}
+		checkSRIDs(geometries);
+		MultiLineString geometry;
 		try {
-			MultiLineString geometry = new GeometryFactory()
-					.createMultiLineString(geometries);
-			checkSRIDs(geometries);
-			if (geometry != null) {
-				geometry.setSRID(geometries[0].getSRID());
-			}
-			checkGeometry(geometry);
-			if (LOG.isDebugEnabled()) {
-				LOG.debug(RESULT + geometry);
-			}
-			return geometry;
+			geometry = new GeometryFactory(PRECISION_MODEL,
+					geometries[0].getSRID()).createMultiLineString(geometries);
 		} catch (Exception e) {
 			String message = ERROR + e.getMessage();
 			LOG.error(message);
 			throw new SpatialException(message, e);
 		}
+		checkGeometry(geometry);
+		if (LOG.isDebugEnabled()) {
+			LOG.debug(RESULT + geometry);
+		}
+		return geometry;
 	}
 
 	//
@@ -221,23 +223,22 @@ public final class SpatialUtils {
 			LOG.debug("Creating multi-polygon from polygons "
 					+ Arrays.toString(geometries));
 		}
+		checkSRIDs(geometries);
+		MultiPolygon geometry;
 		try {
-			MultiPolygon geometry = new GeometryFactory()
-					.createMultiPolygon(geometries);
-			checkSRIDs(geometries);
-			if (geometry != null) {
-				geometry.setSRID(geometries[0].getSRID());
-			}
-			checkGeometry(geometry);
-			if (LOG.isDebugEnabled()) {
-				LOG.debug(RESULT + geometry);
-			}
-			return geometry;
+			geometry = new GeometryFactory(PRECISION_MODEL,
+					geometries[0].getSRID()).createMultiPolygon(geometries);
+
 		} catch (Exception e) {
 			String message = ERROR + e.getMessage();
 			LOG.error(message);
 			throw new SpatialException(message, e);
 		}
+		checkGeometry(geometry);
+		if (LOG.isDebugEnabled()) {
+			LOG.debug(RESULT + geometry);
+		}
+		return geometry;
 	}
 
 	//
@@ -256,23 +257,22 @@ public final class SpatialUtils {
 			LOG.debug("Creating geometry collection from geometries "
 					+ Arrays.toString(geometries));
 		}
+		checkSRIDs(geometries);
+		GeometryCollection geometry;
 		try {
-			GeometryCollection geometry = new GeometryFactory()
+			geometry = new GeometryFactory(PRECISION_MODEL,
+					geometries[0].getSRID())
 					.createGeometryCollection(geometries);
-			checkSRIDs(geometries);
-			if (geometry != null) {
-				geometry.setSRID(geometries[0].getSRID());
-			}
-			checkGeometry(geometry);
-			if (LOG.isDebugEnabled()) {
-				LOG.debug(RESULT + geometry);
-			}
-			return geometry;
 		} catch (Exception e) {
 			String message = ERROR + e.getMessage();
 			LOG.error(message);
 			throw new SpatialException(message, e);
 		}
+		checkGeometry(geometry);
+		if (LOG.isDebugEnabled()) {
+			LOG.debug(RESULT + geometry);
+		}
+		return geometry;
 	}
 
 	//
@@ -283,21 +283,20 @@ public final class SpatialUtils {
 		if (LOG.isDebugEnabled()) {
 			LOG.debug("Creating geometry from wkt " + wkt + " and SRID " + srid);
 		}
+		Geometry geometry;
 		try {
-			Geometry geometry = (Geometry) new WKTReader().read(wkt);
-			if (geometry != null) {
-				geometry.setSRID(srid);
-			}
-			checkGeometry(geometry);
-			if (LOG.isDebugEnabled()) {
-				LOG.debug(RESULT + geometry);
-			}
-			return geometry;
+			geometry = (Geometry) new WKTReader(new GeometryFactory(
+					PRECISION_MODEL, srid)).read(wkt);
 		} catch (Exception e) {
 			String message = ERROR + e.getMessage();
 			LOG.error(message);
 			throw new SpatialException(message, e);
 		}
+		checkGeometry(geometry);
+		if (LOG.isDebugEnabled()) {
+			LOG.debug(RESULT + geometry);
+		}
+		return geometry;
 	}
 
 	//
@@ -453,11 +452,6 @@ public final class SpatialUtils {
 			throw new SpatialException(message);
 		}
 		int srid = geometries[0].getSRID();
-		if (srid == 0) {
-			String message = "Missing SRID in geometry: " + geometries[0];
-			LOG.error(message);
-			throw new SpatialException(message);
-		}
 		for (int i = 1; i < geometries.length; i++) {
 			if (geometries[i].getSRID() != srid) {
 				String message = "Different SRID found in geometry: "
