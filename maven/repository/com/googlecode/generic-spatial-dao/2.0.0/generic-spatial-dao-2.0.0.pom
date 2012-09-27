@@ -139,13 +139,6 @@
 				<artifactId>cobertura-maven-plugin</artifactId>
 				<version>2.5.1</version>
 				<configuration>
-					<check>
-						<totalBranchRate>85</totalBranchRate>
-						<totalLineRate>85</totalLineRate>
-						<packageLineRate>85</packageLineRate>
-						<packageBranchRate>85</packageBranchRate>
-						<haltOnFailure>true</haltOnFailure>
-					</check>
 					<instrumentation>
 						<excludes>
 							<exclude>org/genericspatialdao/exception/**/*.class</exclude>
