@@ -177,55 +177,6 @@ public class SpatialUtilsTest {
 	}
 
 	@Test
-	public void changeScaleTest() {
-		double factor = 2;
-		Polygon polygon = SpatialUtils.createPolygon(
-				"POLYGON ((0 0, 0 3, 3 3, 3 0, 0 0))", SRID);
-		Polygon expectedPolygon = SpatialUtils.createPolygon(
-				"POLYGON ((0 0, 0 6, 6 6, 6 0, 0 0))", SRID);
-		Point point = SpatialUtils.createPoint("POINT (4 2)", SRID);
-		Point expectedPoint = SpatialUtils.createPoint("POINT (8 4)", SRID);
-		assertEquals(expectedPolygon,
-				SpatialUtils.getChangedScaleGeometry(polygon, factor));
-		assertEquals(expectedPoint,
-				SpatialUtils.getChangedScaleGeometry(point, factor));
-		// test clone method
-		assertEquals(SpatialUtils.createPolygon(
-				"POLYGON ((0 0, 0 3, 3 3, 3 0, 0 0))", SRID), polygon);
-	}
-
-	@Test
-	public void changeScale2Test() {
-		Geometry envelope = SpatialUtils
-				.createMultiPolygon(
-						"MULTIPOLYGON (((-47.200183869063 -22.886767385861, -47.197780609786 -22.886681555173, -47.197780609786 -22.889986036679, -47.200183869063 -22.889986036679, -47.200183869063 -22.886767385861)), ((-47.195119858443 -22.886767385861, -47.192029953658 -22.886767385861, -47.192029953658 -22.889943121335, -47.195119858443 -22.889943121335, -47.195119858443 -22.886767385861)), ((-47.186236382186 -22.886767385861, -47.189712525069 -22.886767385861, -47.189755440413 -22.889986036679, -47.186150551497 -22.890028952023, -47.186236382186 -22.886767385861)), ((-47.200183869063 -22.892475126645, -47.19782352513 -22.892432211301, -47.197780609786 -22.895393370053, -47.200226784407 -22.895393370053, -47.200183869063 -22.892475126645)), ((-47.195162773787 -22.892475126645, -47.192072869002 -22.892432211301, -47.192072869002 -22.895436285397, -47.195205689131 -22.895479200742, -47.195162773787 -22.892475126645)), ((-47.18962669438 -22.892518041989, -47.186150551497 -22.892475126645, -47.186107636153 -22.895436285397, -47.189669609725 -22.895436285397, -47.18962669438 -22.892518041989)))",
-						SRID).getEnvelope();
-		SpatialUtils.getChangedScaleGeometry(envelope, 0.4);
-	}
-
-	@Test
-	public void changeScaleCentroidBasedTest() {
-		double factor = 2;
-		Polygon polygon = SpatialUtils.createPolygon(
-				"POLYGON ((0 0, 0 3, 3 3, 3 0, 0 0))", SRID);
-		Polygon expectedPolygon = SpatialUtils
-				.createPolygon(
-						"POLYGON ((-1.5 -1.5, -1.5 4.5, 4.5 4.5, 4.5 -1.5, -1.5 -1.5))",
-						SRID);
-		Point point = SpatialUtils.createPoint("POINT (4 2)", SRID);
-		Point expectedPoint = SpatialUtils.createPoint("POINT (4 2)", SRID);
-		assertEquals(expectedPolygon,
-				SpatialUtils.getCentroidBasedChangedScaleGeometry(polygon,
-						factor));
-		assertEquals(expectedPoint,
-				SpatialUtils
-						.getCentroidBasedChangedScaleGeometry(point, factor));
-		// test clone method
-		assertEquals(SpatialUtils.createPolygon(
-				"POLYGON ((0 0, 0 3, 3 3, 3 0, 0 0))", SRID), polygon);
-	}
-
-	@Test
 	public void roundGeometryTest() {
 		Polygon polygon = SpatialUtils
 				.createPolygon(
