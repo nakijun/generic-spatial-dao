@@ -303,65 +303,6 @@ public final class SpatialUtils {
 	// OTHER METHODS
 	//
 
-	public static Geometry getChangedScaleGeometry(Geometry geometry,
-			double factor) {
-		if (LOG.isInfoEnabled()) {
-			LOG.info("Changing scale using factor " + factor);
-		}
-
-		if (factor == 1.0) {
-			return geometry;
-		}
-
-		Geometry newGeometry = (Geometry) geometry.clone();
-
-		for (int i = 0; i < newGeometry.getCoordinates().length; i++) {
-			Coordinate finalCoordinate = new Coordinate(
-					newGeometry.getCoordinates()[i].x * factor,
-					newGeometry.getCoordinates()[i].y * factor);
-			newGeometry.getCoordinates()[i].setCoordinate(finalCoordinate);
-		}
-		newGeometry.geometryChanged();
-		checkGeometry(newGeometry);
-		if (LOG.isDebugEnabled()) {
-			LOG.debug(RESULT + newGeometry);
-		}
-		return newGeometry;
-	}
-
-	public static Geometry getCentroidBasedChangedScaleGeometry(
-			Geometry geometry, double factor) {
-		if (LOG.isInfoEnabled()) {
-			LOG.info("Changing scale centroid based using factor " + factor);
-		}
-
-		if (factor == 1.0) {
-			return geometry;
-		}
-
-		Geometry newGeometry = (Geometry) geometry.clone();
-
-		Point centroid = newGeometry.getCentroid();
-		for (int i = 0; i < newGeometry.getCoordinates().length; i++) {
-			Coordinate translatedCoordinate = new Coordinate(
-					newGeometry.getCoordinates()[i].x - centroid.getX(),
-					newGeometry.getCoordinates()[i].y - centroid.getY());
-			Coordinate translatedResizedCoordinated = new Coordinate(
-					translatedCoordinate.x * factor, translatedCoordinate.y
-							* factor);
-			Coordinate finalCoordinate = new Coordinate(
-					translatedResizedCoordinated.x + centroid.getX(),
-					translatedResizedCoordinated.y + centroid.getY());
-			newGeometry.getCoordinates()[i].setCoordinate(finalCoordinate);
-		}
-		newGeometry.geometryChanged();
-		checkGeometry(newGeometry);
-		if (LOG.isDebugEnabled()) {
-			LOG.debug(RESULT + newGeometry);
-		}
-		return newGeometry;
-	}
-
 	/**
 	 * Be careful, this method can create invalid geometries depending on the
 	 * case. In these cases, an exception will be throw
