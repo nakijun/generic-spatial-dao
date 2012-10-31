@@ -308,7 +308,8 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 			CriteriaOptions criteriaOptions) {
 		if (LOG.isInfoEnabled()) {
 			LOG.info("Finding by criteria. Conditions: " + list
-					+ ". Projection: " + ". Options: " + criteriaOptions);
+					+ ". Projection: " + projection + ". Options: "
+					+ criteriaOptions);
 		}
 		try {
 			Criteria criteria = getSession().createCriteria(entityClass);
