@@ -23,16 +23,16 @@ public class SpatialTestVO implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 
-	@Type(type = "org.hibernatespatial.GeometryUserType")
+	@Type(type = "org.hibernate.spatial.GeometryType")
 	private Point point;
 
-	@Type(type = "org.hibernatespatial.GeometryUserType")
+	@Type(type = "org.hibernate.spatial.GeometryType")
 	private Polygon polygon;
 
-	@Type(type = "org.hibernatespatial.GeometryUserType")
+	@Type(type = "org.hibernate.spatial.GeometryType")
 	private MultiPolygon multiPolygon;
 
-	@Type(type = "org.hibernatespatial.GeometryUserType")
+	@Type(type = "org.hibernate.spatial.GeometryType")
 	private Geometry geometry;
 
 	public SpatialTestVO() {
