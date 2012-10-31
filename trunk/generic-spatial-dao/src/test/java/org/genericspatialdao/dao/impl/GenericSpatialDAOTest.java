@@ -19,7 +19,7 @@ import org.genericspatialdao.util.TestUtils.DB;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
-import org.hibernatespatial.criterion.SpatialRestrictions;
+import org.hibernate.spatial.criterion.SpatialRestrictions;
 import org.junit.Test;
 
 import com.vividsolutions.jts.geom.Point;

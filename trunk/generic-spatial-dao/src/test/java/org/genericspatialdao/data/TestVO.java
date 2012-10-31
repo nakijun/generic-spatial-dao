@@ -15,7 +15,9 @@ public class TestVO implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
+
 	private String login;
+
 	private String password;
 
 	public int getId() {
