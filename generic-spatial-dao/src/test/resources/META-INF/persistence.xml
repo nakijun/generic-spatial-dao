@@ -9,25 +9,23 @@
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
 		<properties>
 			<property name="hibernate.connection.driver_class" value="org.postgresql.Driver" />
-			<property name="hibernate.dialect"
-				value="org.hibernate.spatial.dialect.postgis.PostgisDialect" />
-			<property name="hibernate.hbm2ddl.auto" value="create-drop" />
+			<property name="hibernate.dialect" value="org.hibernate.spatial.dialect.postgis.PostgisDialect" />
+			<property name="hibernate.hbm2ddl.auto" value="update" />
 			<property name="hibernate.id.new_generator_mappings" value="true" />
-			<property name="hibernate.connection.provider_class"
-				value="org.hibernate.service.jdbc.connections.internal.C3P0ConnectionProvider" />
-		</properties>
+			<property name="hibernate.connection.provider_class" value="org.hibernate.service.jdbc.connections.internal.C3P0ConnectionProvider" />
+            <property name="hibernate.c3p0.max_size" value="100" />
+	    </properties>
 	</persistence-unit>
 
 	<persistence-unit name="genericspatialdao2">
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
 		<properties>
 			<property name="hibernate.connection.driver_class" value="org.postgresql.Driver" />
-			<property name="hibernate.dialect"
-				value="org.hibernate.spatial.dialect.postgis.PostgisDialect" />
+			<property name="hibernate.dialect" value="org.hibernate.spatial.dialect.postgis.PostgisDialect" />
 			<property name="hibernate.hbm2ddl.auto" value="update" />
 			<property name="hibernate.id.new_generator_mappings" value="true" />
-			<property name="hibernate.connection.provider_class"
-				value="org.hibernate.service.jdbc.connections.internal.C3P0ConnectionProvider" />
+			<property name="hibernate.connection.provider_class" value="org.hibernate.service.jdbc.connections.internal.C3P0ConnectionProvider" />
+			<property name="hibernate.c3p0.max_size" value="100" />
 		</properties>
 	</persistence-unit>
 
@@ -35,12 +33,11 @@
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
 		<properties>
 			<property name="hibernate.connection.driver_class" value="org.postgresql.Driver" />
-			<property name="hibernate.dialect"
-				value="org.hibernate.spatial.dialect.postgis.PostgisDialect" />
-			<property name="hibernate.connection.provider_class"
-				value="org.hibernate.service.jdbc.connections.internal.C3P0ConnectionProvider" />
+			<property name="hibernate.dialect" value="org.hibernate.spatial.dialect.postgis.PostgisDialect" />
+			<property name="hibernate.connection.provider_class" value="org.hibernate.service.jdbc.connections.internal.C3P0ConnectionProvider" />
+			<property name="hibernate.c3p0.max_size" value="100" />
 			<property name="hibernate.hbm2ddl.auto" value="update" />
-			<property name="hibernate.id.new_generator_mappings" value="true" />
+			<property name="hibernate.id.new_generator_mappings" value="true" />			
 		</properties>
 	</persistence-unit>
 
@@ -48,12 +45,11 @@
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
 		<properties>
 			<property name="hibernate.connection.driver_class" value="org.postgresql.Driver" />
-			<property name="hibernate.dialect"
-				value="org.hibernate.spatial.dialect.postgis.PostgisDialect" />
+			<property name="hibernate.dialect" value="org.hibernate.spatial.dialect.postgis.PostgisDialect" />
 			<property name="hibernate.hbm2ddl.auto" value="update" />
 			<property name="hibernate.id.new_generator_mappings" value="true" />
-			<property name="hibernate.connection.provider_class"
-				value="org.hibernate.service.jdbc.connections.internal.C3P0ConnectionProvider" />
+			<property name="hibernate.connection.provider_class" value="org.hibernate.service.jdbc.connections.internal.C3P0ConnectionProvider" />
+			<property name="hibernate.c3p0.max_size" value="100" />
 		</properties>
 	</persistence-unit>
 </persistence>
