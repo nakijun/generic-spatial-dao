@@ -24,7 +24,7 @@ public final class EntityManagerService {
 			.getLogger(EntityManagerService.class);
 
 	// there is a session for each persistence unit
-	private static Map<DAOConfiguration, ThreadLocal<EntityManager>> SESSIONS = new HashMap<DAOConfiguration, ThreadLocal<EntityManager>>();
+	private static Map<DAOConfiguration, ThreadLocal<EntityManager>> sessionMap = new HashMap<DAOConfiguration, ThreadLocal<EntityManager>>();
 
 	private EntityManagerService() {
 
@@ -37,10 +37,10 @@ public final class EntityManagerService {
 	 */
 	public static synchronized EntityManager getEntityManager(
 			DAOConfiguration configuration) {
-		ThreadLocal<EntityManager> session = SESSIONS.get(configuration);
+		ThreadLocal<EntityManager> session = sessionMap.get(configuration);
 		if (session == null) {
 			session = new ThreadLocal<EntityManager>();
-			SESSIONS.put(configuration, session);
+			sessionMap.put(configuration, session);
 		}
 		EntityManager em = session.get();
 		if (em == null) {
@@ -60,7 +60,7 @@ public final class EntityManagerService {
 	 * @param configuration
 	 */
 	public static synchronized void close(DAOConfiguration configuration) {
-		ThreadLocal<EntityManager> session = SESSIONS.get(configuration);
+		ThreadLocal<EntityManager> session = sessionMap.get(configuration);
 		if (session == null) {
 			LOG.info(THERE_IS_NO_SESSION_FOR_CONFIGURATION + configuration);
 			return;
@@ -81,7 +81,7 @@ public final class EntityManagerService {
 	 */
 	public static void closeAll() {
 		LOG.info("Closing all entity managers");
-		for (DAOConfiguration configuration : SESSIONS.keySet()) {
+		for (DAOConfiguration configuration : sessionMap.keySet()) {
 			close(configuration);
 		}
 	}
