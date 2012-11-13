@@ -17,36 +17,102 @@ import org.hibernate.criterion.Projection;
  */
 public interface DAO<T> {
 
+	/**
+	 * Begin transaction if there is no one
+	 */
 	void beginTransaction();
 
+	/**
+	 * Commit if there is a transaction
+	 */
 	void commit();
 
+	/**
+	 * Rollback if transaction is active
+	 */
 	void rollback();
 
+	/**
+	 * Close DB connections
+	 */
 	void close();
 
+	/**
+	 * 
+	 * @return a Hibernate session
+	 */
 	Session getSession();
 
+	/**
+	 * 
+	 * @return a entity manager
+	 */
 	EntityManager getEntityManager();
 
+	/**
+	 * Persist an entity
+	 * 
+	 * @param t
+	 */
 	void persist(T... t);
 
+	/**
+	 * Persist a list of entities
+	 * 
+	 * @param list
+	 */
 	void persist(List<T> list);
 
+	/**
+	 * Remove an entity
+	 * 
+	 * @param t
+	 */
 	void remove(T... t);
 
+	/**
+	 * Remove a list of entities
+	 * 
+	 * @param list
+	 */
 	void remove(List<T> list);
 
+	/**
+	 * Merge an entity
+	 * 
+	 * @param t
+	 */
 	void merge(T... t);
 
+	/**
+	 * Merge a list of entities
+	 * 
+	 * @param list
+	 */
 	void merge(List<T> list);
 
+	/**
+	 * Refresh an entity
+	 * 
+	 * @param t
+	 */
 	void refresh(T... t);
 
+	/**
+	 * Refresh a list of entities
+	 * 
+	 * @param list
+	 */
 	void refresh(List<T> list);
 
+	/**
+	 * Clear entity manager
+	 */
 	void clear();
 
+	/**
+	 * Flush session
+	 */
 	void flush();
 
 	T find(Object id);

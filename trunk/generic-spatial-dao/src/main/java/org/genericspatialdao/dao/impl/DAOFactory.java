@@ -13,7 +13,7 @@ import org.genericspatialdao.service.EntityManagerService;
  */
 public final class DAOFactory {
 
-	private static final String CREATING_DAO_FOR_CLASS = "Creating DAO for class ";
+	private static final String CREATING_DAO_FOR_CLASS = "Creating DAO for class: ";
 	private static final Logger LOG = Logger.getLogger(DAOFactory.class);
 
 	private DAOFactory() {
