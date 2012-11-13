@@ -30,9 +30,6 @@ import org.hibernate.criterion.Projections;
  */
 public class GenericSpatialDAO<T> implements DAO<T> {
 
-	protected final Class<T> entityClass;
-	protected final DAOConfiguration configuration;
-
 	private static final String FAILED_TO_REMOVE_ALL = "Failed to remove all: ";
 	private static final String CAUSE = ". Cause: ";
 	private static final String PERSISTING_OBJECT = "Persisting object: ";
@@ -51,8 +48,10 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 	private static final String ERROR = "Error: ";
 	private static final String RESULT = "Result: ";
 	private static final String EMPTY_LIST = "Empty list";
-
 	private static final Logger LOG = Logger.getLogger(GenericSpatialDAO.class);
+
+	private final Class<T> entityClass;
+	private final DAOConfiguration configuration;
 
 	public GenericSpatialDAO(Class<T> entityClass,
 			DAOConfiguration configuration) {
@@ -65,9 +64,7 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 		if (LOG.isInfoEnabled()) {
 			LOG.info(FINDING + entityClass.getName() + OBJECT_BY_ID + id);
 		}
-
 		T t = getEntityManager().find(entityClass, id);
-
 		if (LOG.isDebugEnabled()) {
 			LOG.debug(RESULT + t);
 		}
@@ -80,7 +77,6 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 			LOG.info(FINDING + entityClass.getName() + OBJECTS_BY_IDS
 					+ Arrays.toString(id));
 		}
-
 		List<T> resultList = new ArrayList<T>();
 		for (Object idEntity : id) {
 			T result = getEntityManager().find(entityClass, idEntity);
@@ -100,9 +96,7 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 			LOG.info(FINDING + entityClass.getSimpleName() + OBJECT_BY_ID + id
 					+ " and properties: " + properties);
 		}
-
 		T t = getEntityManager().find(entityClass, id, properties);
-
 		if (LOG.isDebugEnabled()) {
 			LOG.debug(RESULT + t);
 		}
@@ -150,7 +144,6 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 		if (LOG.isInfoEnabled()) {
 			LOG.info(PERSISTING_OBJECT + t);
 		}
-
 		try {
 			getEntityManager().persist(t);
 		} catch (Exception e) {
@@ -187,7 +180,6 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 		if (LOG.isInfoEnabled()) {
 			LOG.info(REMOVING_OBJECT + t);
 		}
-
 		try {
 			getEntityManager().remove(t);
 		} catch (Exception e) {
@@ -224,7 +216,6 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 		if (LOG.isInfoEnabled()) {
 			LOG.info(MERGING_OBJECT + t);
 		}
-
 		try {
 			getEntityManager().merge(t);
 		} catch (Exception e) {
@@ -261,7 +252,6 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 		if (LOG.isInfoEnabled()) {
 			LOG.info(REFRESHING_OBJECT + t);
 		}
-
 		try {
 			getEntityManager().refresh(t);
 		} catch (Exception e) {
@@ -368,9 +358,7 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 			for (int i = 0; i < list.size(); i++) {
 				criteria.add(list.get(i));
 			}
-
 			T result = (T) criteria.uniqueResult();
-
 			if (LOG.isDebugEnabled()) {
 				LOG.debug(RESULT + result);
 			}
@@ -388,7 +376,6 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 		if (LOG.isInfoEnabled()) {
 			LOG.info(EXECUTING_QUERY + sql);
 		}
-
 		try {
 			Query q = getSession().createSQLQuery(sql);
 			List result = q.list();
@@ -409,7 +396,6 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 		if (LOG.isInfoEnabled()) {
 			LOG.info(EXECUTING_QUERY + sql);
 		}
-
 		try {
 			Query q = getSession().createSQLQuery(sql);
 			int result = q.executeUpdate();
@@ -432,7 +418,6 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 		if (LOG.isInfoEnabled()) {
 			LOG.info(EXECUTING_QUERY + hql);
 		}
-
 		try {
 			Query q = getSession().createQuery(hql);
 			List result = q.list();
@@ -478,7 +463,6 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 		if (LOG.isInfoEnabled()) {
 			LOG.info(EXECUTING_QUERY + hql);
 		}
-
 		try {
 			Query q = getSession().createQuery(hql);
 			int result = q.executeUpdate();
@@ -517,7 +501,6 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 		if (LOG.isInfoEnabled()) {
 			LOG.info("Counting rows of " + entityClass.getSimpleName());
 		}
-
 		try {
 			Criteria criteria = getSession().createCriteria(entityClass);
 			criteria.setProjection(Projections.rowCount());
@@ -586,6 +569,14 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 		if (configuration.isAutoTransaction()) {
 			commit();
 		}
+	}
+
+	protected Class<T> getEntityClass() {
+		return entityClass;
+	}
+
+	protected DAOConfiguration getConfiguration() {
+		return configuration;
 	}
 
 	protected boolean isEmpty(List<T> list) {
