@@ -35,10 +35,9 @@ public final class SpatialUtils {
 	private static final String INVALID_GEOMETRY = "Invalid geometry: ";
 	private static final String ERROR = "Error: ";
 	private static final String RESULT = "Result: ";
-
 	private static final Logger LOG = Logger.getLogger(SpatialUtils.class);
 
-	private static PrecisionModel PRECISION_MODEL = new PrecisionModel();
+	private static PrecisionModel precisionModel = new PrecisionModel();
 
 	private SpatialUtils() {
 
@@ -57,7 +56,7 @@ public final class SpatialUtils {
 			LOG.debug("Creating point from coordinate " + coordinate
 					+ " and SRID " + srid);
 		}
-		Point point = new GeometryFactory(PRECISION_MODEL, srid)
+		Point point = new GeometryFactory(precisionModel, srid)
 				.createPoint(coordinate);
 		checkGeometry(point);
 		if (LOG.isDebugEnabled()) {
@@ -123,7 +122,7 @@ public final class SpatialUtils {
 		checkSRIDs(geometries);
 		MultiPoint multiPoint;
 		try {
-			multiPoint = new GeometryFactory(PRECISION_MODEL,
+			multiPoint = new GeometryFactory(precisionModel,
 					geometries[0].getSRID()).createMultiPoint(geometries);
 		} catch (Exception e) {
 			String message = ERROR + e.getMessage();
@@ -152,7 +151,7 @@ public final class SpatialUtils {
 		}
 		LineString line;
 		try {
-			line = new GeometryFactory(PRECISION_MODEL, srid)
+			line = new GeometryFactory(precisionModel, srid)
 					.createLineString(coordinates);
 		} catch (Exception e) {
 			String message = ERROR + e.getMessage();
@@ -183,7 +182,7 @@ public final class SpatialUtils {
 		checkSRIDs(geometries);
 		MultiLineString geometry;
 		try {
-			geometry = new GeometryFactory(PRECISION_MODEL,
+			geometry = new GeometryFactory(precisionModel,
 					geometries[0].getSRID()).createMultiLineString(geometries);
 		} catch (Exception e) {
 			String message = ERROR + e.getMessage();
@@ -226,7 +225,7 @@ public final class SpatialUtils {
 		checkSRIDs(geometries);
 		MultiPolygon geometry;
 		try {
-			geometry = new GeometryFactory(PRECISION_MODEL,
+			geometry = new GeometryFactory(precisionModel,
 					geometries[0].getSRID()).createMultiPolygon(geometries);
 
 		} catch (Exception e) {
@@ -260,7 +259,7 @@ public final class SpatialUtils {
 		checkSRIDs(geometries);
 		GeometryCollection geometry;
 		try {
-			geometry = new GeometryFactory(PRECISION_MODEL,
+			geometry = new GeometryFactory(precisionModel,
 					geometries[0].getSRID())
 					.createGeometryCollection(geometries);
 		} catch (Exception e) {
@@ -286,7 +285,7 @@ public final class SpatialUtils {
 		Geometry geometry;
 		try {
 			geometry = (Geometry) new WKTReader(new GeometryFactory(
-					PRECISION_MODEL, srid)).read(wkt);
+					precisionModel, srid)).read(wkt);
 		} catch (Exception e) {
 			String message = ERROR + e.getMessage();
 			LOG.error(message);
