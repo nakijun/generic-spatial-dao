@@ -353,6 +353,14 @@ public final class SpatialUtils {
 		}
 	}
 
+	public static PrecisionModel getPrecisionModel() {
+		return precisionModel;
+	}
+
+	public static void setPrecisionModel(PrecisionModel precisionModel) {
+		SpatialUtils.precisionModel = precisionModel;
+	}
+
 	private static Point[] getPointArrayFromList(List<Point> list) {
 		Point[] geometries = new Point[list.size()];
 		for (int i = 0; i < geometries.length; i++) {
