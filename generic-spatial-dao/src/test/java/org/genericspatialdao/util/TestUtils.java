@@ -4,9 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import org.genericspatialdao.configuration.DAOConfiguration;
-import org.genericspatialdao.dao.DAO;
-import org.genericspatialdao.dao.impl.GenericSpatialDAO;
+import org.genericspatialdao.configuration.DaoConfiguration;
+import org.genericspatialdao.dao.Dao;
+import org.genericspatialdao.dao.impl.GenericSpatialDao;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Point;
@@ -36,9 +36,9 @@ public class TestUtils {
 			.getProperty("db.password");
 	private static final String URL_TEMPLATE = "jdbc:postgresql://%s:%s/%s";
 
-	public static <T> DAO<T> getDAOTest(Class<T> entityClass, DB db) {
+	public static <T> Dao<T> getDAOTest(Class<T> entityClass, DB db) {
 		String persistenceUnit = db.toString();
-		return new GenericSpatialDAO<T>(entityClass, new DAOConfiguration(
+		return new GenericSpatialDao<T>(entityClass, new DaoConfiguration(
 				persistenceUnit, buildPropertiesMap(db)));
 	}
 
