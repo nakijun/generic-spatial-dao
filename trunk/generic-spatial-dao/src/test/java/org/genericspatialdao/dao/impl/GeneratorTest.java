@@ -5,7 +5,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.genericspatialdao.dao.DAO;
+import org.genericspatialdao.dao.Dao;
 import org.genericspatialdao.data.TestGeneratorVO;
 import org.genericspatialdao.util.TestUtils;
 import org.genericspatialdao.util.TestUtils.DB;
@@ -15,7 +15,7 @@ public class GeneratorTest {
 
 	@Test
 	public void test() {
-		DAO<TestGeneratorVO> testG = TestUtils.getDAOTest(
+		Dao<TestGeneratorVO> testG = TestUtils.getDAOTest(
 				TestGeneratorVO.class, DB.DB_1);
 		List<TestGeneratorVO> list = new ArrayList<TestGeneratorVO>();
 		for (int i = 0; i < 5; i++) {
@@ -30,6 +30,6 @@ public class GeneratorTest {
 		}
 
 		testG.remove(list);
-		DAOFactory.close(testG);
+		DaoFactory.close(testG);
 	}
 }

@@ -3,8 +3,8 @@ package org.genericspatialdao.example;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import org.genericspatialdao.dao.DAO;
-import org.genericspatialdao.dao.impl.DAOFactory;
+import org.genericspatialdao.dao.Dao;
+import org.genericspatialdao.dao.impl.DaoFactory;
 import org.genericspatialdao.example.vo.Department;
 import org.genericspatialdao.example.vo.Employee;
 import org.genericspatialdao.util.DataCreator;
@@ -17,9 +17,9 @@ public class ExampleTest {
 	@Test
 	public void oneToManyTest() {
 		// setup
-		DAO<Department> testD = TestUtils.getDAOTest(Department.class, DB.DB_1);
+		Dao<Department> testD = TestUtils.getDAOTest(Department.class, DB.DB_1);
 
-		DAO<Employee> testE = TestUtils.getDAOTest(Employee.class, DB.DB_1);
+		Dao<Employee> testE = TestUtils.getDAOTest(Employee.class, DB.DB_1);
 
 		Department d = DataCreator.createDepartment();
 		testD.persist(d);
@@ -50,6 +50,6 @@ public class ExampleTest {
 		testE.remove(e2, e1);
 		testD.remove(d);
 
-		DAOFactory.close(testE, testD);
+		DaoFactory.close(testE, testD);
 	}
 }

@@ -9,10 +9,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.genericspatialdao.configuration.CriteriaOptions;
-import org.genericspatialdao.dao.DAO;
+import org.genericspatialdao.dao.Dao;
 import org.genericspatialdao.data.SpatialTestVO;
 import org.genericspatialdao.data.TestVO;
-import org.genericspatialdao.exception.DAOException;
+import org.genericspatialdao.exception.DaoException;
 import org.genericspatialdao.util.SpatialUtils;
 import org.genericspatialdao.util.TestUtils;
 import org.genericspatialdao.util.TestUtils.DB;
@@ -25,14 +25,14 @@ import org.junit.Test;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
 
-public class GenericSpatialDAOTest {
+public class GenericSpatialDaoTest {
 
 	private final int SRID = 4326;
 
 	@Test
 	public void removeAllTest() {
 		System.out.println("removeAllTest");
-		DAO<TestVO> testDAO = TestUtils.getDAOTest(TestVO.class, DB.DB_1);
+		Dao<TestVO> testDAO = TestUtils.getDAOTest(TestVO.class, DB.DB_1);
 
 		TestVO testVO = new TestVO();
 		testVO.setLogin(TestUtils.randomString());
@@ -50,7 +50,7 @@ public class GenericSpatialDAOTest {
 	@Test
 	public void countTest() {
 		System.out.println("countTest");
-		DAO<TestVO> testDAO = TestUtils.getDAOTest(TestVO.class, DB.DB_1);
+		Dao<TestVO> testDAO = TestUtils.getDAOTest(TestVO.class, DB.DB_1);
 		TestVO testVO = new TestVO();
 		testVO.setLogin(TestUtils.randomString());
 		testVO.setPassword(TestUtils.randomString());
@@ -67,10 +67,10 @@ public class GenericSpatialDAOTest {
 		testDAO.close();
 	}
 
-	@Test(expected = DAOException.class)
+	@Test(expected = DaoException.class)
 	public void clearTest() {
 		System.out.println("clearTest");
-		DAO<TestVO> testDAO = TestUtils.getDAOTest(TestVO.class, DB.DB_1);
+		Dao<TestVO> testDAO = TestUtils.getDAOTest(TestVO.class, DB.DB_1);
 		TestVO testVO = new TestVO();
 		testVO.setLogin(TestUtils.randomString());
 		testVO.setPassword(TestUtils.randomString());
@@ -88,7 +88,7 @@ public class GenericSpatialDAOTest {
 	@Test
 	public void persistUpdateRemoveTest() {
 		System.out.println("persistUpdateRemoveTest");
-		DAO<TestVO> testDAO = TestUtils.getDAOTest(TestVO.class, DB.DB_1);
+		Dao<TestVO> testDAO = TestUtils.getDAOTest(TestVO.class, DB.DB_1);
 
 		TestVO testVO = new TestVO();
 		testVO.setLogin(TestUtils.randomString());
@@ -117,7 +117,7 @@ public class GenericSpatialDAOTest {
 	@Test
 	public void persistUpdateByFlushAndRemoveSpatialTest() {
 		System.out.println("persistUpdateByFlushAndRemoveSpatialTest");
-		DAO<SpatialTestVO> testDAO = TestUtils.getDAOTest(SpatialTestVO.class,
+		Dao<SpatialTestVO> testDAO = TestUtils.getDAOTest(SpatialTestVO.class,
 				DB.DB_1);
 
 		SpatialTestVO spatialTestVO = new SpatialTestVO();
@@ -147,7 +147,7 @@ public class GenericSpatialDAOTest {
 	@Test
 	public void hqlTest() {
 		System.out.println("hqlTest");
-		DAO<TestVO> testDAO = TestUtils.getDAOTest(TestVO.class, DB.DB_1);
+		Dao<TestVO> testDAO = TestUtils.getDAOTest(TestVO.class, DB.DB_1);
 
 		String login1 = TestUtils.randomString();
 
@@ -176,7 +176,7 @@ public class GenericSpatialDAOTest {
 	@Test
 	public void sqlTest() {
 		System.out.println("sqlTest");
-		DAO<TestVO> testDAO = TestUtils.getDAOTest(TestVO.class, DB.DB_1);
+		Dao<TestVO> testDAO = TestUtils.getDAOTest(TestVO.class, DB.DB_1);
 
 		String login1 = TestUtils.randomString();
 
@@ -206,7 +206,7 @@ public class GenericSpatialDAOTest {
 	@Test
 	public void sqlUpdateAndRefreshTest() {
 		System.out.println("sqlUpdateTest");
-		DAO<TestVO> testDAO = TestUtils.getDAOTest(TestVO.class, DB.DB_1);
+		Dao<TestVO> testDAO = TestUtils.getDAOTest(TestVO.class, DB.DB_1);
 
 		String login = TestUtils.randomString();
 		String newLogin = TestUtils.randomString();
@@ -228,7 +228,7 @@ public class GenericSpatialDAOTest {
 	@Test
 	public void hql2Test() {
 		System.out.println("hqlTest");
-		DAO<TestVO> testDAO = TestUtils.getDAOTest(TestVO.class, DB.DB_1);
+		Dao<TestVO> testDAO = TestUtils.getDAOTest(TestVO.class, DB.DB_1);
 
 		String login1 = TestUtils.randomString();
 
@@ -256,7 +256,7 @@ public class GenericSpatialDAOTest {
 	@Test
 	public void findAllTest() {
 		System.out.println("findAllTest");
-		DAO<TestVO> testDAO = TestUtils.getDAOTest(TestVO.class, DB.DB_1);
+		Dao<TestVO> testDAO = TestUtils.getDAOTest(TestVO.class, DB.DB_1);
 		assertEquals(0, testDAO.findAll().size());
 		assertEquals(0, testDAO.findAll(new CriteriaOptions(1, 100)).size());
 		testDAO.close();
@@ -265,7 +265,7 @@ public class GenericSpatialDAOTest {
 	@Test
 	public void findTest() {
 		System.out.println("findTest");
-		DAO<TestVO> testDAO = TestUtils.getDAOTest(TestVO.class, DB.DB_1);
+		Dao<TestVO> testDAO = TestUtils.getDAOTest(TestVO.class, DB.DB_1);
 		TestVO testVO = new TestVO();
 		String login = TestUtils.randomString();
 		String password = TestUtils.randomString();
@@ -286,7 +286,7 @@ public class GenericSpatialDAOTest {
 	@Test
 	public void findListTest() {
 		System.out.println("findListTest");
-		DAO<TestVO> testDAO = TestUtils.getDAOTest(TestVO.class, DB.DB_1);
+		Dao<TestVO> testDAO = TestUtils.getDAOTest(TestVO.class, DB.DB_1);
 		TestVO testVO = new TestVO();
 		testVO.setLogin(TestUtils.randomString());
 		testVO.setPassword(TestUtils.randomString());
@@ -306,10 +306,10 @@ public class GenericSpatialDAOTest {
 		testDAO.close();
 	}
 
-	@Test(expected = DAOException.class)
+	@Test(expected = DaoException.class)
 	public void insertWrongTest() {
 		System.out.println("insertWrongTest");
-		DAO<TestVO> testDAO = TestUtils.getDAOTest(TestVO.class, DB.DB_1);
+		Dao<TestVO> testDAO = TestUtils.getDAOTest(TestVO.class, DB.DB_1);
 
 		TestVO testVO = new TestVO();
 		testVO.setId(TestUtils.randomInt());
@@ -326,7 +326,7 @@ public class GenericSpatialDAOTest {
 	public void withinTest() {
 		System.out.println("withinTest");
 		final int NUM = 50;
-		DAO<SpatialTestVO> testDAO = TestUtils.getDAOTest(SpatialTestVO.class,
+		Dao<SpatialTestVO> testDAO = TestUtils.getDAOTest(SpatialTestVO.class,
 				DB.DB_1);
 		List<SpatialTestVO> list = new ArrayList<SpatialTestVO>();
 		for (int i = 0; i < NUM; i++) {
@@ -357,7 +357,7 @@ public class GenericSpatialDAOTest {
 	@Test
 	public void findAddMergeRemoveAndRefreshEmptyTest() {
 		System.out.println("findAddMergeRemoveAndRefreshEmptyTest");
-		DAO<SpatialTestVO> testDAO = TestUtils.getDAOTest(SpatialTestVO.class,
+		Dao<SpatialTestVO> testDAO = TestUtils.getDAOTest(SpatialTestVO.class,
 				DB.DB_1);
 		assertNull(testDAO.find());
 		testDAO.persist(new ArrayList<SpatialTestVO>());
@@ -370,7 +370,7 @@ public class GenericSpatialDAOTest {
 	public void findUniqueByCriteriaTest() {
 		System.out.println("findByCriteriaTest");
 
-		DAO<TestVO> testDAO = TestUtils.getDAOTest(TestVO.class, DB.DB_1);
+		Dao<TestVO> testDAO = TestUtils.getDAOTest(TestVO.class, DB.DB_1);
 		TestVO testVO = new TestVO();
 		String login1 = TestUtils.randomString();
 		testVO.setLogin(login1);
@@ -393,7 +393,7 @@ public class GenericSpatialDAOTest {
 	@Test
 	public void toStringTest() {
 		System.out.println("toStringTest");
-		DAO<TestVO> testDAO = TestUtils.getDAOTest(TestVO.class, DB.DB_1);
+		Dao<TestVO> testDAO = TestUtils.getDAOTest(TestVO.class, DB.DB_1);
 		testDAO.toString();
 	}
 }
