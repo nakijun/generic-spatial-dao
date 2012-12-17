@@ -1,8 +1,8 @@
 package org.genericspatialdao.dao.impl;
 
 import org.apache.log4j.Logger;
-import org.genericspatialdao.configuration.DAOConfiguration;
-import org.genericspatialdao.dao.DAO;
+import org.genericspatialdao.configuration.DaoConfiguration;
+import org.genericspatialdao.dao.Dao;
 import org.genericspatialdao.service.EntityManagerFactoryService;
 import org.genericspatialdao.service.EntityManagerService;
 
@@ -11,12 +11,12 @@ import org.genericspatialdao.service.EntityManagerService;
  * @author Joao Savio C. Longo - joaosavio@gmail.com
  * 
  */
-public final class DAOFactory {
+public final class DaoFactory {
 
 	private static final String CREATING_DAO_FOR_CLASS = "Creating DAO for class: ";
-	private static final Logger LOG = Logger.getLogger(DAOFactory.class);
+	private static final Logger LOG = Logger.getLogger(DaoFactory.class);
 
-	private DAOFactory() {
+	private DaoFactory() {
 
 	}
 
@@ -26,8 +26,8 @@ public final class DAOFactory {
 	 * @param configuration
 	 * @return a DAO implementation
 	 */
-	public static <T> DAO<T> getDAO(Class<T> entityClass,
-			DAOConfiguration configuration) {
+	public static <T> Dao<T> getDAO(Class<T> entityClass,
+			DaoConfiguration configuration) {
 		if (LOG.isInfoEnabled()) {
 			LOG.info(CREATING_DAO_FOR_CLASS + entityClass.getName()
 					+ ". Persistence unit: "
@@ -36,16 +36,16 @@ public final class DAOFactory {
 					+ configuration.isAutoTransaction());
 		}
 
-		return new GenericSpatialDAO<T>(entityClass, configuration);
+		return new GenericSpatialDao<T>(entityClass, configuration);
 	}
 
 	/**
 	 * 
 	 * @param dao
 	 */
-	public static void close(DAO<?>... dao) {
+	public static void close(Dao<?>... dao) {
 		LOG.info("Closing sessions");
-		for (DAO<?> d : dao) {
+		for (Dao<?> d : dao) {
 			d.close();
 		}
 	}

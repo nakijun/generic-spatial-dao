@@ -15,7 +15,7 @@ import org.hibernate.criterion.Projection;
  * @author Joao Savio C. Longo - joaosavio@gmail.com
  * 
  */
-public interface DAO<T> {
+public interface Dao<T> {
 
 	/**
 	 * Begin transaction if there is no one
