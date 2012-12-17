@@ -9,7 +9,7 @@
 	</parent>
 
 	<artifactId>generic-spatial-dao</artifactId>
-	<version>2.2.0</version>
+	<version>2.3.0</version>
 	<packaging>jar</packaging>
 	<name>generic-spatial-dao</name>
 	<url>http://generic-spatial-dao.googlecode.com</url>
