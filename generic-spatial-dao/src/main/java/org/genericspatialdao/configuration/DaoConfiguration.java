@@ -9,7 +9,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-public class DAOConfiguration implements Serializable {
+public class DaoConfiguration implements Serializable {
 
 	private static final long serialVersionUID = 689563783546032476L;
 
@@ -17,16 +17,16 @@ public class DAOConfiguration implements Serializable {
 	private Map<String, String> properties;
 	private boolean autoTransaction;
 
-	public DAOConfiguration(String persistenceUnit) {
+	public DaoConfiguration(String persistenceUnit) {
 		this(persistenceUnit, null);
 	}
 
-	public DAOConfiguration(String persistenceUnit,
+	public DaoConfiguration(String persistenceUnit,
 			Map<String, String> properties) {
 		this(persistenceUnit, properties, true);
 	}
 
-	public DAOConfiguration(String persistenceUnit,
+	public DaoConfiguration(String persistenceUnit,
 			Map<String, String> properties, boolean autoTransaction) {
 		this.persistenceUnit = persistenceUnit;
 		this.properties = properties;
@@ -82,10 +82,10 @@ public class DAOConfiguration implements Serializable {
 		if (this == obj) {
 			return true;
 		}
-		if (!(obj instanceof DAOConfiguration)) {
+		if (!(obj instanceof DaoConfiguration)) {
 			return false;
 		}
-		DAOConfiguration other = (DAOConfiguration) obj;
+		DaoConfiguration other = (DaoConfiguration) obj;
 		return new EqualsBuilder()
 				.append(persistenceUnit, other.getPersistenceUnit())
 				.append(properties, other.getProperties()).isEquals();
