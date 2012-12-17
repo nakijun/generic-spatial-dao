@@ -5,19 +5,19 @@ package org.genericspatialdao.exception;
  * @author Joao Savio C. Longo - joaosavio@gmail.com
  * 
  */
-public class DAOException extends RuntimeException {
+public class DaoException extends RuntimeException {
 
 	private static final long serialVersionUID = -49185129260304863L;
 
-	public DAOException(String message) {
+	public DaoException(String message) {
 		super(message);
 	}
 
-	public DAOException(Exception e) {
+	public DaoException(Exception e) {
 		super(e);
 	}
 
-	public DAOException(String message, Exception e) {
+	public DaoException(String message, Exception e) {
 		super(message, e);
 	}
 }

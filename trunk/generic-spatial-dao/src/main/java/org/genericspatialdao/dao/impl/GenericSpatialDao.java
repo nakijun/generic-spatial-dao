@@ -11,9 +11,9 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.apache.log4j.Logger;
 import org.genericspatialdao.configuration.CriteriaOptions;
-import org.genericspatialdao.configuration.DAOConfiguration;
-import org.genericspatialdao.dao.DAO;
-import org.genericspatialdao.exception.DAOException;
+import org.genericspatialdao.configuration.DaoConfiguration;
+import org.genericspatialdao.dao.Dao;
+import org.genericspatialdao.exception.DaoException;
 import org.genericspatialdao.service.EntityManagerService;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
@@ -28,7 +28,7 @@ import org.hibernate.criterion.Projections;
  * @author Joao Savio C. Longo - joaosavio@gmail.com
  * 
  */
-public class GenericSpatialDAO<T> implements DAO<T> {
+public class GenericSpatialDao<T> implements Dao<T> {
 
 	private static final String FAILED_TO_REMOVE_ALL = "Failed to remove all: ";
 	private static final String CAUSE = ". Cause: ";
@@ -48,13 +48,13 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 	private static final String ERROR = "Error: ";
 	private static final String RESULT = "Result: ";
 	private static final String EMPTY_LIST = "Empty list";
-	private static final Logger LOG = Logger.getLogger(GenericSpatialDAO.class);
+	private static final Logger LOG = Logger.getLogger(GenericSpatialDao.class);
 
 	private final Class<T> entityClass;
-	private final DAOConfiguration configuration;
+	private final DaoConfiguration configuration;
 
-	public GenericSpatialDAO(Class<T> entityClass,
-			DAOConfiguration configuration) {
+	public GenericSpatialDao(Class<T> entityClass,
+			DaoConfiguration configuration) {
 		this.entityClass = entityClass;
 		this.configuration = configuration;
 	}
@@ -136,7 +136,7 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 			autoCommit();
 		} catch (Exception e) {
 			autoRollback();
-			throw new DAOException(e);
+			throw new DaoException(e);
 		}
 	}
 
@@ -150,7 +150,7 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 			String message = FAILED_TO_PERSIST + e.getMessage() + CAUSE
 					+ e.getCause();
 			LOG.error(message);
-			throw new DAOException(message, e);
+			throw new DaoException(message, e);
 		}
 	}
 
@@ -172,7 +172,7 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 			autoCommit();
 		} catch (Exception e) {
 			autoRollback();
-			throw new DAOException(e);
+			throw new DaoException(e);
 		}
 	}
 
@@ -186,7 +186,7 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 			String message = FAILED_TO_REMOVE + e.getMessage() + CAUSE
 					+ e.getCause();
 			LOG.error(message);
-			throw new DAOException(message, e);
+			throw new DaoException(message, e);
 		}
 	}
 
@@ -208,7 +208,7 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 			autoCommit();
 		} catch (Exception e) {
 			autoRollback();
-			throw new DAOException(e);
+			throw new DaoException(e);
 		}
 	}
 
@@ -222,7 +222,7 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 			String message = FAILED_TO_MERGE + e.getMessage() + CAUSE
 					+ e.getCause();
 			LOG.error(message);
-			throw new DAOException(message, e);
+			throw new DaoException(message, e);
 		}
 	}
 
@@ -244,7 +244,7 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 			autoCommit();
 		} catch (Exception e) {
 			autoRollback();
-			throw new DAOException(e);
+			throw new DaoException(e);
 		}
 	}
 
@@ -258,7 +258,7 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 			String message = FAILED_TO_REFRESH + e.getMessage() + CAUSE
 					+ e.getCause();
 			LOG.error(message);
-			throw new DAOException(message, e);
+			throw new DaoException(message, e);
 		}
 	}
 
@@ -314,7 +314,7 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 		} catch (Exception e) {
 			String message = ERROR + e.getMessage() + CAUSE + e.getCause();
 			LOG.error(message);
-			throw new DAOException(message, e);
+			throw new DaoException(message, e);
 		}
 	}
 
@@ -366,7 +366,7 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 		} catch (Exception e) {
 			String message = ERROR + e.getMessage();
 			LOG.error(message);
-			throw new DAOException(message, e);
+			throw new DaoException(message, e);
 		}
 	}
 
@@ -387,7 +387,7 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 			String message = FAILED_TO_EXECUTE_QUERY + e.getMessage() + CAUSE
 					+ e.getCause();
 			LOG.error(message);
-			throw new DAOException(message, e);
+			throw new DaoException(message, e);
 		}
 	}
 
@@ -408,7 +408,7 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 			String message = FAILED_TO_EXECUTE_QUERY + e.getMessage() + CAUSE
 					+ e.getCause();
 			LOG.error(message);
-			throw new DAOException(message, e);
+			throw new DaoException(message, e);
 		}
 	}
 
@@ -429,7 +429,7 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 			String message = FAILED_TO_EXECUTE_QUERY + e.getMessage() + CAUSE
 					+ e.getCause();
 			LOG.error(message);
-			throw new DAOException(message, e);
+			throw new DaoException(message, e);
 		}
 	}
 
@@ -454,7 +454,7 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 			String message = FAILED_TO_EXECUTE_QUERY + e.getMessage() + CAUSE
 					+ e.getCause();
 			LOG.error(message);
-			throw new DAOException(message, e);
+			throw new DaoException(message, e);
 		}
 	}
 
@@ -475,7 +475,7 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 			String message = FAILED_TO_EXECUTE_QUERY + e.getMessage() + CAUSE
 					+ e.getCause();
 			LOG.error(message);
-			throw new DAOException(message, e);
+			throw new DaoException(message, e);
 		}
 	}
 
@@ -492,7 +492,7 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 			String message = FAILED_TO_REMOVE_ALL + e.getMessage() + CAUSE
 					+ e.getCause();
 			LOG.error(message);
-			throw new DAOException(message, e);
+			throw new DaoException(message, e);
 		}
 	}
 
@@ -512,7 +512,7 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 		} catch (Exception e) {
 			String message = ERROR + e.getMessage() + CAUSE + e.getCause();
 			LOG.error(message);
-			throw new DAOException(message, e);
+			throw new DaoException(message, e);
 		}
 	}
 
@@ -575,7 +575,7 @@ public class GenericSpatialDAO<T> implements DAO<T> {
 		return entityClass;
 	}
 
-	protected DAOConfiguration getConfiguration() {
+	protected DaoConfiguration getConfiguration() {
 		return configuration;
 	}
 

@@ -8,8 +8,8 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 
 import org.apache.log4j.Logger;
-import org.genericspatialdao.configuration.DAOConfiguration;
-import org.genericspatialdao.exception.DAOException;
+import org.genericspatialdao.configuration.DaoConfiguration;
+import org.genericspatialdao.exception.DaoException;
 
 /**
  * 
@@ -24,7 +24,7 @@ public final class EntityManagerService {
 			.getLogger(EntityManagerService.class);
 
 	// there is a session for each persistence unit
-	private static Map<DAOConfiguration, ThreadLocal<EntityManager>> sessionMap = new HashMap<DAOConfiguration, ThreadLocal<EntityManager>>();
+	private static Map<DaoConfiguration, ThreadLocal<EntityManager>> sessionMap = new HashMap<DaoConfiguration, ThreadLocal<EntityManager>>();
 
 	private EntityManagerService() {
 
@@ -36,7 +36,7 @@ public final class EntityManagerService {
 	 * @return an entity manager using a DAOConfiguration object
 	 */
 	public static synchronized EntityManager getEntityManager(
-			DAOConfiguration configuration) {
+			DaoConfiguration configuration) {
 		ThreadLocal<EntityManager> session = sessionMap.get(configuration);
 		if (session == null) {
 			session = new ThreadLocal<EntityManager>();
@@ -59,7 +59,7 @@ public final class EntityManagerService {
 	 * 
 	 * @param configuration
 	 */
-	public static synchronized void close(DAOConfiguration configuration) {
+	public static synchronized void close(DaoConfiguration configuration) {
 		ThreadLocal<EntityManager> session = sessionMap.get(configuration);
 		if (session == null) {
 			LOG.info(THERE_IS_NO_SESSION_FOR_CONFIGURATION + configuration);
@@ -81,7 +81,7 @@ public final class EntityManagerService {
 	 */
 	public static void closeAll() {
 		LOG.info("Closing all entity managers");
-		for (DAOConfiguration configuration : sessionMap.keySet()) {
+		for (DaoConfiguration configuration : sessionMap.keySet()) {
 			close(configuration);
 		}
 	}
@@ -89,10 +89,10 @@ public final class EntityManagerService {
 	/**
 	 * Close quietly entity manager and session of a target persistence unit
 	 */
-	public static synchronized void closeQuietly(DAOConfiguration configuration) {
+	public static synchronized void closeQuietly(DaoConfiguration configuration) {
 		try {
 			close(configuration);
-		} catch (DAOException e) {
+		} catch (DaoException e) {
 			LOG.warn("Exception caught in closeQuietly method: "
 					+ e.getMessage());
 		}
@@ -101,7 +101,7 @@ public final class EntityManagerService {
 	/**
 	 * Begin a transaction if it is not active
 	 */
-	public static void beginTransaction(DAOConfiguration configuration) {
+	public static void beginTransaction(DaoConfiguration configuration) {
 		EntityManager em = getEntityManager(configuration);
 		EntityTransaction transaction = em.getTransaction();
 		if (!transaction.isActive()) {
@@ -113,7 +113,7 @@ public final class EntityManagerService {
 	/**
 	 * Commit if transaction is active
 	 */
-	public static void commit(DAOConfiguration configuration) {
+	public static void commit(DaoConfiguration configuration) {
 		EntityManager em = getEntityManager(configuration);
 		EntityTransaction transaction = em.getTransaction();
 		if (transaction.isActive()) {
@@ -127,7 +127,7 @@ public final class EntityManagerService {
 	/**
 	 * Rollback if transaction is active
 	 */
-	public static void rollback(DAOConfiguration configuration) {
+	public static void rollback(DaoConfiguration configuration) {
 		EntityManager em = getEntityManager(configuration);
 		EntityTransaction transaction = em.getTransaction();
 		if (transaction.isActive()) {

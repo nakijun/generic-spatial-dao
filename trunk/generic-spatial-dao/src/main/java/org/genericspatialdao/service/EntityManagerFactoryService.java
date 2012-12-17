@@ -7,8 +7,8 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 import org.apache.log4j.Logger;
-import org.genericspatialdao.configuration.DAOConfiguration;
-import org.genericspatialdao.exception.DAOException;
+import org.genericspatialdao.configuration.DaoConfiguration;
+import org.genericspatialdao.exception.DaoException;
 
 /**
  * 
@@ -20,7 +20,7 @@ public final class EntityManagerFactoryService {
 	private static final String FAILED_TO_LOAD_PERSISTENCE_UNIT = "Failed to load default persistence unit: ";
 	private static final Logger LOG = Logger
 			.getLogger(EntityManagerFactoryService.class);
-	private static Map<DAOConfiguration, EntityManagerFactory> factories = new HashMap<DAOConfiguration, EntityManagerFactory>();
+	private static Map<DaoConfiguration, EntityManagerFactory> factories = new HashMap<DaoConfiguration, EntityManagerFactory>();
 
 	private EntityManagerFactoryService() {
 
@@ -32,7 +32,7 @@ public final class EntityManagerFactoryService {
 	 * @return an entity manager factory for a target persistence unit
 	 */
 	public static EntityManagerFactory getEntityManagerFactory(
-			DAOConfiguration configuration) {
+			DaoConfiguration configuration) {
 		if (LOG.isInfoEnabled()) {
 			LOG.info("Getting entity manager factory using configuration: "
 					+ configuration);
@@ -54,7 +54,7 @@ public final class EntityManagerFactoryService {
 				message = message + ". Cause: " + e.getCause().getMessage();
 			}
 			LOG.error(message);
-			throw new DAOException(message, e);
+			throw new DaoException(message, e);
 		}
 
 		factories.put(configuration, emf);
@@ -66,7 +66,7 @@ public final class EntityManagerFactoryService {
 	 */
 	public static void closeFactories() {
 		LOG.debug("Closing entity manager factories");
-		for (Map.Entry<DAOConfiguration, EntityManagerFactory> entry : factories
+		for (Map.Entry<DaoConfiguration, EntityManagerFactory> entry : factories
 				.entrySet()) {
 			entry.getValue().close();
 		}
