@@ -15,13 +15,6 @@
 	<url>http://generic-spatial-dao.googlecode.com</url>
 
 	<properties>
-		<!-- Sonar properties -->
-		<sonar.host.url>http://${sonar.host}:${sonar.port}</sonar.host.url>
-		<sonar.jdbc.url>jdbc:h2:tcp://${sonar.host}:9092/sonar</sonar.jdbc.url>
-		<sonar.jdbc.username>sonar</sonar.jdbc.username>
-		<sonar.jdbc.password>sonar</sonar.jdbc.password>
-		<sonar.jdbc.driver>org.h2.Driver</sonar.jdbc.driver>
-
 		<!-- Dependency properties -->
 		<hibernate.version>4.1.7.Final</hibernate.version>
 		<slf4j.version>1.6.1</slf4j.version>
