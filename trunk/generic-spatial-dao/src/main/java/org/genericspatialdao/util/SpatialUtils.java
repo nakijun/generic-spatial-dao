@@ -308,7 +308,7 @@ public final class SpatialUtils {
 	 * 
 	 * @param geometry
 	 * @param maxFractionDigits
-	 * @return
+	 * @return a rounded geometry
 	 */
 	public static Geometry getRoundedGeometry(Geometry geometry,
 			int maxFractionDigits) {
