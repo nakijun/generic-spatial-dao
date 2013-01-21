@@ -7,7 +7,7 @@ import org.genericspatialdao.dao.impl.DaoFactory;
 import org.genericspatialdao.data.SpatialTestVO;
 import org.genericspatialdao.data.TestVO;
 import org.genericspatialdao.util.TestUtils;
-import org.genericspatialdao.util.TestUtils.DB;
+import org.genericspatialdao.util.TestUtils.Database;
 import org.junit.Test;
 
 public class DaoFactoryTest {
@@ -16,8 +16,8 @@ public class DaoFactoryTest {
 	public void test() {
 		Dao<TestVO> testDAO = DaoFactory.getDAO(
 				TestVO.class,
-				new DaoConfiguration(DB.DB_1.toString(), TestUtils
-						.buildPropertiesMap(DB.DB_1)));
+				new DaoConfiguration(Database.DB_1.toString(), TestUtils
+						.buildPropertiesMap(Database.DB_1)));
 		assertEquals(true, testDAO instanceof Dao);
 	}
 
@@ -25,12 +25,12 @@ public class DaoFactoryTest {
 	public void closeTest() {
 		Dao<TestVO> testDAO = DaoFactory.getDAO(
 				TestVO.class,
-				new DaoConfiguration(DB.DB_1.toString(), TestUtils
-						.buildPropertiesMap(DB.DB_1)));
+				new DaoConfiguration(Database.DB_1.toString(), TestUtils
+						.buildPropertiesMap(Database.DB_1)));
 		Dao<SpatialTestVO> testDAO2 = DaoFactory.getDAO(
 				SpatialTestVO.class,
-				new DaoConfiguration(DB.DB_1.toString(), TestUtils
-						.buildPropertiesMap(DB.DB_1)));
+				new DaoConfiguration(Database.DB_1.toString(), TestUtils
+						.buildPropertiesMap(Database.DB_1)));
 		DaoFactory.close(testDAO, testDAO2);
 	}
 
