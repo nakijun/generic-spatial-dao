@@ -8,7 +8,7 @@ import java.util.List;
 import org.genericspatialdao.dao.Dao;
 import org.genericspatialdao.data.TestGeneratorVO;
 import org.genericspatialdao.util.TestUtils;
-import org.genericspatialdao.util.TestUtils.DB;
+import org.genericspatialdao.util.TestUtils.Database;
 import org.junit.Test;
 
 public class GeneratorTest {
@@ -16,7 +16,7 @@ public class GeneratorTest {
 	@Test
 	public void test() {
 		Dao<TestGeneratorVO> testG = TestUtils.getDAOTest(
-				TestGeneratorVO.class, DB.DB_1);
+				TestGeneratorVO.class, Database.DB_1);
 		List<TestGeneratorVO> list = new ArrayList<TestGeneratorVO>();
 		for (int i = 0; i < 5; i++) {
 			TestGeneratorVO tg = new TestGeneratorVO();

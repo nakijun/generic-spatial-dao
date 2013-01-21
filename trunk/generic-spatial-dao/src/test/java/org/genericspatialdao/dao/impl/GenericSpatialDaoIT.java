@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
 import org.genericspatialdao.dao.Dao;
 import org.genericspatialdao.data.TestVO;
 import org.genericspatialdao.util.TestUtils;
-import org.genericspatialdao.util.TestUtils.DB;
+import org.genericspatialdao.util.TestUtils.Database;
 import org.junit.Test;
 
 public class GenericSpatialDaoIT {
@@ -79,7 +79,7 @@ class MultiThreadDefaultPUTest extends MultiThreadTest {
 
 	@Override
 	Dao<TestVO> getDAO() {
-		return TestUtils.getDAOTest(TestVO.class, DB.DB_1);
+		return TestUtils.getDAOTest(TestVO.class, Database.DB_1);
 	}
 }
 
@@ -87,7 +87,7 @@ class MultiThreadPU2Test extends MultiThreadTest {
 
 	@Override
 	Dao<TestVO> getDAO() {
-		return TestUtils.getDAOTest(TestVO.class, DB.DB_2);
+		return TestUtils.getDAOTest(TestVO.class, Database.DB_2);
 	}
 }
 
@@ -95,7 +95,7 @@ class MultiThreadPU3Test extends MultiThreadTest {
 
 	@Override
 	Dao<TestVO> getDAO() {
-		return TestUtils.getDAOTest(TestVO.class, DB.DB_3);
+		return TestUtils.getDAOTest(TestVO.class, Database.DB_3);
 	}
 }
 
@@ -103,7 +103,7 @@ class MultiThreadPU4Test extends MultiThreadTest {
 
 	@Override
 	Dao<TestVO> getDAO() {
-		return TestUtils.getDAOTest(TestVO.class, DB.DB_4);
+		return TestUtils.getDAOTest(TestVO.class, Database.DB_4);
 	}
 }
 
@@ -111,8 +111,8 @@ class MultiThreadDifferentPUTest implements Runnable {
 
 	@Override
 	public void run() {
-		Dao<TestVO> testDAO1 = TestUtils.getDAOTest(TestVO.class, DB.DB_1);
-		Dao<TestVO> testDAO2 = TestUtils.getDAOTest(TestVO.class, DB.DB_2);
+		Dao<TestVO> testDAO1 = TestUtils.getDAOTest(TestVO.class, Database.DB_1);
+		Dao<TestVO> testDAO2 = TestUtils.getDAOTest(TestVO.class, Database.DB_2);
 		doTest(testDAO1);
 		doTest(testDAO2);
 

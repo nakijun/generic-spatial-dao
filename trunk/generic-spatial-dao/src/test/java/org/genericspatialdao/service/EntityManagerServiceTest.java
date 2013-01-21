@@ -4,7 +4,7 @@ import static org.junit.Assert.assertNotNull;
 
 import org.genericspatialdao.configuration.DaoConfiguration;
 import org.genericspatialdao.util.TestUtils;
-import org.genericspatialdao.util.TestUtils.DB;
+import org.genericspatialdao.util.TestUtils.Database;
 import org.junit.Test;
 
 public class EntityManagerServiceTest {
@@ -12,8 +12,8 @@ public class EntityManagerServiceTest {
 	@Test
 	public void getEntityManagerTest() {
 		assertNotNull(EntityManagerService
-				.getEntityManager(new DaoConfiguration(DB.DB_1.toString(),
-						TestUtils.buildPropertiesMap(DB.DB_1))));
+				.getEntityManager(new DaoConfiguration(Database.DB_1.toString(),
+						TestUtils.buildPropertiesMap(Database.DB_1))));
 	}
 
 	@Test

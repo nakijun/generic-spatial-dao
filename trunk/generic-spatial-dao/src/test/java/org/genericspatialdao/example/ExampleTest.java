@@ -9,7 +9,7 @@ import org.genericspatialdao.example.vo.Department;
 import org.genericspatialdao.example.vo.Employee;
 import org.genericspatialdao.util.DataCreator;
 import org.genericspatialdao.util.TestUtils;
-import org.genericspatialdao.util.TestUtils.DB;
+import org.genericspatialdao.util.TestUtils.Database;
 import org.junit.Test;
 
 public class ExampleTest {
@@ -17,9 +17,9 @@ public class ExampleTest {
 	@Test
 	public void oneToManyTest() {
 		// setup
-		Dao<Department> testD = TestUtils.getDAOTest(Department.class, DB.DB_1);
+		Dao<Department> testD = TestUtils.getDAOTest(Department.class, Database.DB_1);
 
-		Dao<Employee> testE = TestUtils.getDAOTest(Employee.class, DB.DB_1);
+		Dao<Employee> testE = TestUtils.getDAOTest(Employee.class, Database.DB_1);
 
 		Department d = DataCreator.createDepartment();
 		testD.persist(d);

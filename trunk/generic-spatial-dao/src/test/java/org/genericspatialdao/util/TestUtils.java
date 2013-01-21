@@ -13,13 +13,13 @@ import com.vividsolutions.jts.geom.Point;
 
 public class TestUtils {
 
-	public static enum DB {
+	public static enum Database {
 		DB_1("genericspatialdao1"), DB_2("genericspatialdao2"), DB_3(
 				"genericspatialdao3"), DB_4("genericspatialdao4");
 
 		private String name;
 
-		private DB(String name) {
+		private Database(String name) {
 			this.name = name;
 		}
 
@@ -36,13 +36,13 @@ public class TestUtils {
 			.getProperty("db.password");
 	private static final String URL_TEMPLATE = "jdbc:postgresql://%s:%s/%s";
 
-	public static <T> Dao<T> getDAOTest(Class<T> entityClass, DB db) {
+	public static <T> Dao<T> getDAOTest(Class<T> entityClass, Database db) {
 		String persistenceUnit = db.toString();
 		return new GenericSpatialDao<T>(entityClass, new DaoConfiguration(
 				persistenceUnit, buildPropertiesMap(db)));
 	}
 
-	public static Map<String, String> buildPropertiesMap(DB db) {
+	public static Map<String, String> buildPropertiesMap(Database db) {
 		Map<String, String> properties = new HashMap<String, String>();
 		properties.put("hibernate.connection.username", USERNAME);
 		properties.put("hibernate.connection.password", PASSWORD);
