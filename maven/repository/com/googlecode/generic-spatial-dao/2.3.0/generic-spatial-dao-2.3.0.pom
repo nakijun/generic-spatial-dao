@@ -74,6 +74,7 @@
 										<versionRange>[1.0-alpha-2,)</versionRange>
 										<goals>
 											<goal>read-project-properties</goal>
+											<goal>write-project-properties</goal>
 										</goals>
 									</pluginExecutionFilter>
 									<action>
@@ -104,6 +105,15 @@
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>properties-maven-plugin</artifactId>
 				<version>1.0-alpha-2</version>
+				<configuration>
+					<quiet>true</quiet>
+					<detail>true</detail>
+					<files>
+						<file>${basedir}/properties/build.properties</file>
+						<file>${basedir}/properties/${user.name}.properties</file>
+					</files>
+					<outputFile>target/test-classes/build.properties</outputFile>
+				</configuration>
 				<executions>
 					<execution>
 						<id>read-properties</id>
@@ -111,11 +121,13 @@
 						<goals>
 							<goal>read-project-properties</goal>
 						</goals>
-						<configuration>
-							<files>
-								<file>${basedir}/src/test/resources/build.properties</file>
-							</files>
-						</configuration>
+					</execution>
+					<execution>
+						<id>write-properties</id>
+						<phase>initialize</phase>
+						<goals>
+							<goal>write-project-properties</goal>
+						</goals>
 					</execution>
 				</executions>
 			</plugin>
@@ -137,7 +149,6 @@
 						<excludes>
 							<exclude>org/genericspatialdao/exception/**/*.class</exclude>
 							<exclude>org/genericspatialdao/dao/DaoFactory.class</exclude>
-							<exclude>org/genericspatialdao/util/ConstantUtils.class</exclude>
 						</excludes>
 					</instrumentation>
 				</configuration>
